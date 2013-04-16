@@ -25,10 +25,5 @@
 	
 	<!-- CONFIGURAÇÕES PARA O HIBERNATE -->
 		<!-- CONFIGURAÇÕES DO BANCO DE DADOS -->
-	<context:component-scan base-package="br.edu.aee.UniWeb.model" />
-	<context:component-scan base-package="br.edu.aee.UniWeb.dao" />
-	<context:component-scan base-package="br.edu.aee.UniWeb.service" />
-	<context:component-scan base-package="br.edu.aee.UniWeb.controller" />
-	<context:component-scan base-package="br.edu.aee.UniWeb.view" />
 
 </beans>
