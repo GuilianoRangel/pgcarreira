@@ -1,0 +1,1 @@
+http://blog.coffeebeans.at/?p=64 - instruções do modulo jboss para postgres
