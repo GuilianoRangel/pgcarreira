@@ -1,0 +1,39 @@
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+<?page title="Portal de Gestão de Carreiras - Página de Cadastro" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window border="none">
+<radiogroup id="procurarPor" />
+<style src="/css/style.css"/>
+	<hlayout>
+		<image src="/imagens/logo_ueg.png" width="190px"/>
+		<vlayout>
+			<separator height="50px"></separator>
+			<label sclass="cadastro1_titulo">Bem vindo a página de associação ao Portal de Carreiras da Universidade Estadual de Goiás - UEG.</label>
+			<label>Para iniciar o seu cadastro por favor selecione uma das formas abaixo para poder localizar seus dados na base de dados da Universidade.</label>
+			<separator height="30px"></separator>
+			<label value="Procurar por:" style="font-size:15px; margin-left:150px; font-weight: bold;"/>
+			<groupbox width="450px" sclass="cadastro1_borda" style="border-radius: 10px;
+	border: solid 1px gray;
+	padding: 5px;
+	margin-bottom: 5px; margin-left:150px" contentStyle="border:0">
+				
+				<hlayout>
+					<vlayout>
+						<radio label="Cadastro de Pessoa Física - CPF" value="cpf" radiogroup="procurarPor" />
+						<separator height="2px" />
+						<textbox value="" width="190px" ></textbox>
+					</vlayout>
+					<separator width="30px" />
+					<vlayout>
+						<radio label="Número de Mátricula"	value="matricula" radiogroup="procurarPor" />
+						<separator height="2px" />
+						<button label="Procurar" mold="trendy"></button>
+						<separator height="5px" />
+					</vlayout>
+				</hlayout>
+
+			</groupbox> 			
+		</vlayout>
+	</hlayout>
+</window>
+</zk>

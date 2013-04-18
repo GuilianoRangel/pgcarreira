@@ -9,7 +9,7 @@ import br.edu.aee.UniArch.annotation.VisibleEntityName;
 import br.edu.aee.UniArch.structure.model.Entity;
 
 @SuppressWarnings("serial")
-@VisibleEntityName(key="UegAcademico")
+@VisibleEntityName(value="UegAcademico")
 @javax.persistence.Entity
 @Table(name="ueg_academico")
 public class UegAcademico extends Entity<String> {

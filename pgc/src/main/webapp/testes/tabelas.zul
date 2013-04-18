@@ -1,0 +1,51 @@
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+<?page title="Tabelas Básicas" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window apply="${estadoComposer }">
+		<vlayout>
+			<hlayout>
+				<label value="Descrição:"></label>
+				<textbox value="@{manager.fldDescricao }"/>				
+			</hlayout>
+			<hlayout>
+				<button label="Listar" onClick="manager.list()"/>
+				<button label="Buscar" onClick="manager.find()"/>
+				<button label="Salvar" onClick="manager.record()"/>
+			</hlayout>
+			<hlayout>
+				<listbox model="@{manager.entityListModel }" selectedItem="@{manager.selectedEntity }" width="1000px;" >
+					<listhead>
+						<listheader label="PK"/>
+						<listheader label="Descrição"/>
+						<listheader />
+						<listheader />
+					</listhead>
+					<listitem self="@{each=item }" value="@{item }">
+						<listcell label="@{item.pk}"/>
+						<listcell label="@{item.descricao}"/>
+						<listcell>
+							<button label="Editar"> 
+								<attribute name="onClick">
+									((Listitem)self.getParent().getParent()).setSelected(true);
+									manager.edit();
+								</attribute>
+							</button>
+						</listcell>
+						<listcell>
+							<button label="Remover"> 
+								<attribute name="onClick">
+									((Listitem)self.getParent().getParent()).setSelected(true);
+									manager.delete();
+								</attribute>
+							</button>
+						</listcell>
+					</listitem>
+				</listbox>
+			</hlayout>
+			<separator style="border-bottom: 1px solid;"/>			
+		</vlayout>
+		<searchform composer="@{manager }" />		
+	</window>
+	
+ 
+</zk>

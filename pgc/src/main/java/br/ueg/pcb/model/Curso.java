@@ -13,7 +13,7 @@ import br.edu.aee.UniArch.structure.model.Entity;
 
 
 @SuppressWarnings("serial")
-@VisibleEntityName(key="Curso")
+@VisibleEntityName(value="Curso")
 @javax.persistence.Entity
 @Table(name="ueg_curso")
 public class Curso extends Entity<String> {

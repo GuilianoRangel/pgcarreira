@@ -1,0 +1,146 @@
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+<?page title="Portal de Gestão de Carreiras - Página de Cadastro" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window border="none" width="1024px">
+<radiogroup id="procurarPor" />
+<style src="/css/style.css"/>
+	<hlayout>
+		<image src="/imagens/logo_ueg.png" width="100px"/>
+		<vlayout>
+			<separator height="10px"></separator>
+			<label sclass="cadastro1_titulo">Bem vindo a página de associação ao Portal de Carreiras da Universidade Estadual de Goiás - UEG.</label>
+			<label>Para concluir seu cadastro preencha as informações solicitadas a abaixo e clique ao final no botão salvar,após isso em alguns minutos você receberá um e-mail 
+			para confirmar seu cadastro.</label>
+		</vlayout>
+	</hlayout>
+	<hlayout>
+		<vlayout>
+			<separator height="30px"></separator>
+			<label value="Procurar por:" style="font-size:15px; font-weight: bold;"/>
+			<groupbox width="450px" sclass="cadastro1_borda" style="border-radius: 10px;
+	border: solid 1px gray;
+	padding: 5px;
+	margin-bottom: 5px;" contentStyle="border:0">
+				
+				<hlayout>
+					<vlayout>
+						<radio label="Cadastro de Pessoa Física - CPF" value="cpf" radiogroup="procurarPor" />
+						<separator height="2px" />
+						<textbox value="Teste" width="190px" ></textbox>
+					</vlayout>
+					<separator width="30px" />
+					<vlayout>
+						<radio label="Número de Mátricula"	value="matricula" radiogroup="procurarPor" />
+						<separator height="2px" />
+						<button label="Procurar" mold="trendy"></button>
+						<separator height="5px" />
+					</vlayout>
+				</hlayout>
+
+			</groupbox> 
+			<groupbox sclass="cadastro1_borda" style="border-radius: 10px; border: solid 1px gray; padding: 0px;" contentStyle="border:0;" mold="3d" width="450px">
+				<caption label="Procurar por:"/>
+				<hlayout>
+					<vlayout>
+						<radio label="Cadastro de Pessoa Física - CPF" value="cpf" radiogroup="procurarPor" />
+						<separator height="2px" />
+						<textbox value="" width="190px" ></textbox>
+					</vlayout>
+					<separator width="30px" />
+					<vlayout>
+						<radio label="Número de Mátricula"	value="matricula" radiogroup="procurarPor" />
+						<separator height="2px" />
+						<button label="Procurar" mold="trendy"></button>
+						<separator height="5px" />
+					</vlayout>
+				</hlayout>
+			</groupbox>
+			<groupbox sclass="cadastro1_borda" style="border-radius: 10px; border: solid 1px gray; padding: 0px;" contentStyle="border:0;" mold="3d" width="450px">
+				<caption label="Procurar por:"/>
+				<hlayout>
+					<vlayout>
+						<radio label="Cadastro de Pessoa Física - CPF" value="cpf" radiogroup="procurarPor" />
+						<separator height="2px" />
+						<textbox value="" width="190px" ></textbox>
+					</vlayout>
+					<separator width="30px" />
+					<vlayout>
+						<radio label="Número de Mátricula"	value="matricula" radiogroup="procurarPor" />
+						<separator height="2px" />
+						<button label="Procurar" mold="trendy"></button>
+						<separator height="5px" />
+					</vlayout>
+				</hlayout>
+			</groupbox>
+			<groupbox  style="border-radius: 10px; border: solid 1px gray; padding: 0px; " width="450px">
+				<caption label="Procurar por:"/>
+				<hlayout>
+					<vlayout>
+						<radio label="Cadastro de Pessoa Física - CPF" value="cpf" radiogroup="procurarPor" />
+						<separator height="2px" />
+						<textbox value="" width="190px" ></textbox>
+					</vlayout>
+					<separator width="30px" />
+					<vlayout>
+						<radio label="Número de Mátricula"	value="matricula" radiogroup="procurarPor" />
+						<separator height="2px" />
+						<button label="Procurar" mold="trendy"></button>
+						<separator height="5px" />
+					</vlayout>
+				</hlayout>
+			</groupbox>
+			<groupbox  style="border-radius: 10px; border: solid 1px gray; padding: 0px; " width="450px">
+				<caption label="Procurar por:"/>
+				<hlayout>
+					<vlayout>
+						<radio label="Cadastro de Pessoa Física - CPF" value="cpf" radiogroup="procurarPor" />
+						<separator height="2px" />
+						<textbox value="" width="190px" ></textbox>
+					</vlayout>
+					<separator width="30px" />
+					<vlayout>
+						<radio label="Número de Mátricula"	value="matricula" radiogroup="procurarPor" />
+						<separator height="2px" />
+						<button label="Procurar" mold="trendy"></button>
+						<separator height="5px" />
+					</vlayout>
+				</hlayout>
+			</groupbox>
+			<groupbox  width="450px">
+				<caption label="Procurar por:"/>
+				<hlayout>
+					<vlayout>
+						<radio label="Cadastro de Pessoa Física - CPF" value="cpf" radiogroup="procurarPor" />
+						<separator height="2px" />
+						<textbox value="" width="190px" ></textbox>
+					</vlayout>
+					<separator width="30px" />
+					<vlayout>
+						<radio label="Número de Mátricula"	value="matricula" radiogroup="procurarPor" />
+						<separator height="2px" />
+						<button label="Procurar" mold="trendy"></button>
+						<separator height="5px" />
+					</vlayout>
+				</hlayout>
+			</groupbox>
+			<groupbox  width="450px">
+				<caption label="Procurar por:"/>
+				<hlayout>
+					<vlayout>
+						<radio label="Cadastro de Pessoa Física - CPF" value="cpf" radiogroup="procurarPor" />
+						<separator height="2px" />
+						<textbox value="" width="190px" ></textbox>
+					</vlayout>
+					<separator width="30px" />
+					<vlayout>
+						<radio label="Número de Mátricula"	value="matricula" radiogroup="procurarPor" />
+						<separator height="2px" />
+						<button label="Procurar" mold="trendy"></button>
+						<separator height="5px" />
+					</vlayout>
+				</hlayout>
+			</groupbox>
+		</vlayout>
+	</hlayout>
+</window>
+</zk>

@@ -10,7 +10,7 @@ import br.edu.aee.UniArch.structure.model.CompositeEntity;
 import br.ueg.pcb.model.pks.CursosAcademicoPK;
 
 @SuppressWarnings("serial")
-@VisibleEntityName(key="Cursos Acadêmicos")
+@VisibleEntityName(value="Cursos Acadêmicos")
 @Entity
 @Table(name="ueg_cursos_academico")
 public class CursosAcademico extends CompositeEntity<CursosAcademicoPK> {

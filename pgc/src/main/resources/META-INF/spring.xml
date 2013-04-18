@@ -25,5 +25,10 @@
 	
 	<!-- CONFIGURAÇÕES PARA O HIBERNATE -->
 		<!-- CONFIGURAÇÕES DO BANCO DE DADOS -->
-
+	<context:component-scan base-package="br.ueg.pcb.model" />
+	<context:component-scan base-package="br.ueg.pcb.dao" />
+	<context:component-scan base-package="br.ueg.pcb.service" />
+	<context:component-scan base-package="br.ueg.pcb.controller" />
+	<context:component-scan base-package="br.ueg.pcb.view" />
+	
 </beans>

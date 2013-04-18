@@ -13,7 +13,7 @@ import br.edu.aee.UniArch.structure.model.Entity;
  *
  */
 @SuppressWarnings("serial")
-@VisibleEntityName(key="Unidade")
+@VisibleEntityName(value="Unidade")
 @javax.persistence.Entity
 @Table(name="ueg_unidade")
 public class Unidade extends Entity<String>{
