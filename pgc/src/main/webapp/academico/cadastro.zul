@@ -1,7 +1,7 @@
 <?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
 <?page title="Portal de Gestão de Carreiras - Página de Cadastro" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window border="none">
+<window border="none" apply="${cadastroAcademicoComposer }">
 <radiogroup id="procurarPor" />
 <style src="/css/style.css"/>
 	<hlayout>
@@ -21,13 +21,13 @@
 					<vlayout>
 						<radio label="Cadastro de Pessoa Física - CPF" value="cpf" radiogroup="procurarPor" />
 						<separator height="2px" />
-						<textbox value="" width="190px" ></textbox>
+						<textbox id="academicoChaveBusca" value="" width="190px" ></textbox>
 					</vlayout>
 					<separator width="30px" />
 					<vlayout>
 						<radio label="Número de Mátricula"	value="matricula" radiogroup="procurarPor" />
 						<separator height="2px" />
-						<button label="Procurar" mold="trendy"></button>
+						<button label="Procurar" mold="trendy" onClick="manager.procurarAcademico()"></button>
 						<separator height="5px" />
 					</vlayout>
 				</hlayout>

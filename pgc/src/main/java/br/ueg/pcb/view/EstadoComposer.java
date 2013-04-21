@@ -15,7 +15,7 @@ import br.ueg.pcb.model.assist.Estado;
  */
 
 @SuppressWarnings({ "serial" })
-//@Scope(value="desktop")
+@Scope(value="prototype")
 @org.springframework.stereotype.Component
 public class EstadoComposer extends CRUDViewZK<GenericController<Estado, Long>, Estado, Long> {
 	

@@ -8,6 +8,6 @@
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <property name="java-output-path" value="/pgc/target/classes"/>
-        <property name="context-root" value="PGC"/>
+        <property name="context-root" value="pgc"/>
     </wb-module>
 </project-modules>

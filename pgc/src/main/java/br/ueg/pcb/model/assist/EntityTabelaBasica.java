@@ -34,6 +34,7 @@ public class EntityTabelaBasica extends Entity<Long> {
 	@Column(name = "id_item")
 	private Long pk;
 	
+	@SearchableField(description="Descrição")
 	@Column(name = "descricao", nullable = false, length = 200)
 	private String descricao;
 
