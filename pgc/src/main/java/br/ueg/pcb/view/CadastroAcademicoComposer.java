@@ -3,6 +3,7 @@ package br.ueg.pcb.view;
 import java.sql.Date;
 
 import org.springframework.context.annotation.Scope;
+import org.zkoss.zk.ui.Executions;
 
 import br.edu.aee.UniArch.annotation.AttributeView;
 import br.edu.aee.UniArch.domain.ActionReturn;
@@ -22,6 +23,9 @@ import br.ueg.pcb.model.assist.Sexo;
 @Scope(value="session")
 @org.springframework.stereotype.Component
 public class CadastroAcademicoComposer extends CRUDViewZK<CadastroAcademicoControler, Academico, Long> {
+	
+	@AttributeView(attributeName="tipoBusca", isEntityField=false)
+	private String tipoBusca;
 	
 	@AttributeView(attributeName="academicoChaveBusca", isEntityField=false)
 	private String academicoChaveBusca;
@@ -438,6 +442,20 @@ public class CadastroAcademicoComposer extends CRUDViewZK<CadastroAcademicoContr
 	}
 	
 	/**
+	 * @return the tipoBusca
+	 */
+	public String getTipoBusca() {
+		return tipoBusca;
+	}
+
+	/**
+	 * @param tipoBusca the tipoBusca to set
+	 */
+	public void setTipoBusca(String tipoBusca) {
+		this.tipoBusca = tipoBusca;
+	}
+
+	/**
 	 * @see br.edu.aee.UniArch.structure.view.ZK.SuperViewZK#newControlInstance()
 	 */
 	@Override
@@ -446,7 +464,13 @@ public class CadastroAcademicoComposer extends CRUDViewZK<CadastroAcademicoContr
 	}
 
 	public void procurarAcademico(){
-		this.doAction("procuraracademico");
+		ActionReturn<String, Object> actionReturn = (ActionReturn<String, Object>) this.doAction("procuraracademico");
+		if(actionReturn.isSuccess()){
+			String nextUseCase = (String) actionReturn.getParameter("nextUseCase");
+			if(nextUseCase!=null && !nextUseCase.equals("")){
+				Executions.sendRedirect(nextUseCase);
+			}
+		}
 		/*ActionReturn<?,?> actionReturn = getViewController().save();
 		if (!actionReturn.isSuccess()) {
 			showMessage(actionReturn);

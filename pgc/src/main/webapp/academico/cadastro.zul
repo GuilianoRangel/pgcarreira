@@ -2,7 +2,8 @@
 <?page title="Portal de Gestão de Carreiras - Página de Cadastro" contentType="text/html;charset=UTF-8"?>
 <zk>
 <window border="none" apply="${cadastroAcademicoComposer }">
-<radiogroup id="procurarPor" />
+<label id="hiddenScenarioInfo" value="CadastrarAcademico" />
+<radiogroup id="procurarPor" selectedItem="@{manager.tipoBusca }"/>
 <style src="/css/style.css"/>
 	<hlayout>
 		<image src="/imagens/logo_ueg.png" width="190px"/>
@@ -19,9 +20,9 @@
 				
 				<hlayout>
 					<vlayout>
-						<radio label="Cadastro de Pessoa Física - CPF" value="cpf" radiogroup="procurarPor" />
+						<radio label="Cadastro de Pessoa Física - CPF" value="cpf" radiogroup="procurarPor"  />
 						<separator height="2px" />
-						<textbox id="academicoChaveBusca" value="" width="190px" ></textbox>
+						<textbox id="academicoChaveBusca" value="@{manager.academicoChaveBusca }" width="190px" ></textbox>
 					</vlayout>
 					<separator width="30px" />
 					<vlayout>

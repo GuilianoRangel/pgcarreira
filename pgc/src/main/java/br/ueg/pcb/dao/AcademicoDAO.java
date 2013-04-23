@@ -10,7 +10,7 @@ import br.edu.aee.UniArch.exception.ErrorException;
 import br.edu.aee.UniArch.exception.SuperException;
 import br.edu.aee.UniArch.structure.model.UserPermission;
 import br.edu.aee.UniArch.structure.persistence.dao.GenericDAO;
-import br.ueg.pcb.enums.TipoDeBuscaAcademico;
+import br.ueg.pcb.enums.TipoDeBuscaAcademicoEnum;
 import br.ueg.pcb.model.Academico;
 
 public class AcademicoDAO extends GenericDAO<Academico, Long> {

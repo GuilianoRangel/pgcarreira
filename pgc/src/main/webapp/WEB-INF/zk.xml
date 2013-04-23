@@ -12,5 +12,10 @@
 	<library-property>
         <name>org.zkoss.composite.packageScan</name>
         <value>br.edu.aee.UniArch.structure.view</value>
-</library-property>
+	</library-property>
+<!-- 	 in WEB-INF/zk.xml 
+		<library-property> 
+		    <name>org.zkoss.theme.preferred</name> 
+	    <value>silvertail</value> 
+		</library-property> -->
 </zk>

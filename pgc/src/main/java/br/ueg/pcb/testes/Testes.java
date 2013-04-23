@@ -5,7 +5,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import br.edu.aee.UniArch.exception.SuperException;
 import br.ueg.pcb.dao.UegAcademicoDao;
-import br.ueg.pcb.enums.TipoDeBuscaAcademico;
+import br.ueg.pcb.enums.TipoDeBuscaAcademicoEnum;
 import br.ueg.pcb.model.UegAcademico;
 import br.ueg.pcb.validation.CadastroAcademicoValidation;
 import br.ueg.pcb.view.EstadoComposer;
@@ -19,7 +19,7 @@ public class Testes {
 		UegAcademico ua = new UegAcademico();
 		ua.setCpf("11111111111");
 		try {
-			uaDAO.exists(TipoDeBuscaAcademico.CPF, ua);
+			uaDAO.exists(TipoDeBuscaAcademicoEnum.CPF, ua);
 			System.out.println(ua);
 			System.out.println(ua.getNome());
 		} catch (SuperException e) {
