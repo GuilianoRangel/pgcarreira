@@ -1,9 +1,0 @@
-<jboss-deployment-structure xmlns="urn:jboss:deployment-structure:1.0">
-   <deployment>
-   	   <dependencies>
-   	   		<module name="com.microsoft.sqlserver.jdbc"/>
-   	   		<module name="org.hibernate"/>
-   	   		<module name="javax.annotation.api"/>
-   	   </dependencies>
-   </deployment>
-</jboss-deployment-structure>
