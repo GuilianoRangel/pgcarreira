@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.management.AttributeValueExp;
-
 import org.springframework.stereotype.Controller;
 
 import br.edu.aee.UniArch.annotation.UseCase;
@@ -14,9 +12,9 @@ import br.edu.aee.UniArch.domain.ActionReturn;
 import br.edu.aee.UniArch.domain.GenericActionReturn;
 import br.edu.aee.UniArch.enums.ReturnTypeEnum;
 import br.edu.aee.UniArch.settings.SpringFactory;
-import br.edu.aee.UniArch.structure.interfaces.ISuperEntity;
 import br.edu.aee.UniArch.subsystems.validation.SuperValidator;
 import br.edu.aee.UniArch.utils.ConfigurationProperties;
+import br.ueg.pcb.model.Academico;
 import br.ueg.pcb.service.AcademicoService;
 
 
@@ -42,9 +40,11 @@ public class CadastroAcademicoValidation extends SuperValidator {
 				erroList.add(actionReturn.getErrorMessages().get(0));
 			}
 			
+			
+			
 			//validar se o aluno existe
-			AcademicoService academicoService = SpringFactory.getBean(AcademicoService.class); 
-			if(!academicoService.existsUegAcademico(tipoBusca, (String) getAttributeValue("academicoChaveBusca"))){
+			AcademicoService academicoService = (AcademicoService) SpringFactory.loadService(Academico.class); 
+			if(erroList.isEmpty() && !academicoService.existsUegAcademico(tipoBusca, (String) getAttributeValue("academicoChaveBusca"))){
 				erroList.add(mensagens.getValue("CadastroAcademico.procuraracademico.academicoNaoExiste"));
 			}
 			
@@ -56,8 +56,8 @@ public class CadastroAcademicoValidation extends SuperValidator {
 		}
 		return actionReturn;
 	}
-	@ValidatorMethod(action="CadastrarAcademico", order=0)//validação de atributos com onblur(por isso usa o nome do cenário
-	public ActionReturn<?, ?> validateCadastrarAcademicoFieldsOnBlur(String action, String attributeName){
+	@ValidatorMethod(action="CadastrarAcademicoBusca", order=0)//validação de atributos com onblur(por isso usa o nome do cenário
+	public ActionReturn<?, ?> validateCadastrarAcademicoBuscaFieldsOnBlur(String action, String attributeName){
 		ActionReturn<?, ?> actionReturn = new GenericActionReturn();
 		
 		onBlurValidateFieldAcademicoChaveBusca(attributeName, actionReturn);

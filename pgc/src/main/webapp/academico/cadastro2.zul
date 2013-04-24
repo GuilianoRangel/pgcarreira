@@ -1,7 +1,8 @@
 <?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
 <?page title="Portal de Gestão de Carreiras - Página de Cadastro" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window border="none" width="1024px">
+<window border="none" width="1024px" apply="${cadastroAcademicoComposer }">
+<label id="hiddenScenarioInfo" value="CadastrarAcademico" visible="false"/>
 <radiogroup id="procurarPor" />
 <style src="/css/style.css"/>
 	<hlayout>

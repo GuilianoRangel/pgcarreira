@@ -12,3 +12,7 @@
 .teste{
 	margin-right: x;
 }
+
+.mw-borderlayout .closeButton{
+	width: 50px;
+}

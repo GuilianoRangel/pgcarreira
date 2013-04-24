@@ -2,7 +2,7 @@
 <?page title="Portal de Gestão de Carreiras - Página de Cadastro" contentType="text/html;charset=UTF-8"?>
 <zk>
 <window border="none" apply="${cadastroAcademicoComposer }">
-<label id="hiddenScenarioInfo" value="CadastrarAcademico" />
+<label id="hiddenScenarioInfo" value="CadastrarAcademicoBusca" visible="false"/>
 <radiogroup id="procurarPor" selectedItem="@{manager.tipoBusca }"/>
 <style src="/css/style.css"/>
 	<hlayout>
