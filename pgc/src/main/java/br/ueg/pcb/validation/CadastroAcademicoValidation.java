@@ -86,23 +86,5 @@ public class CadastroAcademicoValidation extends SuperValidator {
 				);
 			}
 		}
-	}
-
-	/* (non-Javadoc)
-	 * @see br.edu.aee.UniArch.subsystems.validation.SuperValidator#validateAttributeNotMandatory(java.lang.String, java.lang.String)
-	 */
-	@Override
-	protected ActionReturn<?, ?> validateAttributeNotMandatory(String action,
-			String attributeName) {
-		ActionReturn<?, ?> actionReturn = new GenericActionReturn();
-		//valida o atributo 
-		if ( action.equals("procuraracademico") && attributeName!=null &&  attributeName.equals("academicoChaveBusca")  ) {
-			String unfilledFieldMessage = this.generateEmptyMessageForAttribute(attributeName, this.getValue());
-			if (unfilledFieldMessage != null) {
-				actionReturn.reportFailure(ReturnTypeEnum.WARNING, Arrays.asList(unfilledFieldMessage));
-			}
-		}
-		return actionReturn;
-	}
-	
+	}	
 }

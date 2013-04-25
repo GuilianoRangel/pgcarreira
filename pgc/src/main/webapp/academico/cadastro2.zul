@@ -20,18 +20,17 @@
 			<groupbox width="1020px" height="300px" sclass="cadastro1_borda" style="border-radius: 10px; border: solid 1px gray; padding: 0px; " contentStyle="border:0;" mold="3d" >
 				<caption label="Unidade Universitária"/>
 				<hlayout>
-					<vlayout>
-						<radio label="Cadastro de Pessoa Física - CPF" value="cpf" radiogroup="procurarPor" />
-						<separator height="2px" />
-						<textbox value="" width="190px" ></textbox>
-					</vlayout>
-					<separator width="30px" />
-					<vlayout>
-						<radio label="Número de Mátricula"	value="matricula" radiogroup="procurarPor" />
-						<separator height="2px" />
-						<button label="Procurar" mold="trendy"></button>
-						<separator height="5px" />
-					</vlayout>
+					<grid model="@{manager.listUnidade }">
+						<columns>
+							<column width="100%"/>							
+						</columns>
+						<rows >
+							<row self="@{each=unidade}">								
+								<label value="@{unidade.nome }">d</label>
+							</row>
+						</rows>
+					</grid>
+							
 				</hlayout>
 			</groupbox>			
 			<groupbox  style="border-radius: 10px; border: solid 1px gray; padding: 0px; " width="1020px">

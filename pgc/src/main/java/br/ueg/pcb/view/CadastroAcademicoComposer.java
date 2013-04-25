@@ -1,6 +1,7 @@
 package br.ueg.pcb.view;
 
 import java.sql.Date;
+import java.util.List;
 
 import org.springframework.context.annotation.Scope;
 import org.zkoss.zk.ui.Executions;
@@ -15,6 +16,7 @@ import br.edu.aee.UniArch.subsystems.security.SecurityController;
 import br.ueg.pcb.controller.CadastroAcademicoControler;
 import br.ueg.pcb.model.Academico;
 import br.ueg.pcb.model.UegAcademico;
+import br.ueg.pcb.model.Unidade;
 import br.ueg.pcb.model.assist.Estado;
 import br.ueg.pcb.model.assist.EstadoCivil;
 import br.ueg.pcb.model.assist.Sexo;
@@ -479,6 +481,9 @@ public class CadastroAcademicoComposer extends CRUDViewZK<CadastroAcademicoContr
 			showMessage(actionReturn);
 			super.binder.loadAll();
 		}*/
+	}
+	public List<Unidade> getListUnidade(){		
+		return ((CadastroAcademicoControler)this.getViewController()).getListUnidadeDoAcademico();
 	}
 	
 
