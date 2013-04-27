@@ -1,18 +1,32 @@
 @CHARSET "ISO-8859-1";
-.cadastro1_titulo{
+
+.cadastro1_titulo {
 	font-size: 16px;
 	font-weight: bold;
 }
-.cadastro1_borda{
+
+.cadastro2_titulo {
+	font-weight: bold;
+}
+
+.cadastro1_borda {
 	border-radius: 10px;
 	border: solid 1px gray;
 	padding: 5px;
 	margin-bottom: 5px;
 }
-.teste{
+
+.teste {
 	margin-right: x;
 }
 
-.mw-borderlayout .closeButton{
+.mw-borderlayout .closeButton {
 	width: 50px;
+}
+
+.myGridWithNoBorder tr.z-row td.z-row-inner,
+.myGridWithNoBorder tr.z-grid-odd td.z-row-inner, 
+.myGridWithNoBorder tr.z-grid-odd .z-cell  {
+	border: 0px #CCC;
+	background-color: #fff;
 }

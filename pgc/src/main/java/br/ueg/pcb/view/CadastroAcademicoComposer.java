@@ -1,6 +1,7 @@
 package br.ueg.pcb.view;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.context.annotation.Scope;
@@ -15,11 +16,13 @@ import br.edu.aee.UniArch.structure.view.ZK.CRUDViewZK;
 import br.edu.aee.UniArch.subsystems.security.SecurityController;
 import br.ueg.pcb.controller.CadastroAcademicoControler;
 import br.ueg.pcb.model.Academico;
+import br.ueg.pcb.model.CursosAcademico;
 import br.ueg.pcb.model.UegAcademico;
 import br.ueg.pcb.model.Unidade;
 import br.ueg.pcb.model.assist.Estado;
 import br.ueg.pcb.model.assist.EstadoCivil;
 import br.ueg.pcb.model.assist.Sexo;
+import br.ueg.pcb.view.model.AcademicoUnidadeCursos;
 
 @SuppressWarnings({ "serial" })
 @Scope(value="session")
@@ -483,8 +486,37 @@ public class CadastroAcademicoComposer extends CRUDViewZK<CadastroAcademicoContr
 		}*/
 	}
 	public List<Unidade> getListUnidade(){		
-		return ((CadastroAcademicoControler)this.getViewController()).getListUnidadeDoAcademico();
+		return getCadastroAcademicoControler().getListUnidadeDoAcademico();
+	}
+
+	/** metodo para retornar o controler tipado
+	 * @return
+	 */
+	private CadastroAcademicoControler getCadastroAcademicoControler() {
+		return (CadastroAcademicoControler)this.getViewController();
 	}
 	
+	public List<AcademicoUnidadeCursos> getListCursosAcademico(){
+		List<CursosAcademico> cursosAcademicos = this.getCadastroAcademicoControler().getListCursosAcademico();
+		if (cursosAcademicos==null) return null;
+		
+		Unidade unidade = new Unidade();
+		unidade.setPk("0");//so para controlar o primeiro diferencte
+		AcademicoUnidadeCursos ant = new AcademicoUnidadeCursos(unidade);
+		List<AcademicoUnidadeCursos> resultList =new ArrayList<AcademicoUnidadeCursos>();	
+		
+		for(CursosAcademico cursoAcademico: cursosAcademicos){
+			if(ant.getUnidade()!=null && ant.getUnidade().getPk().equals(cursoAcademico.getPk().getCurso().getUnidade().getPk())){
+				ant.getCursos().add(cursoAcademico);				
+			}else {	
+				AcademicoUnidadeCursos cursosAcademico = new AcademicoUnidadeCursos(cursoAcademico.getPk().getCurso().getUnidade());
+				cursosAcademico.getCursos().add(cursoAcademico);
+				resultList.add(cursosAcademico);
+				ant = cursosAcademico;
+			}		
+		}
+		
+		return resultList;
+	}
 
 }

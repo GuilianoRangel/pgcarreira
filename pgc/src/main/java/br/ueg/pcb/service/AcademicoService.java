@@ -67,27 +67,36 @@ public class AcademicoService extends GenericService<Academico, Long> {
 	}
 	@SuppressWarnings("unchecked")
 	public List<Unidade> getListUnidadeAcademico(Academico academico){
+		
+		List<CursosAcademico> cursosAcademico=null;
+		List<Unidade> unidadeList = new ArrayList<Unidade>();
+		
+		cursosAcademico = this.getListCursosAcademico(academico);
+		
+		if(cursosAcademico==null) return null;
+		for(CursosAcademico ca: cursosAcademico){
+			Unidade unidade =  ORMUtils.initializeAndUnproxy(ca.getPk().getCurso().getUnidade());				
+			if(!unidadeList.contains(unidade)){
+				unidadeList.add(unidade);
+			}
+		} 
+		return unidadeList;
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public List<CursosAcademico> getListCursosAcademico(Academico academico){
 		if(academico == null) return null;
 		
 		GenericDAO cursosAcademicoDAO = (GenericDAO) SpringFactory.loadDAO(CursosAcademico.class);
 		
-		
 		Restrictions rest = new Restrictions("pk.uegAcademico.pk",academico.getUegAcademico().getPk());
 		
-		List<CursosAcademico> cursosAcademico=null;
-		List<Unidade> unidadeList = new ArrayList<Unidade>();
 		try {
-			cursosAcademico = (List<CursosAcademico>) cursosAcademicoDAO.list(CursosAcademico.class, rest);
-			for(CursosAcademico ca: cursosAcademico){
-				Unidade unidade =  ORMUtils.initializeAndUnproxy(ca.getPk().getCurso().getUnidade());				
-				if(!unidadeList.contains(unidade)){
-					unidadeList.add(unidade);
-				}
-			}
+			return (List<CursosAcademico>) cursosAcademicoDAO.list(CursosAcademico.class, rest);
 		} catch (SuperException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} 
-		return unidadeList;
+		}
+		return null;
 	}
 }

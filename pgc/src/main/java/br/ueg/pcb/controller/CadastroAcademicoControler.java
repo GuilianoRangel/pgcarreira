@@ -13,6 +13,7 @@ import br.edu.aee.UniArch.structure.controller.GenericController;
 import br.edu.aee.UniArch.structure.interfaces.IGenericService;
 import br.edu.aee.UniArch.utils.ConfigurationProperties;
 import br.ueg.pcb.model.Academico;
+import br.ueg.pcb.model.CursosAcademico;
 import br.ueg.pcb.model.UegAcademico;
 import br.ueg.pcb.model.Unidade;
 import br.ueg.pcb.service.AcademicoService;
@@ -54,6 +55,10 @@ public class CadastroAcademicoControler extends GenericController<Academico, Lon
 	
 	public List<Unidade> getListUnidadeDoAcademico(){		
 		return this.getAcademicoService().getListUnidadeAcademico(this.getSelectedAcademico());
+	}
+	
+	public List<CursosAcademico> getListCursosAcademico(){
+		return this.getAcademicoService().getListCursosAcademico(this.getSelectedAcademico());
 	}
 
 	/**

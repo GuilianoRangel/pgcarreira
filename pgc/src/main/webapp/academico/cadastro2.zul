@@ -17,17 +17,75 @@
 	<hlayout>
 		<vlayout>
 			<separator height="10px"></separator>			
-			<groupbox width="1020px" height="300px" sclass="cadastro1_borda" style="border-radius: 10px; border: solid 1px gray; padding: 0px; " contentStyle="border:0;" mold="3d" >
+			<groupbox width="1020px" sclass="cadastro1_borda" style="border-radius: 10px; border: solid 1px gray; padding: 0px; " contentStyle="padding:0px;" mold="3d" >
 				<caption label="Unidade Universitária"/>
 				<hlayout>
-					<grid model="@{manager.listUnidade }">
+					<grid model="@{manager.ListCursosAcademico }" zclass="myGridWithNoBorder" >
 						<columns>
 							<column width="100%"/>							
 						</columns>
-						<rows >
-							<row self="@{each=unidade}">								
-								<label value="@{unidade.nome }">d</label>
-							</row>
+						<rows  sclass="myGridWithNoBorder">
+							<row self="@{each=unidadeCursos}">								
+								<grid>
+									<columns>
+										<column width="90px" align="right"/>
+										<column width="500px" align="left" />
+										<column width="75px" align="right"/>
+										<column align="left" />										
+									</columns>
+									<rows >
+										<row >
+											<label sclass="cadastro2_titulo" style="font-weight:bold">Nome:</label>
+											<label value="@{unidadeCursos.unidade.nome}"/>
+											<label sclass="cadastro2_titulo" style="font-weight:bold">Diretor(a):</label>
+											<label value="@{unidadeCursos.unidade.diretor }" />
+										</row>
+										<row>
+											<label sclass="cadastro2_titulo" style="font-weight:bold">Cidade:</label>
+											<label value="@{unidadeCursos.unidade.enderecoCidade}"/>
+											<label sclass="cadastro2_titulo" style="font-weight:bold">E-Mail:</label>
+											<label value="@{unidadeCursos.unidade.email }" />
+										</row>
+										<row>
+											<label sclass="cadastro2_titulo" style="font-weight:bold">Telefone:</label>
+											<label value="@{unidadeCursos.unidade.telefone}"/>
+											<label sclass="cadastro2_titulo" style="font-weight:bold">Website:</label>
+											<label value="@{unidadeCursos.unidade.website }" />
+										</row>
+										<row>
+											<cell colspan="4" style="margin:0px; padding:0px">
+											<grid model = "@{unidadeCursos.cursos }">
+												<auxhead >
+													<auxheader label="Cursos" colspan="7" align="center" />
+												</auxhead>
+												<columns height="40px" >
+													<column width="90px" 	label="Matricula" 		align="center"/>
+													<column 				label="Nome" 			align="center"/>
+													<column width="100px" 	label="Modalidade"		align="center"/>
+													<column width="85px"	label="Regime" 			align="center"/>
+													<column width="110px"	label="Carga Horária" 	align="center"/>
+													<column width="80px"	label="Turno" 			align="center"/>
+													<column width="70px"	label="Ano Conclusão" 	align="center"/>
+												</columns>
+												<rows>
+													<row  self="@{each=curso}">
+														<label value="@{curso.pk.uegAcademico.pk}"/>
+														<cell align="left">
+															<label value="@{curso.pk.curso.nome }" />
+														</cell>
+														<label value="@{curso.pk.curso.modalidade }" />
+														<label value="@{curso.pk.curso.regime }" />
+														<label value="@{curso.pk.curso.cargaHorariaTotal }" />
+														<label value="@{curso.pk.curso.turno }" />
+														<label value="@{curso.anoConclusao }" />
+													</row>
+												</rows>
+											</grid>
+											</cell>
+										</row>
+									</rows>
+								</grid>
+							</row>							
 						</rows>
 					</grid>
 							
