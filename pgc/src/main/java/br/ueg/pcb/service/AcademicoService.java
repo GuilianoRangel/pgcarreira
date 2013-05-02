@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.swing.text.TabExpander;
 
+import org.omg.CORBA.OMGVMCID;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
@@ -108,13 +109,17 @@ public class AcademicoService extends GenericService<Academico, Long> {
 	public <T extends EntityTabelaBasica> List<T> getListEntityTabelaBasica(Class<T> classe){
 		GenericDAO gDAO = (GenericDAO) SpringFactory.getBean("genericDAO");
 		List<T> listReturn = new ArrayList<T>(0);
+		List<T> listReturnObject = new ArrayList<T>(0);
 		 try {
 			listReturn = (List<T>)gDAO.listByClass(classe);
+			for (T t : listReturn) {
+				listReturnObject.add(ORMUtils.initializeAndUnproxy(t));
+			}
 		} catch (SuperException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return listReturn;
+		return listReturnObject;
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })

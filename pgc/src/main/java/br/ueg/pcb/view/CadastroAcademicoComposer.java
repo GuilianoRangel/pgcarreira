@@ -573,6 +573,7 @@ public class CadastroAcademicoComposer extends CRUDViewZK<CadastroAcademicoContr
 		}
 		
 		Academico academico = this.getViewController().getAcademicoByUserPermission(up);
+		System.out.println(academico.getEnderecoUF());
 		this.getViewController().setSelectedAcademico(academico);
 		this.setSelectedEntity(academico);
 		
