@@ -1,7 +1,7 @@
 package br.ueg.pcb.view;
 
-import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.context.annotation.Scope;
@@ -10,10 +10,10 @@ import org.zkoss.zk.ui.Executions;
 import br.edu.aee.UniArch.annotation.AttributeView;
 import br.edu.aee.UniArch.domain.ActionReturn;
 import br.edu.aee.UniArch.settings.SpringFactory;
-import br.edu.aee.UniArch.structure.controller.GenericController;
+import br.edu.aee.UniArch.structure.interfaces.ISecurityView;
 import br.edu.aee.UniArch.structure.model.UserPermission;
 import br.edu.aee.UniArch.structure.view.ZK.CRUDViewZK;
-import br.edu.aee.UniArch.subsystems.security.SecurityController;
+import br.edu.aee.UniArch.utils.ConfigurationProperties;
 import br.ueg.pcb.controller.CadastroAcademicoControler;
 import br.ueg.pcb.model.Academico;
 import br.ueg.pcb.model.CursosAcademico;
@@ -35,6 +35,9 @@ public class CadastroAcademicoComposer extends CRUDViewZK<CadastroAcademicoContr
 	@AttributeView(attributeName="academicoChaveBusca", isEntityField=false)
 	private String academicoChaveBusca;
 	
+	@AttributeView(attributeName="casoDeUsoCenario",isEntityField=false)
+	private String casoDeUsoCenario="CadastrarAcademicoBusca";
+	
 	@AttributeView(attributeName="uegAcademico" , isEntityField=true)
 	private UegAcademico fldUegAcademico;
 	
@@ -48,12 +51,12 @@ public class CadastroAcademicoComposer extends CRUDViewZK<CadastroAcademicoContr
 	private String fldIdentidadeOrgao;
 	
 	@AttributeView(attributeName="identidadeUf" , isEntityField=true)
-	private String fldIdentidadeUf;
+	private Estado fldIdentidadeUf;
 	
 	@AttributeView(attributeName="dataNascimento" , isEntityField=true)
 	private Date fldDataNascimento;
 	
-	@AttributeView(attributeName="dataNascimento" , isEntityField=true)
+	@AttributeView(attributeName="sexo" , isEntityField=true)
 	private Sexo fldSexo;
 	
 	@AttributeView(attributeName="estadoCivil" , isEntityField=true)
@@ -74,6 +77,9 @@ public class CadastroAcademicoComposer extends CRUDViewZK<CadastroAcademicoContr
 	@AttributeView(attributeName="enderecoUF" , isEntityField=true)
 	private Estado fldEnderecoUF;
 	
+	@AttributeView(attributeName="enderecoPais" , isEntityField=true)
+	private String fldEnderecoPais;
+	
 	@AttributeView(attributeName="enderecoMunicipio" , isEntityField=true)
 	private String fldEnderecoMunicipio;
 	
@@ -87,7 +93,7 @@ public class CadastroAcademicoComposer extends CRUDViewZK<CadastroAcademicoContr
 	private String fldTelefoneRecado;
 	
 	@AttributeView(attributeName="email" , isEntityField=true)
-	private String fldEmail;
+	private String email;
 	
 	@AttributeView(attributeName="pkUserPermission" , isEntityField=true)
 	private Long fldPkUserPermission;
@@ -96,13 +102,19 @@ public class CadastroAcademicoComposer extends CRUDViewZK<CadastroAcademicoContr
 	private Boolean fldAutorizaEmailNovidadeUeg;	
 	
 	@AttributeView(attributeName="autorizaEmailOportundiade" , isEntityField=true)
-	private Boolean fldAutorizaEmailOportundiade;
+	private Boolean fldAutorizaEmailOportunidade;
 	
 	@AttributeView(attributeName="autorizaEmailPublicacao" , isEntityField=true)
 	private Boolean fldAutorizaEmailPublicacao;
 	
 	@AttributeView(attributeName="autorizaParceiroVerTelefone" , isEntityField=true)
 	private Boolean fldAutorizaParceiroVerTelefone;
+	
+	@AttributeView(attributeName="senha" , isEntityField=false)
+	private String fldSenha;
+	
+	@AttributeView(attributeName="confirmaSenha" , isEntityField=false)
+	private String fldConfirmaSenha;
 
 	@Override
 	protected String getUseCase() {
@@ -168,14 +180,14 @@ public class CadastroAcademicoComposer extends CRUDViewZK<CadastroAcademicoContr
 	/**
 	 * @return the fldIdentidadeUf
 	 */
-	public String getFldIdentidadeUf() {
+	public Estado getFldIdentidadeUf() {
 		return fldIdentidadeUf;
 	}
 
 	/**
 	 * @param fldIdentidadeUf the fldIdentidadeUf to set
 	 */
-	public void setFldIdentidadeUf(String fldIdentidadeUf) {
+	public void setFldIdentidadeUf(Estado fldIdentidadeUf) {
 		this.fldIdentidadeUf = fldIdentidadeUf;
 	}
 
@@ -292,6 +304,20 @@ public class CadastroAcademicoComposer extends CRUDViewZK<CadastroAcademicoContr
 	}
 
 	/**
+	 * @return the fldEnderecoPais
+	 */
+	public String getFldEnderecoPais() {
+		return fldEnderecoPais;
+	}
+
+	/**
+	 * @param fldEnderecoPais the fldEnderecoPais to set
+	 */
+	public void setFldEnderecoPais(String fldEnderecoPais) {
+		this.fldEnderecoPais = fldEnderecoPais;
+	}
+
+	/**
 	 * @return the fldEnderecoMunicipio
 	 */
 	public String getFldEnderecoMunicipio() {
@@ -350,15 +376,15 @@ public class CadastroAcademicoComposer extends CRUDViewZK<CadastroAcademicoContr
 	/**
 	 * @return the fldEmail
 	 */
-	public String getFldEmail() {
-		return fldEmail;
+	public String getEmail() {
+		return email;
 	}
 
 	/**
 	 * @param fldEmail the fldEmail to set
 	 */
-	public void setFldEmail(String fldEmail) {
-		this.fldEmail = fldEmail;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	/**
@@ -392,15 +418,15 @@ public class CadastroAcademicoComposer extends CRUDViewZK<CadastroAcademicoContr
 	/**
 	 * @return the fldAutorizaEmailOportundiade
 	 */
-	public Boolean getFldAutorizaEmailOportundiade() {
-		return fldAutorizaEmailOportundiade;
+	public Boolean getFldAutorizaEmailOportunidade() {
+		return fldAutorizaEmailOportunidade;
 	}
 
 	/**
 	 * @param fldAutorizaEmailOportundiade the fldAutorizaEmailOportundiade to set
 	 */
-	public void setFldAutorizaEmailOportundiade(Boolean fldAutorizaEmailOportundiade) {
-		this.fldAutorizaEmailOportundiade = fldAutorizaEmailOportundiade;
+	public void setFldAutorizaEmailOportunidade(Boolean fldAutorizaEmailOportunidade) {
+		this.fldAutorizaEmailOportunidade = fldAutorizaEmailOportunidade;
 	}
 
 	/**
@@ -461,30 +487,110 @@ public class CadastroAcademicoComposer extends CRUDViewZK<CadastroAcademicoContr
 	}
 
 	/**
+	 * @return the fldSenha
+	 */
+	public String getFldSenha() {
+		return fldSenha;
+	}
+
+	/**
+	 * @param fldSenha the fldSenha to set
+	 */
+	public void setFldSenha(String fldSenha) {
+		this.fldSenha = fldSenha;
+	}
+
+	/**
+	 * @return the fldConfirmaSenha
+	 */
+	public String getFldConfirmaSenha() {
+		return fldConfirmaSenha;
+	}
+
+	/**
+	 * @param fldConfirmaSenha the fldConfirmaSenha to set
+	 */
+	public void setFldConfirmaSenha(String fldConfirmaSenha) {
+		this.fldConfirmaSenha = fldConfirmaSenha;
+	}
+
+	/**
+	 * @return the casoDeUsoCenario
+	 */
+	public String getCasoDeUsoCenario() {
+		return casoDeUsoCenario;
+	}
+
+	/**
+	 * @param casoDeUsoCenario the casoDeUsoCenario to set
+	 */
+	public void setCasoDeUsoCenario(String casoDeUsoCenario) {
+		this.casoDeUsoCenario = casoDeUsoCenario;
+	}
+
+	/**
 	 * @see br.edu.aee.UniArch.structure.view.ZK.SuperViewZK#newControlInstance()
 	 */
 	@Override
 	protected CadastroAcademicoControler newControlInstance() {
 		return SpringFactory.getBean("cadastroAcademicoControler", CadastroAcademicoControler.class);
 	}
+	
 
-	public void procurarAcademico(){
-		ActionReturn<String, Object> actionReturn = (ActionReturn<String, Object>) this.doAction("procuraracademico");
+	
+	/**
+	 * @param actionReturn
+	 */
+	private void redirectNexUseCase(ActionReturn<?, ?> actionReturn) {
 		if(actionReturn.isSuccess()){
-			String nextUseCase = (String) actionReturn.getParameter("nextUseCase");
+			String nextUseCase = (String) actionReturn.getExtra("nextUseCase");
 			if(nextUseCase!=null && !nextUseCase.equals("")){
+				getViewController().setEntityFromView(this.getViewController().getSelectedAcademico());
 				Executions.sendRedirect(nextUseCase);
 			}
 		}
-		/*ActionReturn<?,?> actionReturn = getViewController().save();
-		if (!actionReturn.isSuccess()) {
-			showMessage(actionReturn);
-		} else {
-			cleanFields();
-			showMessage(actionReturn);
-			super.binder.loadAll();
-		}*/
 	}
+
+	@SuppressWarnings("unchecked")
+	public void procurarAcademico(){
+		setShowSuccessMessage(false);
+		ActionReturn<String, Object> actionReturn =  (ActionReturn<String, Object>) this.doAction("procuraracademico");
+		redirectNexUseCase(actionReturn);
+		setShowSuccessMessage(true);
+	}
+	
+	
+	/* (non-Javadoc)
+	 * @see br.edu.aee.UniArch.structure.view.ZK.CRUDViewZK#edit()
+	 */
+	@Override
+	public void edit() {
+		//TODO ver questao de verificar sessao, procurar mecanimsmo para o controlador saber o usuário logado.
+		UserPermission up = (UserPermission)this.session.getAttribute(ISecurityView.USER_KEY);
+		if(up==null){
+			String sucessPage = ConfigurationProperties.getInstance().getPropertyOrDefault("SECURITY_LOGIN_PAGE");
+			Executions.sendRedirect(sucessPage);
+		}
+		
+		Academico academico = this.getViewController().getAcademicoByUserPermission(up);
+		this.getViewController().setSelectedAcademico(academico);
+		this.setSelectedEntity(academico);
+		
+		this.setCasoDeUsoCenario("EditarAcademico");
+		super.edit();
+		Executions.sendRedirect( ConfigurationProperties.getInstance().getValue("view.CadastroAcademico.cadastro2"));
+	}
+
+	/* (non-Javadoc)
+	 * @see br.edu.aee.UniArch.structure.view.ZK.CRUDViewZK#record()
+	 */
+	@Override
+	public ActionReturn<String, Academico> record() {
+		ActionReturn<String, Academico> actionReturn =   super.record();
+		redirectNexUseCase(actionReturn);
+		return actionReturn;
+	}
+
 	public List<Unidade> getListUnidade(){		
 		return getCadastroAcademicoControler().getListUnidadeDoAcademico();
 	}
@@ -517,6 +623,17 @@ public class CadastroAcademicoComposer extends CRUDViewZK<CadastroAcademicoContr
 		}
 		
 		return resultList;
+	}
+	
+	public List<Sexo> getListSexo(){
+		return this.getCadastroAcademicoControler().getListEntityTabelaBasica(Sexo.class);
+	}
+	
+	public List<EstadoCivil> getListEstadoCivil(){
+		return this.getCadastroAcademicoControler().getListEntityTabelaBasica(EstadoCivil.class);
+	}
+	public List<Estado> getListUF(){
+		return this.getCadastroAcademicoControler().getListEntityTabelaBasica(Estado.class);
 	}
 
 }

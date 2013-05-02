@@ -1,6 +1,6 @@
 package br.ueg.pcb.model;
 
-import java.sql.Date;
+import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -49,7 +49,7 @@ public class Academico extends SingleEntity {
 	private Date dataNascimento;
 	
 	@SearchableField(description="Sexo")
-	@ManyToOne(optional = true, fetch = FetchType.LAZY)
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	@JoinColumn(name = "sexo_acad", insertable = true, updatable = true, nullable=false)
 	private Sexo sexo; 
 	
@@ -73,9 +73,12 @@ public class Academico extends SingleEntity {
 	private String enderecoBairro;	
 	
 	@SearchableField(description="Endereço UF")
-	@ManyToOne(optional = true, fetch = FetchType.LAZY)
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	@JoinColumn(name = "endereco_uf_acad", insertable = true, updatable = true, nullable=false)
 	private Estado enderecoUF;
+	
+	@Column(name = "end_pais_acad", length=50, nullable=false)
+	private String enderecoPais;
 	
 	@Column(name = "end_municipio_acad", length=100, nullable = false)
 	private String enderecoMunicipio;
@@ -301,6 +304,20 @@ public class Academico extends SingleEntity {
 	 */
 	public void setEnderecoMunicipio(String enderecoMunicipio) {
 		this.enderecoMunicipio = enderecoMunicipio;
+	}
+
+	/**
+	 * @return the enderecoPais
+	 */
+	public String getEnderecoPais() {
+		return enderecoPais;
+	}
+
+	/**
+	 * @param enderecoPais the enderecoPais to set
+	 */
+	public void setEnderecoPais(String enderecoPais) {
+		this.enderecoPais = enderecoPais;
 	}
 
 	/**

@@ -18,4 +18,10 @@
 		    <name>org.zkoss.theme.preferred</name> 
 	    <value>silvertail</value> 
 		</library-property> -->
+		<system-config>
+			<label-location>/WEB-INF/classes/META-INF/settings.properties</label-location>
+			<label-location>/WEB-INF/classes/META-INF/entityNames.properties</label-location>
+			<label-location>/WEB-INF/classes/META-INF/archMessages.properties</label-location>
+			<label-location>/WEB-INF/classes/META-INF/messages.properties</label-location>
+		</system-config>
 </zk>

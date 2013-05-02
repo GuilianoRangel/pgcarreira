@@ -1,13 +1,19 @@
 package br.ueg.pcb.testes;
 
+import java.util.List;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import br.edu.aee.UniArch.domain.Restrictions;
+import br.edu.aee.UniArch.exception.SuperException;
 import br.edu.aee.UniArch.settings.SpringFactory;
 import br.edu.aee.UniArch.structure.interfaces.ISuperEntity;
+import br.edu.aee.UniArch.structure.persistence.dao.GenericDAO;
 import br.ueg.pcb.model.Academico;
 import br.ueg.pcb.model.UegAcademico;
 import br.ueg.pcb.model.Unidade;
+import br.ueg.pcb.model.assist.Sexo;
 import br.ueg.pcb.service.AcademicoService;
 import br.ueg.pcb.validation.CadastroAcademicoValidation;
 
@@ -15,7 +21,10 @@ public class Testes {
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) { ApplicationContext appCo = new ClassPathXmlApplicationContext("META-INF/spring.xml");
+	@SuppressWarnings("unchecked")
+	public static void main(String[] args) { 
+		
+		ApplicationContext appCo = new ClassPathXmlApplicationContext("META-INF/spring.xml");
 		//UegAcademicoDao2  uaDAO = ((UegAcademicoDao2) appCo.getBean("uegAcademicoDao"));
 		
 		System.out.println("---------------");
@@ -30,6 +39,17 @@ public class Testes {
 			System.out.print(":"+u.getPk());
 			System.out.println(":"+u.getSigla());
 		}
+		GenericDAO gDAO = (GenericDAO) appCo.getBean("genericDAO");
+		try {
+			for(Sexo s: (List<Sexo>)gDAO.listByClass(Sexo.class)){
+				System.out.println(s);
+			}
+		} catch (SuperException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 		
 		
 		

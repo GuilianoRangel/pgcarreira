@@ -1,0 +1,25 @@
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+<?page title="Login do Usuário" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window title="Portal de Gestão de Carreiras - Acesso" border="normal" apply="${signInViewZK}" width="380px" position="center" mode="modal">
+	<grid sizedByContent="true">
+		<columns>
+			<column width="75px" />
+			<column width="280px" />
+		</columns>
+		<rows>
+			<row>
+				<label value="E-Mail:"/>
+				<textbox value="@{manager.fldLogin }" focus="true" hflex="1"/>
+			</row>
+			<row>
+				<label value="Senha:"/>
+				<textbox value="@{manager.fldPassword }" type="password"/>
+			</row>
+			<row spans="2" align="center">
+				<button label="Acessar" onClick="manager.signIn()"/>
+			</row>
+		</rows>
+	</grid>
+</window>
+</zk>

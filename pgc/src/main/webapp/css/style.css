@@ -18,6 +18,7 @@
 
 .teste {
 	margin-right: x;
+	text-align: right;
 }
 
 .mw-borderlayout .closeButton {
@@ -29,4 +30,9 @@
 .myGridWithNoBorder tr.z-grid-odd .z-cell  {
 	border: 0px #CCC;
 	background-color: #fff;
+}
+
+.myGridWithNoBorder div.z-grid-header div.z-auxheader-cnt,
+.myGridWithNoBorder div.z-grid-header div.z-column-cnt  {
+    padding: 4px 4px 4px;
 }
