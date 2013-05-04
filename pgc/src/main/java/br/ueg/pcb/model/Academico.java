@@ -95,7 +95,7 @@ public class Academico extends SingleEntity {
 	@Column(name = "email_acad", length=100 ,nullable = false)
 	private String email;
 	
-	@Column(name = "user_acad", nullable = false)
+	@Column(name = "user_acad", nullable = true)
 	private Long pkUserPermission;
 	
 	@Column(name = "autoriza_email_novidade_ueg_acad", nullable = false)

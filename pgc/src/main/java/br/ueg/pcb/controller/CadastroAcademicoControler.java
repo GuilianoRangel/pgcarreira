@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.zkoss.zhtml.Acronym;
 
 import br.edu.aee.UniArch.domain.ActionReturn;
 import br.edu.aee.UniArch.domain.GenericActionReturn;
@@ -15,9 +16,13 @@ import br.edu.aee.UniArch.exception.SuperException;
 import br.edu.aee.UniArch.settings.SpringFactory;
 import br.edu.aee.UniArch.structure.controller.GenericController;
 import br.edu.aee.UniArch.structure.interfaces.IGenericService;
+import br.edu.aee.UniArch.structure.interfaces.IGenericView;
+import br.edu.aee.UniArch.structure.interfaces.IValidator;
 import br.edu.aee.UniArch.structure.model.UserPermission;
 import br.edu.aee.UniArch.structure.persistence.dao.GenericDAO;
+import br.edu.aee.UniArch.structure.service.GenericService;
 import br.edu.aee.UniArch.subsystems.security.SecurityDAO;
+import br.edu.aee.UniArch.subsystems.security.SecurityService;
 import br.edu.aee.UniArch.utils.ConfigurationProperties;
 import br.ueg.pcb.model.Academico;
 import br.ueg.pcb.model.CursosAcademico;
@@ -34,35 +39,74 @@ public class CadastroAcademicoControler extends GenericController<Academico, Lon
 	/* (non-Javadoc)
 	 * @see br.edu.aee.UniArch.structure.controller.GenericController#record()
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public ActionReturn<String, Academico> record() {
-		UserPermission up = new UserPermission();
+		
+		ActionReturn<?,?> actionReturn = super.executeValidateAction(IValidator.SAVE_ACTION);
+		if(!actionReturn.isSuccess()){
+			return (ActionReturn<String, Academico>) actionReturn;
+		}
+		
+		
 		this.resetAttributesOfView();
 		Academico academico = this.getEntityFromView();
+		
+		UserPermission up = saveUserPermission(academico, actionReturn);
+		
+		if(!actionReturn.isSuccess()	){
+			return (ActionReturn<String, Academico>) actionReturn;
+		}
+		
+		
+		academico.setPkUserPermission(up.getPk());
+		
+		
+		
+		setEntityFromView(academico);
+		
+		actionReturn = super.record();
+		if (actionReturn.isSuccess()){
+			actionReturn.addExtra("nextUseCase", this.getMessageByKey("view.Academico.homepage"));
+		}
+		
+		return (ActionReturn<String, Academico>) actionReturn;
+	}
+
+	/**
+	 * metodo para savar um UserPermissio baseado no academico pasado
+	 * @param academico
+	 * @return retorna o UserPermission salvo ou null caso ocorra algum problema ao salvar e modifica o ActionReturn com o erro
+	 */
+	private UserPermission saveUserPermission(Academico academico, ActionReturn<?, ?> actionReturn) {
+		Boolean isUpdate = (Boolean) getAttributeFromView(IGenericView.ATTRIBUTE_UPDATE);
+		UserPermission up = new UserPermission();;;
+		if(isUpdate){
+			up.setPk(academico.getPkUserPermission());
+		}
 		up.setAuthenticationType(AuthenticationTypeEnum.INTERNAL);
 		up.setLogin(academico.getEmail());
 		up.setName(academico.getUegAcademico().getNome());
 		up.setPassword((String)this.getAttributeFromView("senha"));
 		up.setStatus(StatusEnum.ACTIVE);
 		
-		
-		GenericDAO userPermissionDAO = SpringFactory.getBean(SecurityDAO.class);
-		try {
-			userPermissionDAO.save(up);
-		} catch (SuperException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		SecurityService securityService = SpringFactory.getBean(SecurityService.class);
+		ActionReturn<String, ?>ar2 = null;
+		if(isUpdate){
+			ar2 = securityService.update(up);
+		}else{
+			ar2 = securityService.save(up);
 		}
-		academico.setPkUserPermission(up.getPk());
-		
-		setEntityFromView(academico);
-		
-		ActionReturn<String, Academico> actionReturn = super.record();
-		if (actionReturn.isSuccess()){
-			actionReturn.addExtra("nextUseCase", this.getMessageByKey("view.Academico.homepage"));
+		if(!ar2.isSuccess()){
+			actionReturn.reportFailure(ReturnTypeEnum.ERROR,Arrays.asList(this.getMessageByKey("CadastroAcademico.CadastrarAcademico.erroSalvarUserPermission")));
+			actionReturn.addExtra("stackTrace", ar2.getErrorMessages());
+			return null;
 		}
-		
-		return actionReturn;
+		if(isUpdate){
+			return up;
+		}else{
+			return (UserPermission) ar2.getParameter(ActionReturn.ENTITY_PARAMETER);
+		}
 	}
 
 	private Academico selectedAcademico;

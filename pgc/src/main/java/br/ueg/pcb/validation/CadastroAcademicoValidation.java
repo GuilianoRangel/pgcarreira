@@ -54,7 +54,7 @@ public class CadastroAcademicoValidation extends SuperValidator {
 			}
 			
 			//TODO passar para metodo
-			UegAcademico ua = academicoService.getUegAcademico(tipoBusca, getValueOrAttributeValue("academicoChaveBusca"));
+			UegAcademico ua = academicoService.getUegAcademico(tipoBusca, (String)getValueOrAttributeValue("academicoChaveBusca"));
 			if(ua!=null){
 				if(academicoService.existsAcademicoByUegAcademico(ua)){
 					erroList.add(mensagens.getValue("CadastroAcademico.procuraracademico.academicoExiste"));
@@ -78,13 +78,41 @@ public class CadastroAcademicoValidation extends SuperValidator {
 		return academicoService;
 	}
 	
-	@ValidatorMethod(action=IValidator.SAVE_ACTION, order=0)
-	public ActionReturn<?, ?> validateCadastrarAcademico(String Action, String attributeName){
-		ActionReturn<?, ?> actionReturn = new GenericActionReturn();
+	/* (non-Javadoc)
+	 * @see br.edu.aee.UniArch.subsystems.validation.SuperValidator#validateSave(java.lang.String, java.lang.String)
+	 */
+	@Override
+	@ValidatorMethod(action = "SAVE_ACTION", order = 0)
+	public ActionReturn<?, ?> validateSave(String action, String attributeName) {
+		ActionReturn<?, ?> actionReturn = super.validateSave(action, attributeName);
 		
-		onBlurValidateFieldEmailExists("email",actionReturn);
+		onBlurValidateFieldEmailExists(actionReturn,(String) this.getAttributeValue("email"),(Long) getAttributeValue("pk"));
+		if(!actionReturn.isSuccess()){ 
+			return actionReturn; 
+		}
+		
+		if(!validateComplementNumero(action)){
+			actionReturn.reportFailure(ReturnTypeEnum.WARNING,Arrays.asList(
+					ConfigurationProperties.getInstance().getValue("CadastroAcademico.CadastrarAcademico.complemento.numero.vazio")
+					));	
+		}
 		
 		return actionReturn;
+	}
+	
+	
+
+	private boolean validateComplementNumero(String action){
+		String comp = (String)getAttributeValue("enderecoComplemento");
+		String numero =(String) getAttributeValue("enderecoNumero");
+		if( 
+				(comp!=null && comp.isEmpty()) && 
+				(numero!=null && numero.isEmpty()) 
+			){
+			return false;
+		}
+			
+		return true;
 	}
 	
 	/** metodo para validas os campos da tela de busca quando perde o foco
@@ -113,7 +141,7 @@ public class CadastroAcademicoValidation extends SuperValidator {
 			ActionReturn<?, ?> actionReturn) {
 		//valida atributo academicoChave de busca.
 		if (attributeName != null && attributeName.equals("academicoChaveBusca")) {
-			String value = getValueOrAttributeValue(attributeName);
+			String value = (String)getValueOrAttributeValue(attributeName);
 			if(value==null || value.equals("")){
 				actionReturn.reportFailure(
 					ReturnTypeEnum.ERROR,  
@@ -132,27 +160,43 @@ public class CadastroAcademicoValidation extends SuperValidator {
 	@ValidatorMethod(action="CadastrarAcademico", order=0)//validação de atributos com onblur(por isso usa o nome do cenário
 	public ActionReturn<?, ?> validateCadastrarAcademicoFieldsOnBlur(String action, String attributeName){
 		ActionReturn<?, ?> actionReturn = new GenericActionReturn();
-		
-		//valida campos obrigatórios
-		if (this.getAllMandatoryFields().contains(attributeName)) {
-			String unfilledFieldMessage = this.generateEmptyMessageForAttribute(attributeName, this.getValue());
-			if (unfilledFieldMessage != null) {
-				actionReturn.reportFailure(ReturnTypeEnum.WARNING, Arrays.asList(unfilledFieldMessage));
+		if(attributeName!=null && !attributeName.isEmpty()){
+			//valida campos obrigatórios
+			if (this.getAllMandatoryFields().contains(attributeName)) {
+				String unfilledFieldMessage = this.generateEmptyMessageForAttribute(attributeName, this.getValue());
+				if (unfilledFieldMessage != null) {
+					actionReturn.reportFailure(ReturnTypeEnum.WARNING, Arrays.asList(unfilledFieldMessage));
+				}
+				
+			}		
+			if(!actionReturn.isSuccess()) return actionReturn;
+			
+	
+			//validações do e-mail
+			if (attributeName.equalsIgnoreCase("email")) {
+				//valida formato do email
+				this.onBlurValidateFieldEmailFormat(actionReturn,(String)getValueOrAttributeValue(attributeName));
+				if(!actionReturn.isSuccess()) return actionReturn;
+			
+				//validar se o email já existe
+				onBlurValidateFieldEmailExists(actionReturn, (String)getValueOrAttributeValue(attributeName),(Long) getAttributeParameter("pk"));
+				if(!actionReturn.isSuccess()) return actionReturn;
 			}
 			
-		}		
-		if(!actionReturn.isSuccess()) return actionReturn;
+			//valida confirmação da senha
+			if(attributeName.equalsIgnoreCase("confirmaSenha")){
+				String confirmaSenha = (String)getValueOrAttributeValue(attributeName); 
+				confirmaSenha=confirmaSenha!=null?confirmaSenha:"";
+				
+				String senha = (String) getAttributeParameter("senha");
+				senha=senha!=null?senha:"";
+				onBlurValidateFieldConfirmaSenha(actionReturn,confirmaSenha,senha);
+				if(!actionReturn.isSuccess()) return actionReturn;
+			}
+	
+			
+		}
 		
-		//valida formato do email
-		this.onBlurValidateFieldEmailFormat(attributeName, actionReturn);
-		if(!actionReturn.isSuccess()) return actionReturn;
-		
-		//valida confirmação da senha
-		onBlurValidateFieldConfirmaSenha(attributeName,actionReturn);
-		if(!actionReturn.isSuccess()) return actionReturn;
-
-		//validar se o email já existe
-		onBlurValidateFieldEmailExists(attributeName,actionReturn);
 		
 		
 		return actionReturn;
@@ -163,22 +207,21 @@ public class CadastroAcademicoValidation extends SuperValidator {
 	 * @param attributeName
 	 * @param actionReturn
 	 */
-	private void onBlurValidateFieldEmailExists(String attributeName,
-			ActionReturn<?, ?> actionReturn) {
+	private void onBlurValidateFieldEmailExists(ActionReturn<?, ?> actionReturn, String value, Long academicoPk) {
 		//valida atributo academicoChave de busca.
-		if (attributeName != null && attributeName.equalsIgnoreCase("email")) {
-			String value = getValueOrAttributeValue(attributeName);
-			String unfilledFieldMessage = this.generateEmptyMessageForAttribute(attributeName, this.getValue());
+			String unfilledFieldMessage = this.generateEmptyMessageForAttribute("email", value);
 			//valida o formato do e-mail apenas se estiver preenchido
 			if (unfilledFieldMessage ==null){
 				AcademicoService academicoService = getAcademicoService();
-				if(attributeName.equalsIgnoreCase("email") && academicoService.existsAcademicoEmail(value)){
-					actionReturn.reportFailure(ReturnTypeEnum.WARNING,Arrays.asList(
-							ConfigurationProperties.getInstance().getValue("CadastroAcademico.CadastrarAcademico.email.existe")
-							));					
+				if( academicoService.existsAcademicoEmail(value)){
+					ActionReturn<String, Academico> ar = academicoService.findByPk(academicoPk);
+					if(!ar.isSuccess() || !ar.getParameter(ActionReturn.ENTITY_PARAMETER).getEmail().equalsIgnoreCase(value)){
+						actionReturn.reportFailure(ReturnTypeEnum.WARNING,Arrays.asList(
+								ConfigurationProperties.getInstance().getValue("CadastroAcademico.CadastrarAcademico.email.existe")
+								));					
+					}
 				}
 			}
-		}
 	}
 	
 	/**
@@ -186,15 +229,11 @@ public class CadastroAcademicoValidation extends SuperValidator {
 	 * @param attributeName
 	 * @param actionReturn
 	 */
-	private void onBlurValidateFieldEmailFormat(String attributeName,
-			ActionReturn<?, ?> actionReturn) {
-		//valida atributo academicoChave de busca.
-		if (attributeName != null && attributeName.equalsIgnoreCase("email")) {
-			String value = getValueOrAttributeValue(attributeName);
-			String unfilledFieldMessage = this.generateEmptyMessageForAttribute(attributeName, this.getValue());
+	private void onBlurValidateFieldEmailFormat(ActionReturn<?, ?> actionReturn, String value) {			
+			String unfilledFieldMessage = this.generateEmptyMessageForAttribute("email", value);
 			//valida o formato do e-mail apenas se estiver preenchido
 			if (unfilledFieldMessage ==null){
-				if(attributeName.equalsIgnoreCase("email") && !CheckValidEMail.validar(value)){
+				if(!CheckValidEMail.validar(value)){
 					actionReturn.reportFailure(ReturnTypeEnum.WARNING,Arrays.asList(
 							ConfigurationProperties.getInstance().getValue("CadastroAcademico.CadastrarAcademico.email.formato_invalido")
 							));					
@@ -202,16 +241,15 @@ public class CadastroAcademicoValidation extends SuperValidator {
 			}else{
 				actionReturn.reportFailure(ReturnTypeEnum.WARNING, Arrays.asList(unfilledFieldMessage));
 			}
-		}
 	}
 
 	/**
 	 * @param attributeName
 	 * @return
 	 */
-	private String getValueOrAttributeValue(String attributeName) {
-		String value = (String) getValue();
-		value = value!=null ? value :(String) getAttributeValue(attributeName);
+	private Object getValueOrAttributeValue(String attributeName) {
+		Object value =  getValue();
+		value = value!=null ? value :getAttributeValue(attributeName) ;
 		return value;
 	}
 	
@@ -219,17 +257,13 @@ public class CadastroAcademicoValidation extends SuperValidator {
 	 * @param attributeName
 	 * @param actionReturn
 	 */
-	private void onBlurValidateFieldConfirmaSenha(String attributeName, ActionReturn<?, ?> actionReturn){
-		if(attributeName.equalsIgnoreCase("confirmaSenha")){
-			String senha = (String) getAttributeParameter("senha");
-			senha=senha!=null?senha:"";
-			String confirmaSenha = getValueOrAttributeValue(attributeName);
-			confirmaSenha=confirmaSenha!=null?confirmaSenha:"";
-			if (!senha.equals(confirmaSenha)){
-				actionReturn.reportFailure(ReturnTypeEnum.WARNING,Arrays.asList(
-						ConfigurationProperties.getInstance().getValue("CadastroAcademico.CadastrarAcademico.senha_confirma_diferente_senh")
-						));		
-			}
+	private void onBlurValidateFieldConfirmaSenha(ActionReturn<?, ?> actionReturn, String confirmaSenha, String senha){
+		
+		if (!senha.equals(confirmaSenha)){
+			actionReturn.reportFailure(ReturnTypeEnum.WARNING,Arrays.asList(
+					ConfigurationProperties.getInstance().getValue("CadastroAcademico.CadastrarAcademico.senha_confirma_diferente_senha")
+					));		
 		}
 	}
+
 }
