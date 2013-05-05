@@ -538,16 +538,32 @@ public class CadastroAcademicoComposer extends CRUDViewZK<CadastroAcademicoContr
 	
 
 	
+	/** redireciona para a página do próximo usecase se o actionReturn for isSucsess
+	 * @param actionReturn
+	 */
+	private void redirectNexUseCaseSucess(ActionReturn<?, ?> actionReturn) {
+		if(actionReturn.isSuccess()){
+			redirectByActionReturn(actionReturn);
+		}
+	}
+
 	/**
 	 * @param actionReturn
 	 */
-	private void redirectNexUseCase(ActionReturn<?, ?> actionReturn) {
-		if(actionReturn.isSuccess()){
-			String nextUseCase = (String) actionReturn.getExtra("nextUseCase");
-			if(nextUseCase!=null && !nextUseCase.equals("")){
-				getViewController().setEntityFromView(this.getViewController().getSelectedAcademico());
-				Executions.sendRedirect(nextUseCase);
-			}
+	private void redirectByActionReturn(ActionReturn<?, ?> actionReturn) {
+		String nextUseCase = (String) actionReturn.getExtra("nextUseCase");
+		if(nextUseCase!=null && !nextUseCase.equals("")){			
+			Executions.sendRedirect(nextUseCase);
+		}
+	}
+	
+	/** Sempre redireciona para o próximo usecase quando actionReturn for reportar Falha
+	 * @param actionReturn
+	 */
+	@SuppressWarnings("unused")
+	private void redirectNexUseCaseFailure(ActionReturn<?, ?> actionReturn){
+		if(!actionReturn.isSuccess()){
+			this.redirectByActionReturn(actionReturn);
 		}
 	}
 
@@ -555,7 +571,7 @@ public class CadastroAcademicoComposer extends CRUDViewZK<CadastroAcademicoContr
 	public void procurarAcademico(){
 		setShowSuccessMessage(false);
 		ActionReturn<String, Object> actionReturn =  (ActionReturn<String, Object>) this.doAction("procuraracademico");
-		redirectNexUseCase(actionReturn);
+		redirectNexUseCaseSucess(actionReturn);
 		setShowSuccessMessage(true);
 	}
 	
@@ -566,20 +582,29 @@ public class CadastroAcademicoComposer extends CRUDViewZK<CadastroAcademicoContr
 	@Override
 	public void edit() {
 		//TODO ver questao de verificar sessao, procurar mecanimsmo para o controlador saber o usuário logado.
-		UserPermission up = (UserPermission)this.session.getAttribute(ISecurityView.USER_KEY);
+		/*UserPermission up = (UserPermission)this.session.getAttribute(ISecurityView.USER_KEY);
 		if(up==null){
-			String sucessPage = ConfigurationProperties.getInstance().getPropertyOrDefault("SECURITY_LOGIN_PAGE");
-			Executions.sendRedirect(sucessPage);
+			String loginPage = ConfigurationProperties.getInstance().getPropertyOrDefault("SECURITY_LOGIN_PAGE");
+			Executions.sendRedirect(loginPage);
 		}
 		
 		Academico academico = this.getViewController().getAcademicoByUserPermission(up);
-		System.out.println(academico.getEnderecoUF());
 		this.getViewController().setSelectedAcademico(academico);
 		this.setSelectedEntity(academico);
 		
-		this.setCasoDeUsoCenario("EditarAcademico");
+		this.setCasoDeUsoCenario("EditarAcademico");*/
+		ActionReturn<String,Academico> actionReturn = this.getViewController().edit();
+		redirectNexUseCaseFailure(actionReturn);
 		super.edit();
-		Executions.sendRedirect( ConfigurationProperties.getInstance().getValue("view.CadastroAcademico.cadastro2"));
+		redirectNexUseCaseSucess(actionReturn);
+	}
+
+	/* (non-Javadoc)
+	 * @see br.edu.aee.UniArch.structure.view.ZK.GenericViewZK#getSelectedEntity()
+	 */
+	@Override
+	public Academico getSelectedEntity() {
+		return super.getViewController().getSelectedAcademico();
 	}
 
 	/* (non-Javadoc)
@@ -588,7 +613,7 @@ public class CadastroAcademicoComposer extends CRUDViewZK<CadastroAcademicoContr
 	@Override
 	public ActionReturn<String, Academico> record() {
 		ActionReturn<String, Academico> actionReturn =   super.record();
-		redirectNexUseCase(actionReturn);
+		redirectNexUseCaseSucess(actionReturn);
 		return actionReturn;
 	}
 

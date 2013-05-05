@@ -5,23 +5,16 @@ import java.util.List;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
-import org.zkoss.zhtml.Acronym;
 
 import br.edu.aee.UniArch.domain.ActionReturn;
-import br.edu.aee.UniArch.domain.GenericActionReturn;
 import br.edu.aee.UniArch.enums.AuthenticationTypeEnum;
 import br.edu.aee.UniArch.enums.ReturnTypeEnum;
 import br.edu.aee.UniArch.enums.StatusEnum;
-import br.edu.aee.UniArch.exception.SuperException;
 import br.edu.aee.UniArch.settings.SpringFactory;
 import br.edu.aee.UniArch.structure.controller.GenericController;
-import br.edu.aee.UniArch.structure.interfaces.IGenericService;
 import br.edu.aee.UniArch.structure.interfaces.IGenericView;
 import br.edu.aee.UniArch.structure.interfaces.IValidator;
 import br.edu.aee.UniArch.structure.model.UserPermission;
-import br.edu.aee.UniArch.structure.persistence.dao.GenericDAO;
-import br.edu.aee.UniArch.structure.service.GenericService;
-import br.edu.aee.UniArch.subsystems.security.SecurityDAO;
 import br.edu.aee.UniArch.subsystems.security.SecurityService;
 import br.edu.aee.UniArch.utils.ConfigurationProperties;
 import br.ueg.pcb.model.Academico;
@@ -36,6 +29,31 @@ import br.ueg.pcb.view.CadastroAcademicoComposer;
 @Scope("session")
 public class CadastroAcademicoControler extends GenericController<Academico, Long> {
 	
+	
+	public ActionReturn<String, Academico> edit(){
+		ActionReturn<String, Academico> actionReturn = new ActionReturn<String, Academico>();
+				UserPermission up = (UserPermission)getView().getUserLogged();
+				if(up==null){
+					String loginPage = ConfigurationProperties.getInstance().getPropertyOrDefault("SECURITY_LOGIN_PAGE");
+					actionReturn.reportFailure(ReturnTypeEnum.ERROR);
+					actionReturn.addExtra("nextUseCase",loginPage);
+					return actionReturn;
+				}
+				
+				Academico academico = this.getAcademicoByUserPermission(up);
+				this.setSelectedAcademico(academico);
+				this.setEntityFromView(this.getSelectedAcademico());
+				this.setAttributeFromView("senha", "");
+				this.setAttributeFromView("confirmaSenha", "");
+				
+				((CadastroAcademicoComposer)this.getView()).setCasoDeUsoCenario("EditarAcademico");
+				
+				actionReturn.addParameter(ActionReturn.ENTITY_PARAMETER, academico);
+				
+				actionReturn.addExtra("nextUseCase", this.getMessageByKey("view.CadastroAcademico.cadastro2"));
+				
+				return actionReturn;
+	}
 	/* (non-Javadoc)
 	 * @see br.edu.aee.UniArch.structure.controller.GenericController#record()
 	 */
@@ -80,18 +98,32 @@ public class CadastroAcademicoControler extends GenericController<Academico, Lon
 	 */
 	private UserPermission saveUserPermission(Academico academico, ActionReturn<?, ?> actionReturn) {
 		Boolean isUpdate = (Boolean) getAttributeFromView(IGenericView.ATTRIBUTE_UPDATE);
+		
+		SecurityService securityService = (SecurityService) SpringFactory.getBean(SecurityService.class);
+		//securityService.setDao(SpringFactory.getBean(SecurityDAO.class));
+		ActionReturn<String, ?>ar2 = null;
+		
 		UserPermission up = new UserPermission();;;
 		if(isUpdate){
 			up.setPk(academico.getPkUserPermission());
+			ar2 = securityService.findByPk(academico.getPkUserPermission());
+			if(!ar2.isSuccess()){
+				return null;
+			}
+			up = (UserPermission) ar2.getParameter(ActionReturn.ENTITY_PARAMETER);
 		}
 		up.setAuthenticationType(AuthenticationTypeEnum.INTERNAL);
 		up.setLogin(academico.getEmail());
 		up.setName(academico.getUegAcademico().getNome());
-		up.setPassword((String)this.getAttributeFromView("senha"));
+		
+		String senha = (String)this.getAttributeFromView("senha");
+		if(senha!=null && !senha.isEmpty()){
+			up.setPassword(senha);
+		}
 		up.setStatus(StatusEnum.ACTIVE);
 		
-		SecurityService securityService = SpringFactory.getBean(SecurityService.class);
-		ActionReturn<String, ?>ar2 = null;
+		
+		
 		if(isUpdate){
 			ar2 = securityService.update(up);
 		}else{
@@ -137,6 +169,8 @@ public class CadastroAcademicoControler extends GenericController<Academico, Lon
 		actionReturn.addExtra("nextUseCase", this.getMessageByKey("view.CadastroAcademico.cadastro2"));
 		actionReturn.reportSuccess();
 		this.setAttributeFromView("casoDeUsoCenario", "CadastrarAcademico");
+		this.setAttributeFromView(IGenericView.ATTRIBUTE_UPDATE,false);
+		this.setEntityFromView(this.getSelectedAcademico());
 		//((AcademicoService) this.getService()).existsUegAcademico(keyType, keyValue)
 		return actionReturn;
 	}
@@ -173,6 +207,6 @@ public class CadastroAcademicoControler extends GenericController<Academico, Lon
 	 */
 	public <T extends EntityTabelaBasica> List<T> getListEntityTabelaBasica(Class<T> classe){
 		return this.getAcademicoService().getListEntityTabelaBasica(classe);
-	}
+	}	
 
 }

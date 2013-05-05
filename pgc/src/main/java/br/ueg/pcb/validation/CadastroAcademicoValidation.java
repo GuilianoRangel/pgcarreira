@@ -86,16 +86,24 @@ public class CadastroAcademicoValidation extends SuperValidator {
 	public ActionReturn<?, ?> validateSave(String action, String attributeName) {
 		ActionReturn<?, ?> actionReturn = super.validateSave(action, attributeName);
 		
+		//valida se o e-mail já existe.
 		onBlurValidateFieldEmailExists(actionReturn,(String) this.getAttributeValue("email"),(Long) getAttributeValue("pk"));
 		if(!actionReturn.isSuccess()){ 
 			return actionReturn; 
 		}
 		
+		//valida campo completo e numero
 		if(!validateComplementNumero(action)){
 			actionReturn.reportFailure(ReturnTypeEnum.WARNING,Arrays.asList(
 					ConfigurationProperties.getInstance().getValue("CadastroAcademico.CadastrarAcademico.complemento.numero.vazio")
 					));	
 		}
+		
+		//valida senha
+		String confirmaSenha = (String) getAttributeParameter("confirmaSenha"); 		confirmaSenha=confirmaSenha!=null?confirmaSenha:"";		
+		String senha = (String) getAttributeParameter("senha");		senha=senha!=null?senha:"";
+		onBlurValidateFieldConfirmaSenha(actionReturn,confirmaSenha,senha);
+		if(!actionReturn.isSuccess()) return actionReturn;
 		
 		return actionReturn;
 	}

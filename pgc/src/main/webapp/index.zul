@@ -1,6 +1,9 @@
 <?page title="Auto Generated index.zul"?>
-<window title="Hello World!!" border="normal" width="200px">
+<window title="Hello World!!" border="normal" width="500px">
 
-<label value="You are using: ${desktop.webApp.version}"/>
+<vlayout>
+<hlayout><label>Cadastro de Acadêmico/Egresso</label> <a href="/academico/cadastro.zul">Clique aqui</a></hlayout>
+<hlayout><label>Editar Acadêmico/Egresso</label> <a href="/academico/index.zul">Clique aqui</a></hlayout>
+</vlayout>
 
 </window>
