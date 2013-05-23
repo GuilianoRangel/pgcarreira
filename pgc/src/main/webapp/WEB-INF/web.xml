@@ -21,6 +21,18 @@
 	  <param-name>contextConfigLocation</param-name>
 	  <param-value>/WEB-INF/classes/META-INF/spring.xml</param-value>
 	</context-param>
+	 <filter>
+  <filter-name>LoginFilter</filter-name>
+  <filter-class>br.edu.aee.UniArch.subsystems.permission.WebFilter</filter-class>
+ </filter>
+ <filter-mapping>
+  <filter-name>LoginFilter</filter-name>
+  <url-pattern>/academico/index.zul</url-pattern>
+  <dispatcher>REQUEST</dispatcher>
+  <dispatcher>FORWARD</dispatcher>
+  <dispatcher>INCLUDE</dispatcher>
+  <dispatcher>ERROR</dispatcher>
+ </filter-mapping>
 	<servlet>
 		<description>
 		The ZK loader for ZUML pages</description>

@@ -1,19 +1,26 @@
 package br.ueg.pcb.view;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.context.annotation.Scope;
+import org.zkoss.image.AImage;
 import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.event.UploadEvent;
+import org.zkoss.zul.Button;
+import org.zkoss.image.Image;
+import org.zkoss.zul.Messagebox;
 
 import br.edu.aee.UniArch.annotation.AttributeView;
 import br.edu.aee.UniArch.domain.ActionReturn;
 import br.edu.aee.UniArch.settings.SpringFactory;
-import br.edu.aee.UniArch.structure.interfaces.ISecurityView;
-import br.edu.aee.UniArch.structure.model.UserPermission;
 import br.edu.aee.UniArch.structure.view.ZK.CRUDViewZK;
-import br.edu.aee.UniArch.utils.ConfigurationProperties;
 import br.ueg.pcb.controller.CadastroAcademicoControler;
 import br.ueg.pcb.model.Academico;
 import br.ueg.pcb.model.CursosAcademico;
@@ -22,6 +29,7 @@ import br.ueg.pcb.model.Unidade;
 import br.ueg.pcb.model.assist.Estado;
 import br.ueg.pcb.model.assist.EstadoCivil;
 import br.ueg.pcb.model.assist.Sexo;
+import br.ueg.pcb.utils.ImageUtils;
 import br.ueg.pcb.view.model.AcademicoUnidadeCursos;
 
 @SuppressWarnings({ "serial" })
@@ -115,6 +123,14 @@ public class CadastroAcademicoComposer extends CRUDViewZK<CadastroAcademicoContr
 	
 	@AttributeView(attributeName="confirmaSenha" , isEntityField=false)
 	private String fldConfirmaSenha;
+	
+	@AttributeView(attributeName="imagem", isEntityField=false)
+	private Image fldImage;
+	
+	@AttributeView(attributeName="imagem", isEntityField=true)
+	private byte[] imagem;
+	
+	private ActionReturn<?, ?> lastActionReturn = null;
 
 	@Override
 	protected String getUseCase() {
@@ -515,10 +531,66 @@ public class CadastroAcademicoComposer extends CRUDViewZK<CadastroAcademicoContr
 	}
 
 	/**
+	 * @return the fldImage
+	 */
+	public Image getFldImage() {
+		return fldImage;
+	}
+
+	/**
+	 * @param fldImage the fldImage to set
+	 */
+	public void setFldImage(Image fldImage) {
+		this.fldImage = fldImage;
+	}
+	
+	public Image getPerfilImage(){
+		if(this.getFldImage()!=null){
+			return this.getFldImage();
+		}
+		
+		String realPath = Executions.getCurrent().getDesktop().getWebApp().getRealPath("/");
+		String separator = System.getProperty("file.separator");
+		String defaultImage = realPath.concat("imagens"+separator+"anonimo.jpg"); 
+		
+		File file = new File(defaultImage);
+		
+		 try {
+			InputStream is = new FileInputStream(file);
+			this.setFldImage( (Image) new AImage("anonimo.jpg", is));
+			return this.getFldImage();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	/**
 	 * @return the casoDeUsoCenario
 	 */
 	public String getCasoDeUsoCenario() {
 		return casoDeUsoCenario;
+	}
+
+	/**
+	 * @return the profileImage
+	 */
+	public byte[] getImagem() {
+		return imagem;
+	}
+
+	/**
+	 * @param imagem the profileImage to set
+	 */
+	public void setImagem(byte[] imagem) {
+		this.imagem = imagem;
+		try {
+			this.setFldImage(new AImage(null,this.imagem));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -595,8 +667,23 @@ public class CadastroAcademicoComposer extends CRUDViewZK<CadastroAcademicoContr
 		this.setCasoDeUsoCenario("EditarAcademico");*/
 		ActionReturn<String,Academico> actionReturn = this.getViewController().edit();
 		redirectNexUseCaseFailure(actionReturn);
-		super.edit();
+		if(actionReturn.isSuccess()){
+			super.edit();
+		}
 		redirectNexUseCaseSucess(actionReturn);
+	}
+	public void loadAcademico() {		
+		ActionReturn<String,Academico> actionReturn = this.getViewController().edit();
+		redirectNexUseCaseFailure(actionReturn);
+		showPendentMessages();
+		super.edit();		
+	}
+
+	private void showPendentMessages() {
+		if(this.lastActionReturn!=null && !this.lastActionReturn.getErrorMessages().isEmpty()){
+			showMessage(this.lastActionReturn);
+			this.lastActionReturn = null;
+		}
 	}
 
 	/* (non-Javadoc)
@@ -612,8 +699,19 @@ public class CadastroAcademicoComposer extends CRUDViewZK<CadastroAcademicoContr
 	 */
 	@Override
 	public ActionReturn<String, Academico> record() {
+		this.setShowSuccessMessage(false);
 		ActionReturn<String, Academico> actionReturn =   super.record();
+		this.lastActionReturn = actionReturn;
 		redirectNexUseCaseSucess(actionReturn);
+		return actionReturn;
+	}
+	
+	/** atualiza o 
+	 * @return
+	 */
+	public ActionReturn<String, Academico> recordWithoutRedirect() {
+		ActionReturn<String, Academico> actionReturn =   super.record();
+		this.lastActionReturn = actionReturn;
 		return actionReturn;
 	}
 
@@ -660,6 +758,43 @@ public class CadastroAcademicoComposer extends CRUDViewZK<CadastroAcademicoContr
 	}
 	public List<Estado> getListUF(){
 		return this.getCadastroAcademicoControler().getListEntityTabelaBasica(Estado.class);
+	}
+	
+	public boolean addImage(UploadEvent event) {
+
+		org.zkoss.util.media.Media media = event.getMedia();
+		//((Button) event.getTarget()).setLabel(media.getName());
+		if (media instanceof org.zkoss.image.Image) {
+			if(updateAcademicoImageByZKMedia(media)){
+				this.binder.loadComponent(this.component.getFellow("imgAcademico"));
+			}
+
+		} else {
+			Messagebox.show("Somente imagem podem ser incluídas");
+		}
+
+		return true;
+	}
+
+	/**
+	 * @param media
+	 */
+	public boolean updateAcademicoImageByZKMedia(org.zkoss.util.media.Media media) {
+		org.zkoss.zul.Image image = new org.zkoss.zul.Image();
+		image.setContent((Image) media);
+		
+		try {				
+			this.setImagem(ImageUtils.scaleImage(image.getContent().getStreamData(), 150,150));
+			setCasoDeUsoCenario("EditarAcademico");
+			this.recordWithoutRedirect();
+			this.loadAcademico();
+		
+		} catch (Exception e) {
+			Messagebox.show("Erro ao carregar imagem!!!");
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 
 }

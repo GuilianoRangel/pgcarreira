@@ -2,7 +2,7 @@
 <?page title="Portal de Gestão de Carreiras - Página de Cadastro" contentType="text/html;charset=UTF-8"?>
 <zk>
 <window border="none" width="1024px" apply="${cadastroAcademicoComposer }">
-<label id="hiddenScenarioInfo" value="@{manager.casoDeUsoCenario }" visible="true"/>
+<label id="hiddenScenarioInfo" value="@{manager.casoDeUsoCenario }" visible="false"/>
 <style src="/css/style.css"/>
 	<hlayout>
 		<image src="/imagens/logo_ueg.png" width="100px"/>

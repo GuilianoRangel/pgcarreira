@@ -218,16 +218,25 @@ public class CadastroAcademicoValidation extends SuperValidator {
 	private void onBlurValidateFieldEmailExists(ActionReturn<?, ?> actionReturn, String value, Long academicoPk) {
 		//valida atributo academicoChave de busca.
 			String unfilledFieldMessage = this.generateEmptyMessageForAttribute("email", value);
+			boolean exist = false;
 			//valida o formato do e-mail apenas se estiver preenchido
 			if (unfilledFieldMessage ==null){
 				AcademicoService academicoService = getAcademicoService();
 				if( academicoService.existsAcademicoEmail(value)){
-					ActionReturn<String, Academico> ar = academicoService.findByPk(academicoPk);
-					if(!ar.isSuccess() || !ar.getParameter(ActionReturn.ENTITY_PARAMETER).getEmail().equalsIgnoreCase(value)){
-						actionReturn.reportFailure(ReturnTypeEnum.WARNING,Arrays.asList(
-								ConfigurationProperties.getInstance().getValue("CadastroAcademico.CadastrarAcademico.email.existe")
-								));					
+					exist=true;
+					if(academicoPk!=null){
+						ActionReturn<String, Academico> ar = academicoService.findByPk(academicoPk);
+						if(!ar.isSuccess() || !ar.getParameter(ActionReturn.ENTITY_PARAMETER).getEmail().equalsIgnoreCase(value)){
+							exist=true;
+						}else{
+							exist=false;
+						}
 					}
+				}
+				if(exist){
+					actionReturn.reportFailure(ReturnTypeEnum.WARNING,Arrays.asList(
+							ConfigurationProperties.getInstance().getValue("CadastroAcademico.CadastrarAcademico.email.existe")
+							));	
 				}
 			}
 	}

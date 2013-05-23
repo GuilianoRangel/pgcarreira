@@ -1,0 +1,10 @@
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+<?page title="Portal de Gestão de Carreiras - Acadêmico/Egresso Home Page" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window border="none" width="1024px" apply="${cadastroAcademicoComposer }">
+<div>
+<label sclass="cadastro1_titulo">Seja bem vindo ao sistema de Gerenciamento de Carreira dos Acadêmicos/Egressos da Universidade Estadual de Goiás</label>
+</div>
+<a onClick="manager.edit()">Editar Cadastro</a>
+</window>
+</zk>

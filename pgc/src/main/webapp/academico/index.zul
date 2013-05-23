@@ -1,8 +1,22 @@
 <?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
-<?page title="Portal de Gestão de Carreiras - Acadêmico/Egresso Home Page" contentType="text/html;charset=UTF-8"?>
+<?page title="Perfil" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window border="none" width="1024px" apply="${cadastroAcademicoComposer }">
-<label sclass="cadastro1_titulo">Seja bem vindo ao sistema de Gerenciamento de Carreira dos Acadêmicos/Egressos da Universidade Estadual de Goiás</label>
-<a onClick="manager.edit()">Editar Cadastro</a>
-</window>
+<div apply="${cadastroAcademicoComposer }" onCreate="manager.loadAcademico()">
+<label id="hiddenScenarioInfo" value="@{manager.casoDeUsoCenario }" visible="false"/>
+<style src="/css/style.css"/>
+<groupbox  style="border-radius: 10px; border: solid 1px gray; padding: 0px;" width="180px">
+	<caption label="Perfil do acadêmico" sclass="cadastro2_titulo"/>
+	<div align="center" >
+		<image id="imgAcademico" width="150px" content="@{manager.perfilImage }" >
+			
+		</image>
+		<label value="@{manager.fldUegAcademico.nome }" sclass="perfil_nome_academico"/>
+		<button id="btnAlterarImagem" upload="true,maxsize=5000" onUpload="manager.addImage(event)">Alterar Foto Perfil</button>
+	</div>
+
+	<div><a onClick="manager.edit()">Dados Cadastrais</a></div>
+	<div><a href="">Informações Profissionais</a></div>
+	<div><a href="">Informações Acadêmicas</a></div>
+</groupbox>
+</div>
 </zk>

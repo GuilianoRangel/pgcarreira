@@ -2,6 +2,7 @@ package br.ueg.pcb.model;
 
 import java.util.Date;
 
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -109,6 +110,10 @@ public class Academico extends SingleEntity {
 	
 	@Column(name = "autoriza_parcerio_ver_telefone_acad", nullable = false)
 	private Boolean autorizaParceiroVerTelefone;
+	
+	@Column(name="imagem_acad", nullable=true)
+	@Basic(fetch=FetchType.LAZY)
+	private byte[] imagem;
 
 	/**
 	 * @return the uegAcademico
@@ -444,6 +449,20 @@ public class Academico extends SingleEntity {
 	 */
 	public void setAutorizaParceiroVerTelefone(Boolean autorizaParceiroVerTelefone) {
 		this.autorizaParceiroVerTelefone = autorizaParceiroVerTelefone;
+	}
+
+	/**
+	 * @return the imagem
+	 */
+	public byte[] getImagem() {
+		return imagem;
+	}
+
+	/**
+	 * @param imagem the imagem to set
+	 */
+	public void setImagem(byte[] imagem) {
+		this.imagem = imagem;
 	}
 	
 }

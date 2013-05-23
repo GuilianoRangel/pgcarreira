@@ -7,14 +7,17 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import br.edu.aee.UniArch.domain.ActionReturn;
+import br.edu.aee.UniArch.domain.GenericActionReturn;
 import br.edu.aee.UniArch.enums.AuthenticationTypeEnum;
 import br.edu.aee.UniArch.enums.ReturnTypeEnum;
 import br.edu.aee.UniArch.enums.StatusEnum;
+import br.edu.aee.UniArch.exception.SuperException;
 import br.edu.aee.UniArch.settings.SpringFactory;
 import br.edu.aee.UniArch.structure.controller.GenericController;
 import br.edu.aee.UniArch.structure.interfaces.IGenericView;
 import br.edu.aee.UniArch.structure.interfaces.IValidator;
 import br.edu.aee.UniArch.structure.model.UserPermission;
+import br.edu.aee.UniArch.subsystems.security.SecurityDAO;
 import br.edu.aee.UniArch.subsystems.security.SecurityService;
 import br.edu.aee.UniArch.utils.ConfigurationProperties;
 import br.ueg.pcb.model.Academico;
@@ -86,6 +89,14 @@ public class CadastroAcademicoControler extends GenericController<Academico, Lon
 		actionReturn = super.record();
 		if (actionReturn.isSuccess()){
 			actionReturn.addExtra("nextUseCase", this.getMessageByKey("view.Academico.homepage"));
+			try {
+				securityService.commit();
+			} catch (SuperException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}else{
+			securityService.rollback();
 		}
 		
 		return (ActionReturn<String, Academico>) actionReturn;
@@ -99,9 +110,12 @@ public class CadastroAcademicoControler extends GenericController<Academico, Lon
 	private UserPermission saveUserPermission(Academico academico, ActionReturn<?, ?> actionReturn) {
 		Boolean isUpdate = (Boolean) getAttributeFromView(IGenericView.ATTRIBUTE_UPDATE);
 		
-		SecurityService securityService = (SecurityService) SpringFactory.getBean(SecurityService.class);
-		//securityService.setDao(SpringFactory.getBean(SecurityDAO.class));
-		ActionReturn<String, ?>ar2 = null;
+		this.securityService = (SecurityService) SpringFactory.getBean(SecurityService.class);
+		this.securityService.activeMultiTransaction();
+	
+		
+		securityService.setDao(SpringFactory.getBean(SecurityDAO.class));
+		ActionReturn<String, ?>ar2 = new GenericActionReturn();
 		
 		UserPermission up = new UserPermission();;;
 		if(isUpdate){
@@ -125,23 +139,26 @@ public class CadastroAcademicoControler extends GenericController<Academico, Lon
 		
 		
 		if(isUpdate){
-			ar2 = securityService.update(up);
+			ar2 = this.securityService.update(up);
 		}else{
-			ar2 = securityService.save(up);
+			ar2 = this.securityService.save(up);
 		}
 		if(!ar2.isSuccess()){
 			actionReturn.reportFailure(ReturnTypeEnum.ERROR,Arrays.asList(this.getMessageByKey("CadastroAcademico.CadastrarAcademico.erroSalvarUserPermission")));
 			actionReturn.addExtra("stackTrace", ar2.getErrorMessages());
 			return null;
 		}
-		if(isUpdate){
-			return up;
-		}else{
-			return (UserPermission) ar2.getParameter(ActionReturn.ENTITY_PARAMETER);
-		}
+		
+//		if(isUpdate){
+//			return up;
+//		}else{
+//			return (UserPermission) ar2.getParameter(ActionReturn.ENTITY_PARAMETER);
+//		}
+		return up;
 	}
 
 	private Academico selectedAcademico;
+	private SecurityService securityService;
 	
 	public AcademicoService getAcademicoService(){
 		return ((AcademicoService) this.getService());

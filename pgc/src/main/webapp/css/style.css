@@ -36,3 +36,9 @@
 .myGridWithNoBorder div.z-grid-header div.z-column-cnt  {
     padding: 4px 4px 4px;
 }
+.perfil_nome_academico{
+	display: block;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	font-weight: bold;
+}
