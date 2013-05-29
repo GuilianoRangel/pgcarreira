@@ -133,7 +133,7 @@ public class CadastroAcademicoComposer extends CRUDViewZK<CadastroAcademicoContr
 	private ActionReturn<?, ?> lastActionReturn = null;
 
 	@Override
-	protected String getUseCase() {
+	public String getUseCase() {
 		return "CadastroAcademico";
 	}
 
@@ -623,7 +623,7 @@ public class CadastroAcademicoComposer extends CRUDViewZK<CadastroAcademicoContr
 	 * @param actionReturn
 	 */
 	private void redirectByActionReturn(ActionReturn<?, ?> actionReturn) {
-		String nextUseCase = (String) actionReturn.getExtra("nextUseCase");
+		String nextUseCase = (String) actionReturn.getExtra(ActionReturn.NEXT_USE_CASE);
 		if(nextUseCase!=null && !nextUseCase.equals("")){			
 			Executions.sendRedirect(nextUseCase);
 		}
@@ -643,7 +643,8 @@ public class CadastroAcademicoComposer extends CRUDViewZK<CadastroAcademicoContr
 	public void procurarAcademico(){
 		setShowSuccessMessage(false);
 		ActionReturn<String, Object> actionReturn =  (ActionReturn<String, Object>) this.doAction("procuraracademico");
-		redirectNexUseCaseSucess(actionReturn);
+		//redirectNexUseCaseSucess(actionReturn);
+		redirectByActionReturn(actionReturn);
 		setShowSuccessMessage(true);
 	}
 	

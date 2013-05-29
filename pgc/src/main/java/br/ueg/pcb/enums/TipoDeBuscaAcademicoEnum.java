@@ -7,6 +7,9 @@ public enum TipoDeBuscaAcademicoEnum {
 	MATRICULA;
 	
 	public static TipoDeBuscaAcademicoEnum getTipoDeBuscaAcademico(String keyType) {
+		if (keyType==null) {
+			return null;
+		}
 		for (TipoDeBuscaAcademicoEnum tipoDeBuscaAcademico : TipoDeBuscaAcademicoEnum.values()) {
 			if (tipoDeBuscaAcademico.toString().equals(keyType.toUpperCase())) {
 				return tipoDeBuscaAcademico;

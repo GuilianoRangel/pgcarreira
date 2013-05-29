@@ -36,7 +36,7 @@ public class EstadoComposer extends CRUDViewZK<GenericController<Estado, Long>, 
 
 	
 	@Override
-	protected String getUseCase() {
+	public String getUseCase() {
 		return "Estado";
 	}
 

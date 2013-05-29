@@ -39,7 +39,7 @@ public class CadastroAcademicoControler extends GenericController<Academico, Lon
 				if(up==null){
 					String loginPage = ConfigurationProperties.getInstance().getPropertyOrDefault("SECURITY_LOGIN_PAGE");
 					actionReturn.reportFailure(ReturnTypeEnum.ERROR);
-					actionReturn.addExtra("nextUseCase",loginPage);
+					actionReturn.addExtra(ActionReturn.NEXT_USE_CASE,loginPage);
 					return actionReturn;
 				}
 				
@@ -53,7 +53,7 @@ public class CadastroAcademicoControler extends GenericController<Academico, Lon
 				
 				actionReturn.addParameter(ActionReturn.ENTITY_PARAMETER, academico);
 				
-				actionReturn.addExtra("nextUseCase", this.getMessageByKey("view.CadastroAcademico.cadastro2"));
+				actionReturn.addExtra(ActionReturn.NEXT_USE_CASE, this.getMessageByKey("view.CadastroAcademico.cadastro2"));
 				
 				return actionReturn;
 	}
@@ -88,7 +88,7 @@ public class CadastroAcademicoControler extends GenericController<Academico, Lon
 		
 		actionReturn = super.record();
 		if (actionReturn.isSuccess()){
-			actionReturn.addExtra("nextUseCase", this.getMessageByKey("view.Academico.homepage"));
+			actionReturn.addExtra(ActionReturn.NEXT_USE_CASE, this.getMessageByKey("view.Academico.homepage"));
 			try {
 				securityService.commit();
 			} catch (SuperException e) {
@@ -183,7 +183,7 @@ public class CadastroAcademicoControler extends GenericController<Academico, Lon
 		academico.setUegAcademico(ua);
 		this.setSelectedAcademico(academico);
 		
-		actionReturn.addExtra("nextUseCase", this.getMessageByKey("view.CadastroAcademico.cadastro2"));
+		actionReturn.addExtra(ActionReturn.NEXT_USE_CASE, this.getMessageByKey("view.CadastroAcademico.cadastro2"));
 		actionReturn.reportSuccess();
 		this.setAttributeFromView("casoDeUsoCenario", "CadastrarAcademico");
 		this.setAttributeFromView(IGenericView.ATTRIBUTE_UPDATE,false);

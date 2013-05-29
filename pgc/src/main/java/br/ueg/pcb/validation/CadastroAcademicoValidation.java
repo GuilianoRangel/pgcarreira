@@ -58,6 +58,7 @@ public class CadastroAcademicoValidation extends SuperValidator {
 			if(ua!=null){
 				if(academicoService.existsAcademicoByUegAcademico(ua)){
 					erroList.add(mensagens.getValue("CadastroAcademico.procuraracademico.academicoExiste"));
+					actionReturn.addExtra(ActionReturn.NEXT_USE_CASE, ConfigurationProperties.getInstance().getPropertyOrDefault("SECURITY_LOGIN_PAGE"));
 				}
 			}
 			
