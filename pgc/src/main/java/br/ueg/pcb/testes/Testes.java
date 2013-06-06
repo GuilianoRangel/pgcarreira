@@ -3,7 +3,9 @@ package br.ueg.pcb.testes;
 import java.util.List;
 
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.AbstractRefreshableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.web.context.request.SessionScope;
 
 import br.edu.aee.UniArch.domain.Restrictions;
 import br.edu.aee.UniArch.exception.SuperException;
@@ -21,24 +23,25 @@ public class Testes {
 	/**
 	 * @param args
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "resource", "rawtypes" })
 	public static void main(String[] args) { 
 		
 		ApplicationContext appCo = new ClassPathXmlApplicationContext("META-INF/spring.xml");
+		((AbstractRefreshableApplicationContext) appCo).getBeanFactory().registerScope("session", new SessionScope());
 		//UegAcademicoDao2  uaDAO = ((UegAcademicoDao2) appCo.getBean("uegAcademicoDao"));
 		
-		System.out.println("---------------");
-		//CadastroAcademicoValidation cv = ((CadastroAcademicoValidation) appCo.getBean("cadastroAcademicoValidation"));
-		SpringFactory sf = SpringFactory.getInstance(appCo);
-		AcademicoService as = (AcademicoService) sf.loadService(Academico.class);
-		UegAcademico ua = as.getUegAcademico("cpf", "11111111111");
-		Academico a = new Academico();
-		a.setUegAcademico(ua);
-		for(Unidade u: as.getListUnidadeAcademico(a)){
-			System.out.print(u.getNome());
-			System.out.print(":"+u.getPk());
-			System.out.println(":"+u.getSigla());
-		}
+//		System.out.println("---------------");
+//		//CadastroAcademicoValidation cv = ((CadastroAcademicoValidation) appCo.getBean("cadastroAcademicoValidation"));
+//		SpringFactory sf = SpringFactory.getInstance(appCo);
+//		AcademicoService as = (AcademicoService) sf.loadService(Academico.class);
+//		UegAcademico ua = as.getUegAcademico("cpf", "11111111111");
+//		Academico a = new Academico();
+//		a.setUegAcademico(ua);
+//		for(Unidade u: as.getListUnidadeAcademico(a)){
+//			System.out.print(u.getNome());
+//			System.out.print(":"+u.getPk());
+//			System.out.println(":"+u.getSigla());
+//		}
 		GenericDAO gDAO = (GenericDAO) appCo.getBean("genericDAO");
 		try {
 			for(Sexo s: (List<Sexo>)gDAO.listByClass(Sexo.class)){

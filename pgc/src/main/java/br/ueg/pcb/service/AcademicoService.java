@@ -134,7 +134,10 @@ public class AcademicoService extends GenericService<Academico, Long> {
 	public Academico getAcademicoByUserPermission(UserPermission up){
 		List<Academico> listAcademico = this.findAcademicoByField("pkUserPermission",up.getPk());
 		if (listAcademico!=null && listAcademico.size()>0){
-			return listAcademico.get(0);
+			Academico academico = listAcademico.get(0);
+			UegAcademico ua = this.getUegAcademico("matricula", academico.getUegAcademico().getPk());
+			academico.setUegAcademico(ua);
+			return academico;
 		}
 		return null;
 	}

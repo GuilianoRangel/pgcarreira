@@ -26,7 +26,7 @@ import br.ueg.pcb.model.UegAcademico;
 import br.ueg.pcb.model.Unidade;
 import br.ueg.pcb.model.assist.EntityTabelaBasica;
 import br.ueg.pcb.service.AcademicoService;
-import br.ueg.pcb.view.CadastroAcademicoComposer;
+import br.ueg.pcb.view.SuperViewZKPGC;
 
 @Controller
 @Scope("session")
@@ -49,7 +49,7 @@ public class CadastroAcademicoControler extends GenericController<Academico, Lon
 				this.setAttributeFromView("senha", "");
 				this.setAttributeFromView("confirmaSenha", "");
 				
-				((CadastroAcademicoComposer)this.getView()).setCasoDeUsoCenario("EditarAcademico");
+				((SuperViewZKPGC)this.getView()).setCasoDeUsoCenario("EditarAcademico");
 				
 				actionReturn.addParameter(ActionReturn.ENTITY_PARAMETER, academico);
 				
@@ -76,6 +76,7 @@ public class CadastroAcademicoControler extends GenericController<Academico, Lon
 		UserPermission up = saveUserPermission(academico, actionReturn);
 		
 		if(!actionReturn.isSuccess()	){
+			securityService.rollback();
 			return (ActionReturn<String, Academico>) actionReturn;
 		}
 		

@@ -1,22 +1,31 @@
 <?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
 <?page title="Perfil" contentType="text/html;charset=UTF-8"?>
 <zk>
-<div apply="${cadastroAcademicoComposer }" onCreate="manager.loadAcademico()">
-<label id="hiddenScenarioInfo" value="@{manager.casoDeUsoCenario }" visible="false"/>
-<style src="/css/style.css"/>
-<groupbox  style="border-radius: 10px; border: solid 1px gray; padding: 0px;" width="180px">
-	<caption label="Perfil do acadêmico" sclass="cadastro2_titulo"/>
-	<div align="center" >
-		<image id="imgAcademico" width="150px" content="@{manager.perfilImage }" >
-			
-		</image>
-		<label value="@{manager.fldUegAcademico.nome }" sclass="perfil_nome_academico"/>
-		<button id="btnAlterarImagem" upload="true,maxsize=5000" onUpload="manager.addImage(event)">Alterar Foto Perfil</button>
+	<div apply="${cadastroAcademicoComposer }" onCreate="manager.loadAcademico()" sclass="academico">
+		<div sclass="topo">			
+			<style src="/css/style.css"/>
+			<image sclass="topo_image" src="/imagens/logo_ueg.png" width="100px"/>
+			<label sclass="cadastro1_titulo topo_titulo" >Bem vindo a Portal de Carreiras da Universidade Estadual de Goiás - UEG.</label>
+		</div>	
+		<div sclass="conteudo">	
+			<div sclass="div_menu">
+				<div sclass="groupbox_titulo">Perfil do acadêmico</div>
+				<div  sclass="groupbox_menu"> 		
+				<label id="hiddenScenarioInfo" value="@{manager.casoDeUsoCenario }" visible="false"/>			
+					<div align="center" >
+						<image id="imgAcademico" width="150px" content="@{CadastroAcademico.perfilImage }" />
+						<label value="@{CadastroAcademico.fldUegAcademico.nome }" sclass="perfil_nome_academico"/>
+						<button id="btnAlterarImagem" upload="true,maxsize=5000" onUpload="CadastroAcademico.addImage(event)">Alterar Foto Perfil</button>
+					</div>
+				
+					<div><a onClick="CadastroAcademico.edit()">Dados Cadastrais</a></div>
+					<div><a onClick="CadastroAcademico.getEdit()">Dados Cadastrais2</a></div>
+					<div><a onClick="CadastroAcademico.getInfoProfissionalIndex()">Informações Profissionais</a></div>
+					<div><a href="">Informações Acadêmicas</a></div>
+				</div>
+			</div>
+			<div id="conteudo_interno" sclass="conteudo_interno">
+			</div>
+		</div>
 	</div>
-
-	<div><a onClick="manager.edit()">Dados Cadastrais</a></div>
-	<div><a href="">Informações Profissionais</a></div>
-	<div><a href="">Informações Acadêmicas</a></div>
-</groupbox>
-</div>
 </zk>

@@ -2,7 +2,6 @@ package br.ueg.pcb.view;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -11,16 +10,15 @@ import java.util.List;
 
 import org.springframework.context.annotation.Scope;
 import org.zkoss.image.AImage;
+import org.zkoss.image.Image;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.UploadEvent;
-import org.zkoss.zul.Button;
-import org.zkoss.image.Image;
+import org.zkoss.zkplus.databind.AnnotateDataBinder;
 import org.zkoss.zul.Messagebox;
 
 import br.edu.aee.UniArch.annotation.AttributeView;
 import br.edu.aee.UniArch.domain.ActionReturn;
 import br.edu.aee.UniArch.settings.SpringFactory;
-import br.edu.aee.UniArch.structure.view.ZK.CRUDViewZK;
 import br.ueg.pcb.controller.CadastroAcademicoControler;
 import br.ueg.pcb.model.Academico;
 import br.ueg.pcb.model.CursosAcademico;
@@ -35,16 +33,13 @@ import br.ueg.pcb.view.model.AcademicoUnidadeCursos;
 @SuppressWarnings({ "serial" })
 @Scope(value="session")
 @org.springframework.stereotype.Component
-public class CadastroAcademicoComposer extends CRUDViewZK<CadastroAcademicoControler, Academico, Long> {
+public class CadastroAcademicoComposer extends SuperViewZKPGC<CadastroAcademicoControler, Academico, Long> {
 	
 	@AttributeView(attributeName="tipoBusca", isEntityField=false)
 	private String tipoBusca;
 	
 	@AttributeView(attributeName="academicoChaveBusca", isEntityField=false)
 	private String academicoChaveBusca;
-	
-	@AttributeView(attributeName="casoDeUsoCenario",isEntityField=false)
-	private String casoDeUsoCenario="CadastrarAcademicoBusca";
 	
 	@AttributeView(attributeName="uegAcademico" , isEntityField=true)
 	private UegAcademico fldUegAcademico;
@@ -130,8 +125,6 @@ public class CadastroAcademicoComposer extends CRUDViewZK<CadastroAcademicoContr
 	@AttributeView(attributeName="imagem", isEntityField=true)
 	private byte[] imagem;
 	
-	private ActionReturn<?, ?> lastActionReturn = null;
-
 	@Override
 	public String getUseCase() {
 		return "CadastroAcademico";
@@ -567,13 +560,6 @@ public class CadastroAcademicoComposer extends CRUDViewZK<CadastroAcademicoContr
 	}
 
 	/**
-	 * @return the casoDeUsoCenario
-	 */
-	public String getCasoDeUsoCenario() {
-		return casoDeUsoCenario;
-	}
-
-	/**
 	 * @return the profileImage
 	 */
 	public byte[] getImagem() {
@@ -594,13 +580,6 @@ public class CadastroAcademicoComposer extends CRUDViewZK<CadastroAcademicoContr
 	}
 
 	/**
-	 * @param casoDeUsoCenario the casoDeUsoCenario to set
-	 */
-	public void setCasoDeUsoCenario(String casoDeUsoCenario) {
-		this.casoDeUsoCenario = casoDeUsoCenario;
-	}
-
-	/**
 	 * @see br.edu.aee.UniArch.structure.view.ZK.SuperViewZK#newControlInstance()
 	 */
 	@Override
@@ -616,26 +595,6 @@ public class CadastroAcademicoComposer extends CRUDViewZK<CadastroAcademicoContr
 	private void redirectNexUseCaseSucess(ActionReturn<?, ?> actionReturn) {
 		if(actionReturn.isSuccess()){
 			redirectByActionReturn(actionReturn);
-		}
-	}
-
-	/**
-	 * @param actionReturn
-	 */
-	private void redirectByActionReturn(ActionReturn<?, ?> actionReturn) {
-		String nextUseCase = (String) actionReturn.getExtra(ActionReturn.NEXT_USE_CASE);
-		if(nextUseCase!=null && !nextUseCase.equals("")){			
-			Executions.sendRedirect(nextUseCase);
-		}
-	}
-	
-	/** Sempre redireciona para o próximo usecase quando actionReturn for reportar Falha
-	 * @param actionReturn
-	 */
-	@SuppressWarnings("unused")
-	private void redirectNexUseCaseFailure(ActionReturn<?, ?> actionReturn){
-		if(!actionReturn.isSuccess()){
-			this.redirectByActionReturn(actionReturn);
 		}
 	}
 
@@ -680,13 +639,6 @@ public class CadastroAcademicoComposer extends CRUDViewZK<CadastroAcademicoContr
 		super.edit();		
 	}
 
-	private void showPendentMessages() {
-		if(this.lastActionReturn!=null && !this.lastActionReturn.getErrorMessages().isEmpty()){
-			showMessage(this.lastActionReturn);
-			this.lastActionReturn = null;
-		}
-	}
-
 	/* (non-Javadoc)
 	 * @see br.edu.aee.UniArch.structure.view.ZK.GenericViewZK#getSelectedEntity()
 	 */
@@ -707,15 +659,6 @@ public class CadastroAcademicoComposer extends CRUDViewZK<CadastroAcademicoContr
 		return actionReturn;
 	}
 	
-	/** atualiza o 
-	 * @return
-	 */
-	public ActionReturn<String, Academico> recordWithoutRedirect() {
-		ActionReturn<String, Academico> actionReturn =   super.record();
-		this.lastActionReturn = actionReturn;
-		return actionReturn;
-	}
-
 	public List<Unidade> getListUnidade(){		
 		return getCadastroAcademicoControler().getListUnidadeDoAcademico();
 	}
@@ -762,7 +705,7 @@ public class CadastroAcademicoComposer extends CRUDViewZK<CadastroAcademicoContr
 	}
 	
 	public boolean addImage(UploadEvent event) {
-
+		
 		org.zkoss.util.media.Media media = event.getMedia();
 		//((Button) event.getTarget()).setLabel(media.getName());
 		if (media instanceof org.zkoss.image.Image) {
@@ -787,6 +730,7 @@ public class CadastroAcademicoComposer extends CRUDViewZK<CadastroAcademicoContr
 		try {				
 			this.setImagem(ImageUtils.scaleImage(image.getContent().getStreamData(), 150,150));
 			setCasoDeUsoCenario("EditarAcademico");
+			this.setShowSuccessMessage(false);
 			this.recordWithoutRedirect();
 			this.loadAcademico();
 		
@@ -797,5 +741,62 @@ public class CadastroAcademicoComposer extends CRUDViewZK<CadastroAcademicoContr
 		}
 		return true;
 	}
+	
+	public void getEdit(){
+		String zulfile="formulario.zul";
+		
+		cleanActiveComponent();
+		try {		
+			this.setActiveComponent(  Executions
+						.createComponentsDirectly(getZulReader(zulfile), null,
+								this.component, null));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		//this.binderForm = new AnnotateDataBinder(this.getActiveComponent());
+		//this.binderForm.setLoadOnSave(false);
+		//this.binderForm.bindBean("manager", this);
+		
+		this.binder = new AnnotateDataBinder(this.getActiveComponent());
+		this.binder.setLoadOnSave(false);
+		//this.binder.bindBean(this.getUseCase(), this);
+		
+		this.insertConstraint(this.getActiveComponent());
+		//this.getActiveComponent().setAttribute("manager", this, true);
+		
+		//this.binder.init(this.getActiveComponent(), true);
+		
+
+		this.getCadastroAcademicoControler().edit();
+		this.binder.loadComponent(this.getActiveComponent());
+		//this.binderForm.loadComponent(this.getActiveComponent());
+		
+		this.getActiveComponent().setParent(null);
+		this.getActiveComponent().setParent(this.component.getFellow("conteudo_interno"));
+	}
+	
+	public void getInfoProfissionalIndex(){
+		String zulfile="infoprofissional.zul";
+		
+		cleanActiveComponent();
+		
+		try {		
+			this.setActiveComponent(  Executions
+						.createComponentsDirectly(getZulReader(zulfile), null,
+								this.component.getFellow("conteudo_interno"), null));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+		
+		//this.getActiveComponent().setParent(null);
+		//this.getActiveComponent().setParent(this.component.getFellow("conteudo_interno"));
+	}
+	
+	
+
+	
 
 }

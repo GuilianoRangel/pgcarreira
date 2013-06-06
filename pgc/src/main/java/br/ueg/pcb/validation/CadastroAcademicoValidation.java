@@ -58,7 +58,8 @@ public class CadastroAcademicoValidation extends SuperValidator {
 			if(ua!=null){
 				if(academicoService.existsAcademicoByUegAcademico(ua)){
 					erroList.add(mensagens.getValue("CadastroAcademico.procuraracademico.academicoExiste"));
-					actionReturn.addExtra(ActionReturn.NEXT_USE_CASE, ConfigurationProperties.getInstance().getPropertyOrDefault("SECURITY_LOGIN_PAGE"));
+					//TODO ver como mostrar a mensagem e depois redirecionar.
+					//actionReturn.addExtra(ActionReturn.NEXT_USE_CASE, ConfigurationProperties.getInstance().getPropertyOrDefault("SECURITY_LOGIN_PAGE"));
 				}
 			}
 			
@@ -83,7 +84,7 @@ public class CadastroAcademicoValidation extends SuperValidator {
 	 * @see br.edu.aee.UniArch.subsystems.validation.SuperValidator#validateSave(java.lang.String, java.lang.String)
 	 */
 	@Override
-	@ValidatorMethod(action = "SAVE_ACTION", order = 0)
+	@ValidatorMethod(action = IValidator.SAVE_ACTION, order = 0)
 	public ActionReturn<?, ?> validateSave(String action, String attributeName) {
 		ActionReturn<?, ?> actionReturn = super.validateSave(action, attributeName);
 		
@@ -166,7 +167,7 @@ public class CadastroAcademicoValidation extends SuperValidator {
 	 * @param attributeName
 	 * @return
 	 */
-	@ValidatorMethod(action="CadastrarAcademico", order=0)//validação de atributos com onblur(por isso usa o nome do cenário
+	@ValidatorMethod(action={"CadastrarAcademico", "EditarAcademico"}, order=0)//validação de atributos com onblur(por isso usa o nome do cenário
 	public ActionReturn<?, ?> validateCadastrarAcademicoFieldsOnBlur(String action, String attributeName){
 		ActionReturn<?, ?> actionReturn = new GenericActionReturn();
 		if(attributeName!=null && !attributeName.isEmpty()){
@@ -188,7 +189,7 @@ public class CadastroAcademicoValidation extends SuperValidator {
 				if(!actionReturn.isSuccess()) return actionReturn;
 			
 				//validar se o email já existe
-				onBlurValidateFieldEmailExists(actionReturn, (String)getValueOrAttributeValue(attributeName),(Long) getAttributeParameter("pk"));
+				onBlurValidateFieldEmailExists(actionReturn, (String)getValueOrAttributeValue(attributeName),(Long) this.getEntity().getPk());
 				if(!actionReturn.isSuccess()) return actionReturn;
 			}
 			

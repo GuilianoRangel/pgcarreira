@@ -24,8 +24,8 @@ import br.ueg.pcb.model.assist.Sexo;
 @Table(name="academico")
 public class Academico extends SingleEntity {
 	@SearchableField(description="UegAcadêmico")
-	@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
-	@JoinColumn(name="matricula_acad")
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="matricula_acad", updatable=false)
 	private UegAcademico uegAcademico;
 	
 	@SearchableField(description="Nome da mãe")

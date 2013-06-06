@@ -42,3 +42,41 @@
 	margin-bottom: 10px;
 	font-weight: bold;
 }
+
+/* css da pagina inicial do acadêmico */
+.topo_image{
+	display: inline-block;
+}
+.topo .topo_titulo{
+	vertical-align: top;
+}
+.academico .div_menu{
+	margin-top: 10px;
+}
+
+.academico .div_menu{
+	border-radius: 10px; 
+	border: solid 1px gray; 
+	padding: 0px;
+	width: 200px;
+	height: 600px;
+	float: left;
+	margin-right: 10px;
+}
+.academico .div_menu .groupbox_menu{
+	padding: 10px;
+}
+.div_menu .groupbox_titulo .z-label{
+	position: relative;
+	top: -10px;
+	margin-left: 20px;
+	background-color: white;
+	font-weight: bold;
+	font-size: 1em;
+}
+.academico .conteudo .conteudo_interno{
+		
+}
+.academico .conteudo .conteudo_interno .z-include{
+	padding: 9px	
+}
