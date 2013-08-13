@@ -13,15 +13,16 @@
 				<div  sclass="groupbox_menu"> 		
 				<label id="hiddenScenarioInfo" value="@{manager.casoDeUsoCenario }" visible="false"/>			
 					<div align="center" >
-						<image id="imgAcademico" width="150px" content="@{CadastroAcademico.perfilImage }" />
-						<label value="@{CadastroAcademico.fldUegAcademico.nome }" sclass="perfil_nome_academico"/>
-						<button id="btnAlterarImagem" upload="true,maxsize=5000" onUpload="CadastroAcademico.addImage(event)">Alterar Foto Perfil</button>
+						<image id="imgAcademico" width="150px" content="@{CADASTRO_ACADEMICO_UC.perfilImage }" />
+						<label value="@{CADASTRO_ACADEMICO_UC.fldUegAcademico.nome }" sclass="perfil_nome_academico"/>
+						<button id="btnAlterarImagem" upload="true,maxsize=5000" onUpload="CADASTRO_ACADEMICO_UC.addImage(event)">Alterar Foto Perfil</button>
 					</div>
 				
-					<div><a onClick="CadastroAcademico.edit()">Dados Cadastrais</a></div>
-					<div><a onClick="CadastroAcademico.getEdit()">Dados Cadastrais2</a></div>
-					<div><a onClick="CadastroAcademico.getInfoProfissionalIndex()">Informações Profissionais</a></div>
+					<div><a onClick="CADASTRO_ACADEMICO_UC.edit()">Dados Cadastrais</a></div>
+					<div><a onClick="CADASTRO_ACADEMICO_UC.getEdit()">Dados Cadastrais2</a></div>
+					<div><a onClick="CADASTRO_ACADEMICO_UC.getInfoProfissionalIndex()">Informações Profissionais</a></div>
 					<div><a href="">Informações Acadêmicas</a></div>
+					<div><a href="/~./sapo/sign-out.zul?url=/index.zul">Sair</a></div>
 				</div>
 			</div>
 			<div id="conteudo_interno" sclass="conteudo_interno">

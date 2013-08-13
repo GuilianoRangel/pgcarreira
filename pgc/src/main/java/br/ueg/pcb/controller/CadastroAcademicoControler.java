@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
+import br.edu.aee.UniArch.annotation.UseCase;
 import br.edu.aee.UniArch.domain.ActionReturn;
 import br.edu.aee.UniArch.domain.GenericActionReturn;
 import br.edu.aee.UniArch.enums.AuthenticationTypeEnum;
@@ -30,6 +31,7 @@ import br.ueg.pcb.view.SuperViewZKPGC;
 
 @Controller
 @Scope("session")
+@UseCase(value = "CADASTRO_ACADEMICO_UC", order = 4)
 public class CadastroAcademicoControler extends GenericController<Academico, Long> {
 	
 	
@@ -110,13 +112,20 @@ public class CadastroAcademicoControler extends GenericController<Academico, Lon
 	 */
 	private UserPermission saveUserPermission(Academico academico, ActionReturn<?, ?> actionReturn) {
 		Boolean isUpdate = (Boolean) getAttributeFromView(IGenericView.ATTRIBUTE_UPDATE);
+		ActionReturn<String, ?>ar2 = new GenericActionReturn();
 		
 		this.securityService = (SecurityService) SpringFactory.getBean(SecurityService.class);
-		this.securityService.activeMultiTransaction();
+		try {
+			this.securityService.activeMultiTransaction();
+		} catch (SuperException e) {
+			actionReturn.reportFailure(ReturnTypeEnum.ERROR,Arrays.asList(this.getMessageByKey("CadastroAcademico.CadastrarAcademico.erroSalvarUserPermission")));
+			actionReturn.addExtra("stackTrace", e.getStackTrace());
+			return null;
+		}
 	
 		
 		securityService.setDao(SpringFactory.getBean(SecurityDAO.class));
-		ActionReturn<String, ?>ar2 = new GenericActionReturn();
+		
 		
 		UserPermission up = new UserPermission();;;
 		if(isUpdate){

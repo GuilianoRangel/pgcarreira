@@ -24,7 +24,7 @@ import br.ueg.pcb.utils.CheckValidEMail;
 
 
 @Controller
-@UseCase(value="CadastroAcademico")
+@UseCase(value="CADASTRO_ACADEMICO_UC")
 public class CadastroAcademicoValidation extends SuperValidator {
 	
 	@ValidatorMethod(action="procuraracademico", order=0)//validação das ações

@@ -5,7 +5,7 @@
 			<groupbox width="1020px" sclass="cadastro1_borda" style="border-radius: 10px; border: solid 1px gray; padding: 0px; " contentStyle="padding:0px;" mold="3d">
 				<caption label="Unidade Universitária"/>
 				<hlayout>
-					<grid model="@{CadastroAcademico.ListCursosAcademico }" sclass="myGridWithNoBorder" >
+					<grid model="@{CADASTRO_ACADEMICO_UC.ListCursosAcademico }" sclass="myGridWithNoBorder" >
 						<columns>
 							<column width="100%"/>							
 						</columns>
@@ -93,32 +93,32 @@
 						<row >
 							<label sclass="cadastro2_titulo" style="font-weight:bold">Nome:</label>
 							<cell colspan="5">
-								<textbox hflex="1" value="@{CadastroAcademico.fldUegAcademico.nome }" disabled="true"></textbox>
+								<textbox hflex="1" value="@{CADASTRO_ACADEMICO_UC.fldUegAcademico.nome }" disabled="true"></textbox>
 							</cell>
 							<label sclass="cadastro2_titulo" style="font-weight:bold">Sexo*:</label>
-							<combobox id="sexo" hflex="1" selectedItem="@{CadastroAcademico.fldSexo }" model="@{CadastroAcademico.listSexo}">
+							<combobox id="sexo" hflex="1" selectedItem="@{CADASTRO_ACADEMICO_UC.fldSexo }" model="@{CADASTRO_ACADEMICO_UC.listSexo}">
 								<comboitem self="@{each=sexo}" label="@{sexo.descricao}" value="@{sexo}"/>	
 							</combobox>
 						</row>
 						<row>
 							<label sclass="cadastro2_titulo" style="font-weight:bold">Nº Identidade:</label>
-							<textbox id="identidadeNumero" hflex="1" value="@{CadastroAcademico.fldIdentidadeNumero }"></textbox>
+							<textbox id="identidadeNumero" hflex="1" value="@{CADASTRO_ACADEMICO_UC.fldIdentidadeNumero }"></textbox>
 							<label sclass="cadastro2_titulo" style="font-weight:bold">Orgão Expedidor:</label>
-							<textbox id="identidadeOrgao" value="@{CadastroAcademico.fldIdentidadeOrgao }" hflex="1"></textbox>
+							<textbox id="identidadeOrgao" value="@{CADASTRO_ACADEMICO_UC.fldIdentidadeOrgao }" hflex="1"></textbox>
 							<label sclass="cadastro2_titulo" style="font-weight:bold">UF:</label>
-							<combobox id="identidadeUf" hflex="1" selectedItem="@{CadastroAcademico.fldIdentidadeUf }" model="@{CadastroAcademico.listUF}">
+							<combobox id="identidadeUf" hflex="1" selectedItem="@{CADASTRO_ACADEMICO_UC.fldIdentidadeUf }" model="@{CADASTRO_ACADEMICO_UC.listUF}">
 								<comboitem self="@{each=UF}" label="@{UF.descricao}" value="@{UF}"/>	
 							</combobox>
 							<label sclass="cadastro2_titulo" style="font-weight:bold">Data nascimento*:</label>
-							<datebox id="dataNascimento" value="@{CadastroAcademico.fldDataNascimento }" hflex="1"></datebox>
+							<datebox id="dataNascimento" value="@{CADASTRO_ACADEMICO_UC.fldDataNascimento }" hflex="1"></datebox>
 						</row>
 						<row >
 							<label sclass="cadastro2_titulo" style="font-weight:bold">Nome da mãe*:</label>
 							<cell colspan="5">
-								<textbox id="nomeMae" value="@{CadastroAcademico.fldMae }" hflex="1"></textbox>
+								<textbox id="nomeMae" value="@{CADASTRO_ACADEMICO_UC.fldMae }" hflex="1"></textbox>
 							</cell>
 							<label sclass="cadastro2_titulo" style="font-weight:bold">Estado cívil:</label>
-							<combobox id="estadoCivil" hflex="1" selectedItem="@{CadastroAcademico.fldEstadoCivil }" model="@{CadastroAcademico.listEstadoCivil}">
+							<combobox id="estadoCivil" hflex="1" selectedItem="@{CADASTRO_ACADEMICO_UC.fldEstadoCivil }" model="@{CADASTRO_ACADEMICO_UC.listEstadoCivil}">
 								<comboitem self="@{each=estadoCivil}" label="@{estadoCivil.descricao}" value="@{estadoCivil}"/>	
 							</combobox>
 						</row>										
@@ -142,39 +142,39 @@
 						<row >
 							<label sclass="cadastro2_titulo" style="font-weight:bold">Logradouro*:</label>
 							<cell colspan="5">
-								<textbox id="enderecoLogradouro" value="@{CadastroAcademico.fldEnderecoLogradouro }" hflex="1"></textbox>
+								<textbox id="enderecoLogradouro" value="@{CADASTRO_ACADEMICO_UC.fldEnderecoLogradouro }" hflex="1"></textbox>
 							</cell>
 							<label sclass="cadastro2_titulo" style="font-weight:bold">Número:</label>
-							<textbox id="enderecoNumero" value="@{CadastroAcademico.fldEnderecoNumero }" hflex="1"></textbox>
+							<textbox id="enderecoNumero" value="@{CADASTRO_ACADEMICO_UC.fldEnderecoNumero }" hflex="1"></textbox>
 						</row>
 						<row>
 							<label sclass="cadastro2_titulo" style="font-weight:bold">Complemento:</label>
-							<textbox id="enderecoComplemento" value="@{CadastroAcademico.fldEnderecoComplemento }" hflex="1"></textbox>
+							<textbox id="enderecoComplemento" value="@{CADASTRO_ACADEMICO_UC.fldEnderecoComplemento }" hflex="1"></textbox>
 							<label sclass="cadastro2_titulo" style="font-weight:bold">Bairro/Distrito*:</label>
 							<cell colspan="3">
-								<textbox id="enderecoBairro" value="@{CadastroAcademico.fldEnderecoBairro }" hflex="1"></textbox>
+								<textbox id="enderecoBairro" value="@{CADASTRO_ACADEMICO_UC.fldEnderecoBairro }" hflex="1"></textbox>
 							</cell>
 							<cell colspan="2"></cell>
 						</row>
 						<row >
 							<label sclass="cadastro2_titulo" style="font-weight:bold">Municipio*:</label>
-							<textbox id="enderecoMunicipio" value="@{CadastroAcademico.fldEnderecoMunicipio }" hflex="1"></textbox>
+							<textbox id="enderecoMunicipio" value="@{CADASTRO_ACADEMICO_UC.fldEnderecoMunicipio }" hflex="1"></textbox>
 							<label sclass="cadastro2_titulo" style="font-weight:bold">UF*:</label>
-							<combobox id="enderecoUF" hflex="1" selectedItem="@{CadastroAcademico.fldEnderecoUF }" model="@{CadastroAcademico.listUF}">
+							<combobox id="enderecoUF" hflex="1" selectedItem="@{CADASTRO_ACADEMICO_UC.fldEnderecoUF }" model="@{CADASTRO_ACADEMICO_UC.listUF}">
 								<comboitem self="@{each=UF}" label="@{UF.descricao}" value="@{UF}"/>	
 							</combobox>
 							<label sclass="cadastro2_titulo" style="font-weight:bold">País*:</label>
-							<textbox id="enderecoPais" value="@{CadastroAcademico.fldEnderecoPais }" hflex="1"></textbox>
+							<textbox id="enderecoPais" value="@{CADASTRO_ACADEMICO_UC.fldEnderecoPais }" hflex="1"></textbox>
 							<cell colspan="2"></cell>
 						</row>
 						<row >
 							<label sclass="cadastro2_titulo" style="font-weight:bold">Telefone fixo:</label>
-							<textbox id="telefoneFixo" value="@{CadastroAcademico.fldTelefoneFixo }" hflex="1"></textbox>
+							<textbox id="telefoneFixo" value="@{CADASTRO_ACADEMICO_UC.fldTelefoneFixo }" hflex="1"></textbox>
 							<label sclass="cadastro2_titulo" style="font-weight:bold">Telefone celular:</label>
-							<cell colspan="2"><textbox id="telefoneCelular" value="@{CadastroAcademico.fldTelefoneCelular }" hflex="1"></textbox></cell>
+							<cell colspan="2"><textbox id="telefoneCelular" value="@{CADASTRO_ACADEMICO_UC.fldTelefoneCelular }" hflex="1"></textbox></cell>
 							<cell></cell>
 							<label sclass="cadastro2_titulo" style="font-weight:bold" >Telefone recado:</label>
-							<textbox id="telefoneRecado" value="@{CadastroAcademico.fldTelefoneRecado }" hflex="1"></textbox>
+							<textbox id="telefoneRecado" value="@{CADASTRO_ACADEMICO_UC.fldTelefoneRecado }" hflex="1"></textbox>
 						</row>									
 					</rows>
 				</grid>
@@ -196,16 +196,16 @@
 						<row >
 							<label sclass="cadastro2_titulo" style="font-weight:bold">E-Mail*:</label>
 							<cell colspan="5">
-								<textbox id="email" value="@{CadastroAcademico.email }" hflex="1"></textbox>
+								<textbox id="email" value="@{CADASTRO_ACADEMICO_UC.email }" hflex="1"></textbox>
 							</cell>
 							<label sclass="cadastro2_titulo" style="font-weight:bold">CPF:</label>
-							<textbox value="@{CadastroAcademico.fldUegAcademico.cpf }" hflex="1" disabled="true"></textbox>
+							<textbox value="@{CADASTRO_ACADEMICO_UC.fldUegAcademico.cpf }" hflex="1" disabled="true"></textbox>
 						</row>						
 						<row >
 							<label sclass="cadastro2_titulo" style="font-weight:bold">Senha*:</label>
-							<textbox id="senha" type="password"  value="@{CadastroAcademico.fldSenha }" hflex="1"></textbox>
+							<textbox id="senha" type="password"  value="@{CADASTRO_ACADEMICO_UC.fldSenha }" hflex="1"></textbox>
 							<label sclass="cadastro2_titulo" style="font-weight:bold">Repita a senha*:</label>
-							<cell colspan="2"><textbox id="confirmaSenha" type="password" value="@{CadastroAcademico.fldConfirmaSenha }" hflex="1"></textbox></cell>
+							<cell colspan="2"><textbox id="confirmaSenha" type="password" value="@{CADASTRO_ACADEMICO_UC.fldConfirmaSenha }" hflex="1"></textbox></cell>
 							<cell colspan="3"></cell>
 							
 						</row>									
@@ -223,26 +223,26 @@
 					<rows sclass="myGridWithNoBorder">
 						<row >							
 							<cell></cell>
-							<checkbox label="Receber novidades e informações sobre a UEG" checked="@{CadastroAcademico.fldAutorizaEmailNovidadeUeg }"></checkbox>
+							<checkbox label="Receber novidades e informações sobre a UEG" checked="@{CADASTRO_ACADEMICO_UC.fldAutorizaEmailNovidadeUeg }"></checkbox>
 						</row>
 						<row >							
 							<cell></cell>
-							<checkbox label="Receber E-Mail com oportunidades relacionadas aos meus cursos de formação" checked="@{CadastroAcademico.fldAutorizaEmailOportunidade }"></checkbox>
+							<checkbox label="Receber E-Mail com oportunidades relacionadas aos meus cursos de formação" checked="@{CADASTRO_ACADEMICO_UC.fldAutorizaEmailOportunidade }"></checkbox>
 						</row>
 						<row >							
 							<cell></cell>
-							<checkbox label="Receber E-Mail com atualizações de publicações realizadas no portal" checked="@{CadastroAcademico.fldAutorizaEmailPublicacao }"></checkbox>
+							<checkbox label="Receber E-Mail com atualizações de publicações realizadas no portal" checked="@{CADASTRO_ACADEMICO_UC.fldAutorizaEmailPublicacao }"></checkbox>
 						</row>
 						<row >							
 							<cell></cell>
-							<checkbox label="Permitir parceiros acessarem meus telfones de contato" checked="@{CadastroAcademico.fldAutorizaParceiroVerTelefone }"></checkbox>
+							<checkbox label="Permitir parceiros acessarem meus telfones de contato" checked="@{CADASTRO_ACADEMICO_UC.fldAutorizaParceiroVerTelefone }"></checkbox>
 						</row>	
 					</rows>
 				</grid>
 			</groupbox>	
 			<separator height="5px"></separator>
 			<hlayout width="100%" style="text-align:right;">
-				<button label="Salvar" width="130px" height="30px" onClick="CadastroAcademico.record()"></button>
+				<button label="Salvar" width="130px" height="30px" onClick="CADASTRO_ACADEMICO_UC.record()"></button>
 			</hlayout>					
 		</vlayout>
 </zk>

@@ -7,6 +7,7 @@ import org.springframework.context.support.AbstractRefreshableApplicationContext
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.web.context.request.SessionScope;
 
+import br.edu.aee.UniArch.domain.Order;
 import br.edu.aee.UniArch.domain.Restrictions;
 import br.edu.aee.UniArch.exception.SuperException;
 import br.edu.aee.UniArch.settings.SpringFactory;
@@ -44,7 +45,7 @@ public class Testes {
 //		}
 		GenericDAO gDAO = (GenericDAO) appCo.getBean("genericDAO");
 		try {
-			for(Sexo s: (List<Sexo>)gDAO.listByClass(Sexo.class)){
+			for(Sexo s: (List<Sexo>)gDAO.listByClass(Sexo.class, new Restrictions[0],new Order[0])){
 				System.out.println(s);
 			}
 		} catch (SuperException e) {

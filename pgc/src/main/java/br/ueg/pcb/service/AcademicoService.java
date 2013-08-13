@@ -9,6 +9,7 @@ import org.omg.CORBA.OMGVMCID;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import br.edu.aee.UniArch.domain.Order;
 import br.edu.aee.UniArch.domain.Restrictions;
 import br.edu.aee.UniArch.enums.RestrictionsTypeEnum;
 import br.edu.aee.UniArch.exception.SuperException;
@@ -48,16 +49,17 @@ public class AcademicoService extends GenericService<Academico, Long> {
 		GenericDAO uaDAO = (GenericDAO) SpringFactory.loadDAO(UegAcademico.class);
 		
 		UegAcademico ua = new UegAcademico();
-		Restrictions rest;
+		Restrictions[] restrictions =  new Restrictions[1];
+
 		if(typeSearch == TipoDeBuscaAcademicoEnum.CPF){
 			ua.setCpf(keyValue);
-			rest = new Restrictions(RestrictionsTypeEnum.EQUAL,"cpf",(Object)keyValue);
+			restrictions[0]  = new Restrictions(RestrictionsTypeEnum.EQUAL,"cpf",(Object)keyValue);
 		}else{
 			ua.setPk(keyValue);
-			rest = new Restrictions(RestrictionsTypeEnum.EQUAL,"id", (Object)keyValue);
+			restrictions[0]  = new Restrictions(RestrictionsTypeEnum.EQUAL,"id", (Object)keyValue);
 		}
 		try {		
-			List<UegAcademico> uga2 = (List<UegAcademico>) uaDAO.listByClass(UegAcademico.class, rest);
+			List<UegAcademico> uga2 = (List<UegAcademico>) uaDAO.listByClass(UegAcademico.class, restrictions , new Order[0]);
 			
 			if (uga2!=null && uga2.size()>0){
 				return uga2.get(0);
@@ -95,10 +97,11 @@ public class AcademicoService extends GenericService<Academico, Long> {
 		
 		GenericDAO cursosAcademicoDAO = (GenericDAO) SpringFactory.loadDAO(CursosAcademico.class);
 		
-		Restrictions rest = new Restrictions(RestrictionsTypeEnum.EQUAL,"pk.uegAcademico.pk",(Object)academico.getUegAcademico().getPk());
+		Restrictions[] restrictions =  new Restrictions[1];
+		restrictions[0] = new Restrictions(RestrictionsTypeEnum.EQUAL,"pk.uegAcademico.pk",(Object)academico.getUegAcademico().getPk());
 		
 		try {
-			return (List<CursosAcademico>) cursosAcademicoDAO.list(CursosAcademico.class, rest);
+			return (List<CursosAcademico>) cursosAcademicoDAO.list(CursosAcademico.class, restrictions, new Order[0]);
 		} catch (SuperException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -111,7 +114,7 @@ public class AcademicoService extends GenericService<Academico, Long> {
 		List<T> listReturn = new ArrayList<T>(0);
 		List<T> listReturnObject = new ArrayList<T>(0);
 		 try {
-			listReturn = (List<T>)gDAO.listByClass(classe);
+			listReturn = (List<T>)gDAO.listByClass(classe, new Restrictions[0], new Order[0]);
 			for (T t : listReturn) {
 				listReturnObject.add(ORMUtils.initializeAndUnproxy(t));
 			}
@@ -158,11 +161,11 @@ public class AcademicoService extends GenericService<Academico, Long> {
 	private List<Academico> findAcademicoByField(String field, Object value){		
 		GenericDAO uaDAO = (GenericDAO) SpringFactory.loadDAO(UegAcademico.class);
 				
-		Restrictions rest;
-		rest = new Restrictions(RestrictionsTypeEnum.EQUAL,field, value);
+		Restrictions[] restrictions =  new Restrictions[1];
+		restrictions[0] = new Restrictions(RestrictionsTypeEnum.EQUAL,field, value);
 		
 		try {		
-			List<Academico> academico = (List<Academico>) uaDAO.listByClass(Academico.class, rest);
+			List<Academico> academico = (List<Academico>) uaDAO.listByClass(Academico.class, restrictions, new Order[0]);
 			
 			if (academico!=null && academico.size()>0){
 				return academico;

@@ -125,10 +125,10 @@ public class CadastroAcademicoComposer extends SuperViewZKPGC<CadastroAcademicoC
 	@AttributeView(attributeName="imagem", isEntityField=true)
 	private byte[] imagem;
 	
-	@Override
+	/*@Override
 	public String getUseCase() {
 		return "CadastroAcademico";
-	}
+	}*/
 
 	/**
 	 * @return the fldUegAcademico

@@ -24,6 +24,11 @@
 			<name>ZK CE Repository</name>
 			<url>http://mavensync.zkoss.org/maven2</url>
 		</repository>
+		<repository>
+			<id>axis</id>
+			<name>Axis repository</name>
+			<url>http://repo1.maven.org/maven2</url>
+		</repository>
 	</repositories>
 	
     <properties>
@@ -69,7 +74,7 @@
     	<dependency>
     		<groupId>br.edu.aee</groupId>
     		<artifactId>UniArch</artifactId>
-    		<version>0.0.1-SNAPSHOT</version>
+    		<version>1.0-SNAPSHOT</version>
     		<scope>compile</scope>
     	</dependency>
     	<!-- <dependency>
@@ -123,6 +128,19 @@
 			<artifactId>commons-io</artifactId>
 			<version>1.4</version>
 		</dependency>
+
+		<dependency>
+			<groupId>axis</groupId>
+			<artifactId>axis</artifactId>
+			<version>1.4</version>
+		</dependency>            
+		
+		<dependency>
+			<groupId>commons-email</groupId>
+			<artifactId>commons-email</artifactId>
+			<version>1.0</version>
+		</dependency>
+            
     </dependencies>
 
     <build>
@@ -158,27 +176,7 @@
                 <version>7.1.1.Final</version>
             </plugin>
             
-			<plugin>
-			    <artifactId>maven-resources-plugin</artifactId>
-			    <executions>
-			        <execution>
-			            <id>copy-security-archives</id>
-			            <phase>generate-resources</phase>
-			            <goals>
-			                <goal>copy-resources</goal>
-			            </goals>
-			            <configuration>
-			                <outputDirectory>${project.build.directory}/${project.artifactId}/security</outputDirectory>
-			                <overwrite>true</overwrite>
-			                <resources>
-			                    <resource>
-			                        <directory>../UniArch/src/main/resources/web/security</directory>
-			                    </resource>
-			                </resources>
-			            </configuration>
-			        </execution>
-			    </executions>
-			</plugin>
+					
         </plugins>
     </build>
 
