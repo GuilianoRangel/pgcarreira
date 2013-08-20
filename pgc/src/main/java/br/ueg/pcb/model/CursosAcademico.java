@@ -16,9 +16,26 @@ import br.ueg.pcb.model.pks.CursosAcademicoPK;
 public class CursosAcademico extends CompositeEntity<CursosAcademicoPK> {
 	
 	@SearchableField(description="Ano Conclusão")
-	@Column(name = "ano_conclusao_cuac", length=10, nullable = false)
+	@Column(name = "ano_conclusao_cuac", length=10, nullable = true)
 	private String anoConclusao;
 
+	@SearchableField(description="Matricula")
+	@Column(name = "matricula_cuac", length=12, nullable = false)
+	private String matricula;
+	
+	/**
+	 * @return the matricula
+	 */
+	public String getMatricula() {
+		return matricula;
+	}
+
+	/**
+	 * @param matricula the matricula to set
+	 */
+	public void setMatricula(String matricula) {
+		this.matricula = matricula;
+	}
 	/**
 	 * @return the anoConclusao
 	 */

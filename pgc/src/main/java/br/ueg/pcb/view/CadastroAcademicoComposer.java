@@ -35,9 +35,6 @@ import br.ueg.pcb.view.model.AcademicoUnidadeCursos;
 @org.springframework.stereotype.Component
 public class CadastroAcademicoComposer extends SuperViewZKPGC<CadastroAcademicoControler, Academico, Long> {
 	
-	@AttributeView(attributeName="tipoBusca", isEntityField=false)
-	private String tipoBusca;
-	
 	@AttributeView(attributeName="academicoChaveBusca", isEntityField=false)
 	private String academicoChaveBusca;
 	
@@ -480,20 +477,7 @@ public class CadastroAcademicoComposer extends SuperViewZKPGC<CadastroAcademicoC
 	public void setAcademicoChaveBusca(String academicoChaveBusca) {
 		this.academicoChaveBusca = academicoChaveBusca;
 	}
-	
-	/**
-	 * @return the tipoBusca
-	 */
-	public String getTipoBusca() {
-		return tipoBusca;
-	}
-
-	/**
-	 * @param tipoBusca the tipoBusca to set
-	 */
-	public void setTipoBusca(String tipoBusca) {
-		this.tipoBusca = tipoBusca;
-	}
+		
 
 	/**
 	 * @return the fldSenha

@@ -15,11 +15,7 @@ import br.edu.aee.UniArch.structure.model.Entity;
 public class UegAcademico extends Entity<String> {
 
 	@Id
-	@SearchableField(description="matricula_acad")
-	@Column(name = "matricula_acad", length=12, nullable = false)
-	private String pk;
-	
-	@SearchableField(description="CPF")
+	@SearchableField(description="cpf_acad")
 	@Column(name = "cpf_acad", length=12, nullable = false)
 	private String cpf;
 	
@@ -29,12 +25,12 @@ public class UegAcademico extends Entity<String> {
 	
 	@Override
 	public String getPk() {
-		return this.pk;
+		return this.cpf;
 	}
 
 	@Override
 	public void setPk(String pk) {
-		this.pk = pk;
+		this.cpf = pk;
 	}
 
 	/**

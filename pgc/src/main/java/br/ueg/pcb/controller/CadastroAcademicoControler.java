@@ -181,13 +181,20 @@ public class CadastroAcademicoControler extends GenericController<Academico, Lon
 	public ActionReturn<String, Object> procuraracademico(){
 		ActionReturn<String, Object> actionReturn = new ActionReturn<String, Object>();
 		
-		String tipoBusca = (String) this.getAttributeFromView("tipoBusca");
+		String tipoBusca = "CPF";
 		String academicoChaveBusca = (String) this.getAttributeFromView("academicoChaveBusca");
 				
 		UegAcademico ua = getAcademicoService().getUegAcademico(tipoBusca, academicoChaveBusca);
 		if(ua==null){
 			actionReturn.reportFailure(ReturnTypeEnum.ERROR, Arrays.asList(this.getMessageByKey("CadastroAcademico.procuraracademico.academicoNaoExiste")));
 			return actionReturn;
+		}
+		if(getAcademicoService().existsAcademicoByUegAcademico(ua)){
+			String loginPage = ConfigurationProperties.getInstance().getPropertyOrDefault("SECURITY_LOGIN_PAGE");
+			actionReturn.reportFailure(ReturnTypeEnum.ERROR, Arrays.asList(this.getMessageByKey("CadastroAcademico.procuraracademico.academicoExiste")));
+			actionReturn.addExtra(ActionReturn.NEXT_USE_CASE,loginPage);
+			
+			return actionReturn;			
 		}
 		Academico academico = new Academico();
 		academico.setUegAcademico(ua);

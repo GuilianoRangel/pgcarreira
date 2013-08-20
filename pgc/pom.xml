@@ -140,6 +140,18 @@
 			<artifactId>commons-email</artifactId>
 			<version>1.0</version>
 		</dependency>
+		
+		 <dependency>
+	        <groupId>commons-collections</groupId>
+	        <artifactId>commons-collections</artifactId>
+	        <version>1.0</version>
+	      </dependency>
+            
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>20030211.134440</version>
+		</dependency>
             
     </dependencies>
 

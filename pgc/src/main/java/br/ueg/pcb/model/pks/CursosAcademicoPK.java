@@ -16,7 +16,7 @@ public class CursosAcademicoPK implements ICompositePK {
 
 	@SearchableField(description="UegAcadêmico")
 	@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
-	@JoinColumn(name="matricula_acad_cuac")
+	@JoinColumn(name="cpf_acad_cuac")
 	private UegAcademico uegAcademico;
 	
 	@SearchableField(description="Curso")
@@ -27,6 +27,8 @@ public class CursosAcademicoPK implements ICompositePK {
 	@SearchableField(description="AnoIngresso")
 	@Column(name = "ano_ingresso_cuac", length=10, nullable = false)
 	private String anoIngresso;	
+	
+	
 	
 	public CursosAcademicoPK(){		
 	}
@@ -73,6 +75,8 @@ public class CursosAcademicoPK implements ICompositePK {
 		this.anoIngresso = anoIngresso;
 	}
 	
+	
+
 	/**
 	 * @see java.lang.Object#hashCode()
 	 */

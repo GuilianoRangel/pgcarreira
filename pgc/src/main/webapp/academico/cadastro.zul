@@ -3,7 +3,6 @@
 <zk>
 <window border="none" apply="${cadastroAcademicoComposer }">
 <label id="hiddenScenarioInfo" value="@{manager.casoDeUsoCenario }" visible="false"/>
-<radiogroup id="procurarPor" selectedItem="@{manager.tipoBusca }"/>
 <style src="/css/style.css"/>
 	<hlayout>
 		<image src="/imagens/logo_ueg.png" width="190px"/>
@@ -12,7 +11,7 @@
 			<label sclass="cadastro1_titulo">Bem vindo a página de associação ao Portal de Carreiras da Universidade Estadual de Goiás - UEG.</label>
 			<label>Para iniciar o seu cadastro por favor selecione uma das formas abaixo para poder localizar seus dados na base de dados da Universidade.</label>
 			<separator height="30px"></separator>
-			<label value="Procurar por:" style="font-size:15px; margin-left:150px; font-weight: bold;"/>
+			<label value="Procurar por CPF:" style="font-size:15px; margin-left:150px; font-weight: bold;"/>
 			<groupbox width="450px" sclass="cadastro1_borda" style="border-radius: 10px;
 	border: solid 1px gray;
 	padding: 5px;
@@ -20,13 +19,12 @@
 				
 				<hlayout>
 					<vlayout>
-						<radio label="Cadastro de Pessoa Física - CPF" value="cpf" radiogroup="procurarPor"  />
 						<separator height="2px" />
 						<textbox id="academicoChaveBusca" value="@{manager.academicoChaveBusca }" width="190px" ></textbox>
 					</vlayout>
 					<separator width="30px" />
 					<vlayout>
-						<radio label="Número de Mátricula"	value="matricula" radiogroup="procurarPor" />
+						
 						<separator height="2px" />
 						<button label="Procurar" mold="trendy" onClick="manager.procurarAcademico()"></button>
 						<separator height="5px" />

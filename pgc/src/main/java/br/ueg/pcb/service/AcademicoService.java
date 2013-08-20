@@ -1,13 +1,22 @@
 package br.ueg.pcb.service;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.text.TabExpander;
 
+import org.apache.axis.transport.jms.MapUtils;
+import org.apache.commons.beanutils.BeanUtils;
 import org.omg.CORBA.OMGVMCID;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+
 
 import br.edu.aee.UniArch.domain.Order;
 import br.edu.aee.UniArch.domain.Restrictions;
@@ -19,12 +28,15 @@ import br.edu.aee.UniArch.structure.persistence.dao.GenericDAO;
 import br.edu.aee.UniArch.structure.service.GenericService;
 import br.ueg.pcb.enums.TipoDeBuscaAcademicoEnum;
 import br.ueg.pcb.model.Academico;
+import br.ueg.pcb.model.Curso;
 import br.ueg.pcb.model.CursosAcademico;
 import br.ueg.pcb.model.UegAcademico;
 import br.ueg.pcb.model.Unidade;
 import br.ueg.pcb.model.assist.EntityTabelaBasica;
 import br.ueg.pcb.model.assist.Sexo;
+import br.ueg.pcb.model.pks.CursosAcademicoPK;
 import br.ueg.pcb.utils.ORMUtils;
+import br.ueg.pcb.webservice.client.WsAlunoClient;
 
 @Service
 @Qualifier
@@ -41,10 +53,176 @@ public class AcademicoService extends GenericService<Academico, Long> {
 			return false;
 		}
 	}
+	/**
+	 * Mapeia o usuário no banco de dados da aplicação, atualizando o cadastro de
+	 * unidade, curso, academico
+	 * @param CPF
+	 * @return true caso do usuário foi ou está mapeado no banco de dados, 
+	 */
+	public boolean mapUegAcademico(String CPF){
+		//HashMap<String,String> searchAluno = WsAlunoClient.searchAluno(CPF);
+		ArrayList<HashMap<String,String>> searchAluno = WsAlunoClient.searchAluno(CPF);
+		
+		
+		
+		if(searchAluno!=null){	
+			for (Iterator iterator = searchAluno.iterator(); iterator.hasNext(); ) {    
+				HashMap<String,String> cursoInfo = (HashMap<String,String>) iterator.next();
+				try {
+					UegAcademico uegAcademico = new UegAcademico();
+					Curso curso = new Curso();
+					CursosAcademico cursosAcademico = new CursosAcademico();
+					Unidade unidade = new Unidade();
+					
+					this.prepareHashMapWebServiceAluno(cursoInfo);
+					BeanUtils.populate(uegAcademico, cursoInfo);	
+					
+					this.prepareHashMapWebServiceUnidade(cursoInfo);
+					BeanUtils.populate(unidade, cursoInfo);
+					
+					this.prepareHashMapWebServiceCurso(cursoInfo);
+					
+					BeanUtils.populate(curso, cursoInfo);
+					if(cursoInfo.get("situacao").equalsIgnoreCase("formando")){
+						cursosAcademico.setAnoConclusao(cursoInfo.get("ano_semestre_conclusao_ou_ultimo_semestre_cursado"));
+					};
+					cursosAcademico.setMatricula(cursoInfo.get("matricula"));
+					
+					CursosAcademicoPK pk = new CursosAcademicoPK();
+					
+					pk.setAnoIngresso(cursoInfo.get("ano_semestre_inicio"));					
+					pk.setCurso(curso);
+					pk.setUegAcademico(uegAcademico);
+					cursosAcademico.setPk(pk);
+					
+					saveUpdateUegAcademico(uegAcademico);
+					
+					unidade = saveUpdateUnidade(unidade);
+					curso.setUnidade(unidade);
+					saveUpdateCurso(curso);
+					
+					saveUpdateCursosAcademico(cursosAcademico);
+					
+					
+				} catch (IllegalAccessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (SuperException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			return true;
+			//System.out.println(uegAcademico);
+		}
+			
+		return false;
+	}
+	/**
+	 * @param uegAcademico
+	 * @throws SuperException
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private void saveUpdateUegAcademico(UegAcademico uegAcademico)
+			throws SuperException {
+		GenericDAO uaDAO = (GenericDAO) SpringFactory.loadDAO(UegAcademico.class);
+		UegAcademico uegAcademico2 = (UegAcademico) uaDAO.findEntityByPk(uegAcademico);
+		if(uegAcademico2==null){
+			uaDAO.save(uegAcademico);
+		}else{
+			uaDAO.update(uegAcademico);
+		}
+	}
 	
+	/**
+	 * @param unidade
+	 * @throws SuperException
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private Unidade saveUpdateUnidade(Unidade unidade)
+			throws SuperException {
+		GenericDAO uaDAO = (GenericDAO) SpringFactory.loadDAO(Unidade.class);
+		Unidade unidade2 = (Unidade) uaDAO.findEntityByPk(unidade);
+		if(unidade2==null){
+			uaDAO.save(unidade);
+		}else{
+			uaDAO.update(unidade);
+		}
+		unidade2 = (Unidade) uaDAO.findEntityByPk(unidade);
+		return unidade2;
+	}
+	
+	/**
+	 * @param curso
+	 * @throws SuperException
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private void saveUpdateCurso(Curso curso)
+			throws SuperException {
+		GenericDAO uaDAO = (GenericDAO) SpringFactory.loadDAO(Curso.class);
+		Curso curso2 = (Curso) uaDAO.findEntityByPk(curso);
+		if(curso2==null){
+			uaDAO.save(curso);
+		}else{
+			uaDAO.update(curso);
+		}
+	}
+	
+	/**
+	 * @param cursosAcademico
+	 * @throws SuperException
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private void saveUpdateCursosAcademico(CursosAcademico cursosAcademico)
+			throws SuperException {
+		GenericDAO uaDAO = (GenericDAO) SpringFactory.loadDAO(CursosAcademico.class);
+		CursosAcademico cursosAcademico2 = (CursosAcademico) uaDAO.findEntityByPk(cursosAcademico);
+		if(cursosAcademico2==null){
+			uaDAO.save(cursosAcademico);
+		}else{
+			uaDAO.update(cursosAcademico);
+		}
+	}
+	
+	private void prepareHashMapWebServiceAluno(Map<String,String> map){
+		map.put("nome", map.get("aluno"));
+	}
+	
+	private void prepareHashMapWebServiceUnidade(Map<String,String> map){
+		map.put("pk",map.get("id_unidade"));
+		map.put("nome", map.get("unidade"));
+		map.put("telefone", map.get("telefones_unidade"));
+		map.put("email", map.get("email_unidade"));
+		map.put("enderecoCidade", map.get("cidade"));
+	}
+	
+	private void prepareHashMapWebServiceCurso(Map<String,String> map){
+		map.remove("unidade");
+		map.remove("pk");
+		map.put("pk", map.get("id_curso"));
+		map.put("nome", map.get("curso"));
+		map.put("cargaHorariaTotal", map.get("cht"));		
+	}
+	
+	/**
+	 * @param keyType - tipo de busca(CPF(caso seja cpf faz a busca no web service e mapea) ou matricula
+	 * @param keyValue - chave de busca(o número CPF ou a o número da matricula)
+	 * @return
+	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public UegAcademico getUegAcademico(String keyType, String keyValue){
-		TipoDeBuscaAcademicoEnum typeSearch = TipoDeBuscaAcademicoEnum.getTipoDeBuscaAcademico(keyType); 
+
+		TipoDeBuscaAcademicoEnum typeSearch = TipoDeBuscaAcademicoEnum.getTipoDeBuscaAcademico(keyType);
+		
+		if(typeSearch == TipoDeBuscaAcademicoEnum.CPF){
+			if(!this.mapUegAcademico(keyValue)){
+				return null;
+			}
+		}
+		
 		//UegAcademicoDao  uaDAO = (UegAcademicoDao) SpringFactory.getBean(UegAcademicoDao.class);
 		GenericDAO uaDAO = (GenericDAO) SpringFactory.loadDAO(UegAcademico.class);
 		
@@ -98,7 +276,7 @@ public class AcademicoService extends GenericService<Academico, Long> {
 		GenericDAO cursosAcademicoDAO = (GenericDAO) SpringFactory.loadDAO(CursosAcademico.class);
 		
 		Restrictions[] restrictions =  new Restrictions[1];
-		restrictions[0] = new Restrictions(RestrictionsTypeEnum.EQUAL,"pk.uegAcademico.pk",(Object)academico.getUegAcademico().getPk());
+		restrictions[0] = new Restrictions(RestrictionsTypeEnum.EQUAL,"pk.uegAcademico.cpf",(Object)academico.getUegAcademico().getPk());
 		
 		try {
 			return (List<CursosAcademico>) cursosAcademicoDAO.list(CursosAcademico.class, restrictions, new Order[0]);

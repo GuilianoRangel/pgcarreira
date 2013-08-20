@@ -1,6 +1,8 @@
 package br.ueg.pcb.model;
 
 import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -28,7 +30,7 @@ public class Unidade extends Entity<String>{
 	private String nome;
 	
 	@SearchableField(description="Sigla Unidade")
-	@Column(name = "sigla_unid", length=20, nullable = false)
+	@Column(name = "sigla_unid", length=20, nullable = true)
 	private String sigla;
 	
 	@SearchableField(description="Diretor Unidade")
