@@ -54,7 +54,7 @@
 												</columns>
 												<rows>
 													<row  self="@{each=curso}">
-														<label value="@{curso.pk.uegAcademico.pk}"/>
+														<label value="@{curso.matricula}"/>
 														<cell align="left">
 															<label value="@{curso.pk.curso.nome }" />
 														</cell>
