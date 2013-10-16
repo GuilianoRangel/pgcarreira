@@ -17,8 +17,10 @@ import org.zkoss.zkplus.databind.AnnotateDataBinder;
 import org.zkoss.zul.Messagebox;
 
 import br.edu.aee.UniArch.annotation.AttributeView;
+import br.edu.aee.UniArch.annotation.Scenario;
 import br.edu.aee.UniArch.domain.ActionReturn;
 import br.edu.aee.UniArch.settings.SpringFactory;
+import br.edu.aee.UniArch.structure.interfaces.IValidator;
 import br.ueg.pcb.controller.CadastroAcademicoControler;
 import br.ueg.pcb.model.Academico;
 import br.ueg.pcb.model.CursosAcademico;
@@ -31,6 +33,10 @@ import br.ueg.pcb.utils.ImageUtils;
 import br.ueg.pcb.view.model.AcademicoUnidadeCursos;
 
 @SuppressWarnings({ "serial" })
+@Scenario(visibleName = "CADASTRO_ACADEMICO", value = "CADASTRO_ACADEMICO_SCENARIO", isSingle = true, restrictedAccess = true, showOnMenu = true, actions = {
+		IValidator.RECORD_ACTION, IValidator.SAVE_ACTION,
+		IValidator.LIST_ACTION, CadastroAcademicoControler.ACTION_EDIT_ACADEMICO,
+		CadastroAcademicoControler.ACTION_PROCURAR_ACADEMICO })
 @Scope(value="session")
 @org.springframework.stereotype.Component
 public class CadastroAcademicoComposer extends SuperViewZKPGC<CadastroAcademicoControler, Academico, Long> {

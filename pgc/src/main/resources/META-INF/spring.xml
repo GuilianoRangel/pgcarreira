@@ -17,13 +17,13 @@
 						http://www.zkoss.org/2008/zkspring/core 
 						http://www.zkoss.org/2008/zkspring/core/zkspring-core.xsd">
 	
+   <!-- CONFIGURAÇÕES PARA HABILITAR A ARQUITETURA -->
     <bean id="springApplicationContext" class="br.edu.aee.UniArch.settings.SpringApplicationContext"/>
-	<!-- FIM DAS CONFIGURAÇÕES DA ARQUITETURA -->
-
-	<!-- CONFIGURAÇÕES PARA HABILITAR A ARQUITETURA -->
+    
 	<import resource="classpath:/META-INF/application-context-root.xml" />
-	
 
+	<bean id="viewAccess" class="br.edu.aee.UniArch.subsystems.menu.ViewAccessZK"/>	
+	<!-- FIM DAS CONFIGURAÇÕES DA ARQUITETURA -->
 	
 	<!-- CONFIGURAÇÕES PARA O HIBERNATE -->
 		<!-- CONFIGURAÇÕES DO BANCO DE DADOS -->
@@ -33,4 +33,5 @@
 	<context:component-scan base-package="br.ueg.pcb.controller" />
 	<context:component-scan base-package="br.ueg.pcb.view" />
 	<context:component-scan base-package="br.ueg.pcb.validation" />
+	<context:component-scan base-package="br.ueg.pcb.settings" />
 </beans>

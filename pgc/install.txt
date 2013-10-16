@@ -1,1 +1,3 @@
 http://blog.coffeebeans.at/?p=64 - instruções do modulo jboss para postgres
+
+http://localhost:8080/pgc/~./map-app/admin/mapper.zul

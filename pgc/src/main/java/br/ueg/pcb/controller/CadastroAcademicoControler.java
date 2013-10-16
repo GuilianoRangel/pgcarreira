@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
+import br.edu.aee.UniArch.annotation.ActionMethod;
 import br.edu.aee.UniArch.annotation.UseCase;
 import br.edu.aee.UniArch.domain.ActionReturn;
 import br.edu.aee.UniArch.domain.GenericActionReturn;
@@ -17,6 +18,7 @@ import br.edu.aee.UniArch.settings.SpringFactory;
 import br.edu.aee.UniArch.structure.controller.GenericController;
 import br.edu.aee.UniArch.structure.interfaces.IGenericView;
 import br.edu.aee.UniArch.structure.interfaces.IValidator;
+import br.edu.aee.UniArch.structure.model.AllocationUser;
 import br.edu.aee.UniArch.structure.model.UserPermission;
 import br.edu.aee.UniArch.subsystems.security.SecurityDAO;
 import br.edu.aee.UniArch.subsystems.security.SecurityService;
@@ -33,8 +35,10 @@ import br.ueg.pcb.view.SuperViewZKPGC;
 @Scope("session")
 @UseCase(value = "CADASTRO_ACADEMICO_UC", order = 4)
 public class CadastroAcademicoControler extends GenericController<Academico, Long> {
+	public static final String ACTION_EDIT_ACADEMICO = "AC_EDITAR_ACADEMICO";
+	public static final String ACTION_PROCURAR_ACADEMICO = "AC_PROCURAR_ACADEMICO";
 	
-	
+	@ActionMethod(ACTION_EDIT_ACADEMICO)
 	public ActionReturn<String, Academico> edit(){
 		ActionReturn<String, Academico> actionReturn = new ActionReturn<String, Academico>();
 				UserPermission up = (UserPermission)getView().getUserLogged();
@@ -64,6 +68,7 @@ public class CadastroAcademicoControler extends GenericController<Academico, Lon
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
+	@ActionMethod(IValidator.RECORD_ACTION)
 	public ActionReturn<String, Academico> record() {
 		
 		ActionReturn<?,?> actionReturn = super.executeValidateAction(IValidator.SAVE_ACTION);
@@ -78,7 +83,7 @@ public class CadastroAcademicoControler extends GenericController<Academico, Lon
 		UserPermission up = saveUserPermission(academico, actionReturn);
 		
 		if(!actionReturn.isSuccess()	){
-			securityService.rollback();
+			this.getSecurityService().rollback();
 			return (ActionReturn<String, Academico>) actionReturn;
 		}
 		
@@ -93,13 +98,13 @@ public class CadastroAcademicoControler extends GenericController<Academico, Lon
 		if (actionReturn.isSuccess()){
 			actionReturn.addExtra(ActionReturn.NEXT_USE_CASE, this.getMessageByKey("view.Academico.homepage"));
 			try {
-				securityService.commit();
+				this.getSecurityService().commit();
 			} catch (SuperException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}else{
-			securityService.rollback();
+			this.getSecurityService().rollback();
 		}
 		
 		return (ActionReturn<String, Academico>) actionReturn;
@@ -114,9 +119,9 @@ public class CadastroAcademicoControler extends GenericController<Academico, Lon
 		Boolean isUpdate = (Boolean) getAttributeFromView(IGenericView.ATTRIBUTE_UPDATE);
 		ActionReturn<String, ?>ar2 = new GenericActionReturn();
 		
-		this.securityService = (SecurityService) SpringFactory.getBean(SecurityService.class);
+		//this._securityService = (SecurityService) SpringFactory.getBean(SecurityService.class);
 		try {
-			this.securityService.activeMultiTransaction();
+			this.getSecurityService().activeMultiTransaction();
 		} catch (SuperException e) {
 			actionReturn.reportFailure(ReturnTypeEnum.ERROR,Arrays.asList(this.getMessageByKey("CadastroAcademico.CadastrarAcademico.erroSalvarUserPermission")));
 			actionReturn.addExtra("stackTrace", e.getStackTrace());
@@ -124,13 +129,13 @@ public class CadastroAcademicoControler extends GenericController<Academico, Lon
 		}
 	
 		
-		securityService.setDao(SpringFactory.getBean(SecurityDAO.class));
+		//_securityService.setDao(SpringFactory.getBean(SecurityDAO.class));
 		
 		
 		UserPermission up = new UserPermission();;;
 		if(isUpdate){
 			up.setPk(academico.getPkUserPermission());
-			ar2 = securityService.findByPk(academico.getPkUserPermission());
+			ar2 = this.getSecurityService().findByPk(academico.getPkUserPermission());
 			if(!ar2.isSuccess()){
 				return null;
 			}
@@ -149,14 +154,23 @@ public class CadastroAcademicoControler extends GenericController<Academico, Lon
 		
 		
 		if(isUpdate){
-			ar2 = this.securityService.update(up);
+			ar2 = this.getSecurityService().update(up);
 		}else{
-			ar2 = this.securityService.save(up);
+			ar2 = this.getSecurityService().save(up);
+			
 		}
 		if(!ar2.isSuccess()){
 			actionReturn.reportFailure(ReturnTypeEnum.ERROR,Arrays.asList(this.getMessageByKey("CadastroAcademico.CadastrarAcademico.erroSalvarUserPermission")));
 			actionReturn.addExtra("stackTrace", ar2.getErrorMessages());
 			return null;
+		}else{
+			//salva alocação de unidade(requirido pela arquitetura)
+			if (!isUpdate && this.getSystem().getHasNoUnit()) {
+				AllocationUser allocationUser = new AllocationUser();
+				allocationUser.setUser(up);
+				allocationUser.setUnit(this.getSecurityService().findNoUnit());
+				this.getSecurityService().saveAllocatedUser(allocationUser);
+			}
 		}
 		
 //		if(isUpdate){
@@ -168,7 +182,7 @@ public class CadastroAcademicoControler extends GenericController<Academico, Lon
 	}
 
 	private Academico selectedAcademico;
-	private SecurityService securityService;
+	//private SecurityService _securityService;
 	
 	public AcademicoService getAcademicoService(){
 		return ((AcademicoService) this.getService());
@@ -178,6 +192,7 @@ public class CadastroAcademicoControler extends GenericController<Academico, Lon
 		return ConfigurationProperties.getInstance().getValue(key);
 	}
 	
+	@ActionMethod(ACTION_PROCURAR_ACADEMICO)
 	public ActionReturn<String, Object> procuraracademico(){
 		ActionReturn<String, Object> actionReturn = new ActionReturn<String, Object>();
 		

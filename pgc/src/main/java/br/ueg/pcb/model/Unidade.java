@@ -8,6 +8,7 @@ import javax.persistence.Table;
 
 import br.edu.aee.UniArch.annotation.SearchableField;
 import br.edu.aee.UniArch.annotation.VisibleEntityName;
+import br.edu.aee.UniArch.structure.interfaces.ISessionParameterEntity;
 import br.edu.aee.UniArch.structure.model.Entity;
 
 /**
@@ -18,7 +19,7 @@ import br.edu.aee.UniArch.structure.model.Entity;
 @VisibleEntityName(value="Unidade")
 @javax.persistence.Entity
 @Table(name="ueg_unidade")
-public class Unidade extends Entity<String>{
+public class Unidade extends Entity<String>  implements ISessionParameterEntity{
 		
 	@Id
 	@SearchableField(description="id_unid")
@@ -206,6 +207,18 @@ public class Unidade extends Entity<String>{
 	 */
 	public void setWebsite(String website) {
 		this.website = website;
+	}
+
+	@Override
+	public String getLabel() {
+		// TODO Auto-generated method stub
+		return "Unidade Universitária";
+	}
+
+	@Override
+	public String getTooltiptext() {
+		// TODO Auto-generated method stub
+		return "Unidade Universitária do aluno";
 	}
 
 }
