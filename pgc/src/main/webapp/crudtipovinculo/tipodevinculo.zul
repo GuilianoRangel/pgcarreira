@@ -1,0 +1,14 @@
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+<?page title="Portal de Gestão de Carreiras - Página de Vinculo" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window border="none" apply="${vinculoComposer }"> <!--regra spring minuscula--> 
+     <label>Descrição Vinculo
+     </label>
+     <textbox value="@{manager.fldDescricao }"></textbox>
+     <button label="Cadastrar" onClick='manager.record()'></button>
+     
+     <locatorbutton composer="@{manager }" key="vinculo" entityClass="@{manager.entityClass }" emptyMessage="Busque ou liste..."
+						value="@{manager.selectedEntity }" onAction="manager.edit()" >
+					</locatorbutton>
+</window>
+</zk>
