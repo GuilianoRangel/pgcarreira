@@ -20,6 +20,7 @@ import br.edu.aee.UniArch.annotation.AttributeView;
 import br.edu.aee.UniArch.annotation.Scenario;
 import br.edu.aee.UniArch.domain.ActionReturn;
 import br.edu.aee.UniArch.settings.SpringFactory;
+import br.edu.aee.UniArch.structure.interfaces.ISessionParameterView;
 import br.edu.aee.UniArch.structure.interfaces.IValidator;
 import br.ueg.pcb.controller.CadastroAcademicoControler;
 import br.ueg.pcb.model.Academico;
@@ -39,7 +40,9 @@ import br.ueg.pcb.view.model.AcademicoUnidadeCursos;
 		CadastroAcademicoControler.ACTION_PROCURAR_ACADEMICO })
 @Scope(value="session")
 @org.springframework.stereotype.Component
-public class CadastroAcademicoComposer extends SuperViewZKPGC<CadastroAcademicoControler, Academico, Long> {
+public class CadastroAcademicoComposer extends SuperViewZKPGC<CadastroAcademicoControler, Academico, Long> 
+//implements ISessionParameterView  
+{
 	
 	@AttributeView(attributeName="academicoChaveBusca", isEntityField=false)
 	private String academicoChaveBusca;

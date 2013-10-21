@@ -212,7 +212,7 @@ public class Unidade extends Entity<String>  implements ISessionParameterEntity{
 	@Override
 	public String getLabel() {
 		// TODO Auto-generated method stub
-		return "Unidade Universitária";
+		return this.getNome();
 	}
 
 	@Override

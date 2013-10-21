@@ -14,14 +14,12 @@ import br.edu.aee.UniArch.enums.AuthenticationTypeEnum;
 import br.edu.aee.UniArch.enums.ReturnTypeEnum;
 import br.edu.aee.UniArch.enums.StatusEnum;
 import br.edu.aee.UniArch.exception.SuperException;
-import br.edu.aee.UniArch.settings.SpringFactory;
 import br.edu.aee.UniArch.structure.controller.GenericController;
 import br.edu.aee.UniArch.structure.interfaces.IGenericView;
 import br.edu.aee.UniArch.structure.interfaces.IValidator;
 import br.edu.aee.UniArch.structure.model.AllocationUser;
 import br.edu.aee.UniArch.structure.model.UserPermission;
-import br.edu.aee.UniArch.subsystems.security.SecurityDAO;
-import br.edu.aee.UniArch.subsystems.security.SecurityService;
+import br.edu.aee.UniArch.subsystems.sessionparam.SessionParameter;
 import br.edu.aee.UniArch.utils.ConfigurationProperties;
 import br.ueg.pcb.model.Academico;
 import br.ueg.pcb.model.CursosAcademico;
@@ -256,6 +254,13 @@ public class CadastroAcademicoControler extends GenericController<Academico, Lon
 	 */
 	public <T extends EntityTabelaBasica> List<T> getListEntityTabelaBasica(Class<T> classe){
 		return this.getAcademicoService().getListEntityTabelaBasica(classe);
-	}	
-
+	}
+	
+	/*
+	 * Sem javaDoc, verificar super classe
+	 
+	@Override
+	protected List<SessionParameter> getUseCaseSessionParameters() {
+		return Arrays.asList(new SessionParameter(Unidade.class));
+	}*/
 }
