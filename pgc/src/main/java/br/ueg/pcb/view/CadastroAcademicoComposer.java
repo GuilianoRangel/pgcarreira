@@ -747,7 +747,7 @@ public class CadastroAcademicoComposer extends SuperViewZKPGC<CadastroAcademicoC
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		this.setCasoDeUsoCenario("EditarAcademico");
 		//this.binderForm = new AnnotateDataBinder(this.getActiveComponent());
 		//this.binderForm.setLoadOnSave(false);
 		//this.binderForm.bindBean("manager", this);

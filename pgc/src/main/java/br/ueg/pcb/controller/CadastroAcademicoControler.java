@@ -15,10 +15,12 @@ import br.edu.aee.UniArch.enums.ReturnTypeEnum;
 import br.edu.aee.UniArch.enums.StatusEnum;
 import br.edu.aee.UniArch.exception.SuperException;
 import br.edu.aee.UniArch.structure.controller.GenericController;
+import br.edu.aee.UniArch.structure.interfaces.IEntityView;
 import br.edu.aee.UniArch.structure.interfaces.IGenericView;
 import br.edu.aee.UniArch.structure.interfaces.IValidator;
 import br.edu.aee.UniArch.structure.model.AllocationUser;
 import br.edu.aee.UniArch.structure.model.UserPermission;
+import br.edu.aee.UniArch.structure.view.ZK.EntityViewZK;
 import br.edu.aee.UniArch.subsystems.sessionparam.SessionParameter;
 import br.edu.aee.UniArch.utils.ConfigurationProperties;
 import br.ueg.pcb.model.Academico;
@@ -69,7 +71,7 @@ public class CadastroAcademicoControler extends GenericController<Academico, Lon
 	@ActionMethod(IValidator.RECORD_ACTION)
 	public ActionReturn<String, Academico> record() {
 		
-		ActionReturn<?,?> actionReturn = super.executeValidateAction(IValidator.SAVE_ACTION);
+		ActionReturn<?,?> actionReturn = super.executeValidateAction(IValidator.SAVE_ACTION,true);
 		if(!actionReturn.isSuccess()){
 			return (ActionReturn<String, Academico>) actionReturn;
 		}
@@ -215,8 +217,10 @@ public class CadastroAcademicoControler extends GenericController<Academico, Lon
 		
 		actionReturn.addExtra(ActionReturn.NEXT_USE_CASE, this.getMessageByKey("view.CadastroAcademico.cadastro2"));
 		actionReturn.reportSuccess();
-		this.setAttributeFromView("casoDeUsoCenario", "CadastrarAcademico");
+		//this.setAttributeFromView("casoDeUsoCenario", "CadastrarAcademico");
+		
 		this.setAttributeFromView(IGenericView.ATTRIBUTE_UPDATE,false);
+		this.getView().setScenarioAction("CadastrarAcademico");//tem que vir apos os setAttributeFromView
 		this.setEntityFromView(this.getSelectedAcademico());
 		//((AcademicoService) this.getService()).existsUegAcademico(keyType, keyValue)
 		return actionReturn;

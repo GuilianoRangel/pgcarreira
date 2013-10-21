@@ -47,7 +47,7 @@ public class WsAlunoClient {
 	}
 	
 	public static void main(String[] args) {
-		//ArrayList<HashMap<String,String>> searchAluno = WsAlunoClient.searchAluno("04657156136");
+		//ArrayList<HashMap<String,String>> searchAluno = WsAlunoClient.searchAluno("04657156136");//02945206196
 		ArrayList<HashMap<String,String>> searchAluno = WsAlunoClient.searchAluno("01525541145");
 		if(searchAluno!=null)
 		for (Iterator iterator = searchAluno.iterator(); iterator.hasNext(); ) {    

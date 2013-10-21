@@ -14,6 +14,7 @@ import br.edu.aee.UniArch.domain.ActionReturn;
 import br.edu.aee.UniArch.domain.GenericActionReturn;
 import br.edu.aee.UniArch.enums.ReturnTypeEnum;
 import br.edu.aee.UniArch.settings.SpringFactory;
+import br.edu.aee.UniArch.structure.interfaces.IGenericView;
 import br.edu.aee.UniArch.structure.interfaces.IValidator;
 import br.edu.aee.UniArch.subsystems.validation.SuperValidator;
 import br.edu.aee.UniArch.utils.ConfigurationProperties;
@@ -84,10 +85,11 @@ public class CadastroAcademicoValidation extends SuperValidator {
 	 * @see br.edu.aee.UniArch.subsystems.validation.SuperValidator#validateSave(java.lang.String, java.lang.String)
 	 */
 	@Override
-	@ValidatorMethod(action = IValidator.SAVE_ACTION, order = 0)
+	@ValidatorMethod(action={IValidator.SAVE_ACTION}, order = 0)
 	public ActionReturn<?, ?> validateSave(String action, String attributeName) {
-		ActionReturn<?, ?> actionReturn = super.validateSave(action, attributeName);
 		
+		ActionReturn<?, ?> actionReturn = super.validateSave(action, attributeName);
+	
 		//valida se o e-mail já existe.
 		onBlurValidateFieldEmailExists(actionReturn,(String) this.getAttributeValue("email"),(Long) getAttributeValue("pk"));
 		if(!actionReturn.isSuccess()){ 
@@ -95,15 +97,24 @@ public class CadastroAcademicoValidation extends SuperValidator {
 		}
 		
 		//valida campo completo e numero
-		if(!validateComplementNumero(action)){
+		if(attributeName==null && !validateComplementNumero(action)){
 			actionReturn.reportFailure(ReturnTypeEnum.WARNING,Arrays.asList(
 					ConfigurationProperties.getInstance().getValue("CadastroAcademico.CadastrarAcademico.complemento.numero.vazio")
 					));	
+			return actionReturn;
 		}
 		
 		//valida senha
+		Boolean isUpdate = (Boolean) getAttributeParameter(IGenericView.ATTRIBUTE_UPDATE);
 		String confirmaSenha = (String) getAttributeParameter("confirmaSenha"); 		confirmaSenha=confirmaSenha!=null?confirmaSenha:"";		
 		String senha = (String) getAttributeParameter("senha");		senha=senha!=null?senha:"";
+		if(attributeName==null && !isUpdate){
+			if(senha.equals("")){
+				actionReturn.reportFailure(ReturnTypeEnum.WARNING,Arrays.asList(
+					ConfigurationProperties.getInstance().getValue("CadastroAcademico.CadastrarAcademico.senha_obrigatorio")
+					));
+			}
+		}
 		onBlurValidateFieldConfirmaSenha(actionReturn,confirmaSenha,senha);
 		if(!actionReturn.isSuccess()) return actionReturn;
 		

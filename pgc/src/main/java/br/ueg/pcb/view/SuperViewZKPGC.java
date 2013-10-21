@@ -15,9 +15,8 @@ import br.edu.aee.UniArch.domain.ActionReturn;
 import br.edu.aee.UniArch.structure.controller.GenericController;
 import br.edu.aee.UniArch.structure.interfaces.ISuperEntity;
 import br.edu.aee.UniArch.structure.view.ZK.CRUDViewZK;
-import br.ueg.pcb.controller.CadastroAcademicoControler;
-import br.ueg.pcb.model.Academico;
 
+@SuppressWarnings("serial")
 public abstract class SuperViewZKPGC<CONTROL extends GenericController<ENTITY, PK>, ENTITY extends ISuperEntity<PK>, PK extends Serializable> extends
 		CRUDViewZK<CONTROL, ENTITY, PK> {
 
@@ -26,17 +25,27 @@ public abstract class SuperViewZKPGC<CONTROL extends GenericController<ENTITY, P
 	protected ActionReturn<?, ?> lastActionReturn = null;
 	protected AnnotateDataBinder binderForm;
 
+	public SuperViewZKPGC() {
+		this("CadastrarAcademicoBusca");
+	}
+	
+	public SuperViewZKPGC(String scenarioAction) {
+		super(scenarioAction);
+	}
+	
 	/**
 	 * @return the casoDeUsoCenario
 	 */
 	public String getCasoDeUsoCenario() {
-		return casoDeUsoCenario;
+		//return casoDeUsoCenario;
+		return this.getScenarioAction();
 	}
 
 	/**
 	 * @param casoDeUsoCenario the casoDeUsoCenario to set
 	 */
 	public void setCasoDeUsoCenario(String casoDeUsoCenario) {
+		this.setScenarioAction(casoDeUsoCenario);
 		this.casoDeUsoCenario = casoDeUsoCenario;
 	}
 
@@ -93,9 +102,7 @@ public abstract class SuperViewZKPGC<CONTROL extends GenericController<ENTITY, P
 				return new InputStreamReader(resourceAsStream, "UTF-8");
 			}
 
-	public SuperViewZKPGC() {
-		super();
-	}
+
 
 	/**
 	 * remove o componente ativo
