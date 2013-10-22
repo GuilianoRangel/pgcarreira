@@ -1,4 +1,4 @@
-package br.ueg.pcb.view;
+package br.ueg.pcb.viewnousecase;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;

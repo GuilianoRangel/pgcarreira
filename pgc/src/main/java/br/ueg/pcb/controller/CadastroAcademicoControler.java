@@ -17,6 +17,7 @@ import br.edu.aee.UniArch.exception.SuperException;
 import br.edu.aee.UniArch.structure.controller.GenericController;
 import br.edu.aee.UniArch.structure.interfaces.IEntityView;
 import br.edu.aee.UniArch.structure.interfaces.IGenericView;
+import br.edu.aee.UniArch.structure.interfaces.ISuperView;
 import br.edu.aee.UniArch.structure.interfaces.IValidator;
 import br.edu.aee.UniArch.structure.model.AllocationUser;
 import br.edu.aee.UniArch.structure.model.UserPermission;
@@ -29,7 +30,8 @@ import br.ueg.pcb.model.UegAcademico;
 import br.ueg.pcb.model.Unidade;
 import br.ueg.pcb.model.assist.EntityTabelaBasica;
 import br.ueg.pcb.service.AcademicoService;
-import br.ueg.pcb.view.SuperViewZKPGC;
+import br.ueg.pcb.utils.UtilAcademico;
+import br.ueg.pcb.viewnousecase.SuperViewZKPGC;
 
 @Controller
 @Scope("session")
@@ -40,16 +42,14 @@ public class CadastroAcademicoControler extends GenericController<Academico, Lon
 	
 	@ActionMethod(ACTION_EDIT_ACADEMICO)
 	public ActionReturn<String, Academico> edit(){
-		ActionReturn<String, Academico> actionReturn = new ActionReturn<String, Academico>();
-				UserPermission up = (UserPermission)getView().getUserLogged();
-				if(up==null){
-					String loginPage = ConfigurationProperties.getInstance().getPropertyOrDefault("SECURITY_LOGIN_PAGE");
-					actionReturn.reportFailure(ReturnTypeEnum.ERROR);
-					actionReturn.addExtra(ActionReturn.NEXT_USE_CASE,loginPage);
+						
+				ActionReturn<String, Academico> actionReturn = UtilAcademico.getAcademicoLogged(getView());
+				if(!actionReturn.isSuccess()){
 					return actionReturn;
 				}
 				
-				Academico academico = this.getAcademicoByUserPermission(up);
+				Academico academico = actionReturn.getParameter(ActionReturn.ENTITY_PARAMETER);
+				
 				this.setSelectedAcademico(academico);
 				this.setEntityFromView(this.getSelectedAcademico());
 				this.setAttributeFromView("senha", "");
@@ -57,12 +57,12 @@ public class CadastroAcademicoControler extends GenericController<Academico, Lon
 				
 				((SuperViewZKPGC)this.getView()).setCasoDeUsoCenario("EditarAcademico");
 				
-				actionReturn.addParameter(ActionReturn.ENTITY_PARAMETER, academico);
-				
 				actionReturn.addExtra(ActionReturn.NEXT_USE_CASE, this.getMessageByKey("view.CadastroAcademico.cadastro2"));
 				
 				return actionReturn;
 	}
+	
+	
 	/* (non-Javadoc)
 	 * @see br.edu.aee.UniArch.structure.controller.GenericController#record()
 	 */

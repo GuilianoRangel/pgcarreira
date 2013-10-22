@@ -6,8 +6,9 @@ import br.edu.aee.UniArch.annotation.AttributeView;
 import br.edu.aee.UniArch.annotation.Scenario;
 import br.edu.aee.UniArch.settings.SpringFactory;
 import br.edu.aee.UniArch.structure.interfaces.IValidator;
-import br.ueg.pcb.controller.VinculoControler;
-import br.ueg.pcb.model.Vinculo;
+import br.ueg.pcb.controller.TipoVinculoController;
+import br.ueg.pcb.model.assist.TipoVinculo;
+import br.ueg.pcb.viewnousecase.SuperViewZKPGC;
 
 @SuppressWarnings("serial")
 @Scope(value="prototype")
@@ -17,7 +18,7 @@ import br.ueg.pcb.model.Vinculo;
 @org.springframework.stereotype.Component
 
 
-public class VinculoComposer extends SuperViewZKPGC<VinculoControler, Vinculo, Long>{
+public class VinculoComposer extends SuperViewZKPGC<TipoVinculoController, TipoVinculo, Long>{
 	
 	@AttributeView(isEntityField = true, attributeName = "descricao")
 	private String fldDescricao;
@@ -31,18 +32,24 @@ public class VinculoComposer extends SuperViewZKPGC<VinculoControler, Vinculo, L
 	}
 	
 	public Class<?> getEntityClass() {
-		return Vinculo.class;
+		return TipoVinculo.class;
+	}
+
+	@Override
+	public void cleanFields() {
+		this.setFldDescricao(null);
+		super.cleanFields();
 	}
 	
-	@Override
+	/*@Override
 	public String getUseCase() {
 		return "VINCULO_UC";
-	}
+	}*/
 	/**
 	 * @see br.edu.aee.UniArch.structure.view.ZK.SuperViewZK#newControlInstance()
 	 */
-	@Override
-	protected VinculoControler newControlInstance() {
-		return SpringFactory.getBean("vinculoControler", VinculoControler.class);
-	}
+	/*@Override
+	protected VinculoController newControlInstance() {
+		return SpringFactory.getBean("vinculoController", VinculoController.class);
+	}*/
 }

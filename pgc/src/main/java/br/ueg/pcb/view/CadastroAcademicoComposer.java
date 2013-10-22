@@ -32,6 +32,7 @@ import br.ueg.pcb.model.assist.EstadoCivil;
 import br.ueg.pcb.model.assist.Sexo;
 import br.ueg.pcb.utils.ImageUtils;
 import br.ueg.pcb.view.model.AcademicoUnidadeCursos;
+import br.ueg.pcb.viewnousecase.SuperViewZKPGC;
 
 @SuppressWarnings({ "serial" })
 @Scenario(visibleName = "CADASTRO_ACADEMICO", value = "CADASTRO_ACADEMICO_SCENARIO", isSingle = true, restrictedAccess = true, showOnMenu = true, actions = {

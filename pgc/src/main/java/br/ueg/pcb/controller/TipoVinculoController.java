@@ -5,12 +5,12 @@ import org.springframework.stereotype.Controller;
 
 import br.edu.aee.UniArch.annotation.UseCase;
 import br.edu.aee.UniArch.structure.controller.GenericController;
-import br.ueg.pcb.model.Vinculo;
+import br.ueg.pcb.model.assist.TipoVinculo;
 
 @Controller
 @Scope("session")
 @UseCase(value = "VINCULO_UC", order = 4)
 
-public class VinculoControler extends GenericController<Vinculo, Long> {
+public class TipoVinculoController extends GenericController<TipoVinculo, Long> {
 
 }

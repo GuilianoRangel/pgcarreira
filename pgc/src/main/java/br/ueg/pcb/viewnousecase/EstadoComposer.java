@@ -1,4 +1,4 @@
-package br.ueg.pcb.view;
+package br.ueg.pcb.viewnousecase;
 
 import org.springframework.context.annotation.Scope;
 import org.zkoss.zk.ui.Component;

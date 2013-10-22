@@ -4,7 +4,7 @@ import javax.persistence.DiscriminatorValue;
 
 import br.edu.aee.UniArch.annotation.VisibleEntityName;
 
-@VisibleEntityName(value="Estado")
+@VisibleEntityName(value="Mês")
 @SuppressWarnings("serial")
 @javax.persistence.Entity
 @DiscriminatorValue("mes")

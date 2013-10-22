@@ -1,4 +1,4 @@
-package br.ueg.pcb.model;
+package br.ueg.pcb.model.assist;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,14 +9,12 @@ import javax.persistence.Entity;
 import br.edu.aee.UniArch.annotation.UseCase;
 import br.edu.aee.UniArch.annotation.VisibleEntityName;
 import br.edu.aee.UniArch.structure.interfaces.ILocalizableEntity;
-import br.ueg.pcb.model.assist.EntityTabelaBasica;
 
 @SuppressWarnings("serial")
 @DiscriminatorValue("tipovinculo")
 @Entity
-@UseCase(value="VINCULO_UC", order=0 )
 @VisibleEntityName("Vinculo")
-public class Vinculo extends EntityTabelaBasica implements ILocalizableEntity {
+public class TipoVinculo extends EntityTabelaBasica implements ILocalizableEntity {
 
 	@Override
 	public Map<String, String> getLocalizableFields() {
