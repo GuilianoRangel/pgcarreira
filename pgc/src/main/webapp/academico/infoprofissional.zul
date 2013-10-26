@@ -1,7 +1,107 @@
 <?page contentType="text/html;charset=UTF-8"?>
 <zk>
-<div id="infoProfissional" apply="${infoProfissionalComposer}">
-<label value="@{manager.casoDeUsoCenario }" visible="true" />
+	<div id="infoProfissional" apply="${infoProfissionalComposer}">
+		<label value="@{manager.casoDeUsoCenario }" visible="false" />
+		<groupbox width="1020px" sclass="cadastro1_borda"
+			style="border-radius: 10px; border: solid 1px gray; padding: 0px; "
+			contentStyle="padding:0px;" mold="3d">
+			<style src="/css/style.css" />
+			<caption label="Informações Profissionais">
+				<button>Adicionar</button>
+			</caption>
 
-</div>
+			<listbox zclass="nothing">
+				<listhead>
+					<listheader label="" sort="auto" />
+				</listhead>
+				<listitem>
+					<listcell>
+						<hlayout>
+							<groupbox width="970px">
+								<caption>
+									<label sclass="cadastro1_titulo">
+										Cargo ocupado na empresa -
+									</label>
+									<label sclass="cadastro1_titulo">
+										Tipo Vínculo
+									</label>
+								</caption>
+								<vlayout style="min-height:81px">
+									<hlayout>
+										<label>Nome da empresa(</label>
+										<label>Localidade</label>
+										<label>)</label>
+									</hlayout>
+									<hlayout>
+										<label>mês/ano</label>
+										<label>-</label>
+										<label>mês/ano</label>
+									</hlayout>
+									<hlayout>
+										<label>
+											Descrição do cargo ocupado,
+											é um texto livre onde o
+											acadêmico pode descrever o
+											que ele realizava na
+											empresa, funções,
+											atribuições, etc
+										</label>
+									</hlayout>
+								</vlayout>
+							</groupbox>
+							<vlayout style="padding-top: 8px">
+							<image src="/imagens/editar.png" onClick=""></image>
+							<image src="/imagens/lixeira.png" onClick=""></image>
+							<image src="/imagens/estrela_cheia.png" onClick=""></image>
+							</vlayout>
+						</hlayout>
+					</listcell>
+				</listitem>
+				<listitem>
+					<listcell>
+						<hlayout>
+							<groupbox width="970px">
+								<caption>
+									<label sclass="cadastro1_titulo">
+										Cargo ocupado na empresa -
+									</label>
+									<label sclass="cadastro1_titulo">
+										Tipo Vínculo
+									</label>
+								</caption>
+								<vlayout style="min-height:81px">
+									<hlayout>
+										<label>Nome da empresa(</label>
+										<label>Localidade</label>
+										<label>)</label>
+									</hlayout>
+									<hlayout>
+										<label>mês/ano</label>
+										<label>-</label>
+										<label>mês/ano</label>
+									</hlayout>
+									<hlayout>
+										<label>
+											Descrição do cargo ocupado,
+											é um texto livre onde o
+											acadêmico pode descrever o
+											que ele realizava na
+											empresa, funções,
+											atribuições, etc
+										</label>
+									</hlayout>
+								</vlayout>
+							</groupbox>
+							<vlayout style="padding-top: 8px">
+							<image src="/imagens/editar.png" onClick=""></image>
+							<image src="/imagens/lixeira.png" onClick=""></image>
+							<image src="/imagens/estrela_cheia.png" onClick=""></image>
+							</vlayout>
+						</hlayout>
+					</listcell>
+				</listitem>
+			</listbox>
+
+		</groupbox>
+	</div>
 </zk>
