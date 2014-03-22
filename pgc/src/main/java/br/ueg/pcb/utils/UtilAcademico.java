@@ -4,7 +4,7 @@ import br.edu.aee.UniArch.domain.ActionReturn;
 import br.edu.aee.UniArch.enums.ReturnTypeEnum;
 import br.edu.aee.UniArch.settings.SpringFactory;
 import br.edu.aee.UniArch.structure.interfaces.ISuperView;
-import br.edu.aee.UniArch.structure.model.UserPermission;
+import br.edu.aee.UniArch.structure.model.User;
 import br.edu.aee.UniArch.utils.ConfigurationProperties;
 import br.ueg.pcb.model.Academico;
 import br.ueg.pcb.service.AcademicoService;
@@ -19,7 +19,7 @@ public class UtilAcademico {
 	 */
 	public static ActionReturn<String, Academico> getAcademicoLogged(ISuperView view){
 		ActionReturn<String, Academico> actionReturn = new ActionReturn<String, Academico>();
-		UserPermission up = (UserPermission)view.getUserLogged();
+		User up = (User)view.getUserLogged();
 		if(up==null){
 			String loginPage = ConfigurationProperties.getInstance().getPropertyOrDefault("SECURITY_LOGIN_PAGE");
 			actionReturn.reportFailure(ReturnTypeEnum.ERROR);

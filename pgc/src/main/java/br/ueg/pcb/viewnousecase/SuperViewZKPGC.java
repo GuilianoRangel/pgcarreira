@@ -120,7 +120,7 @@ public abstract class SuperViewZKPGC<CONTROL extends GenericController<ENTITY, P
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public void doAfterCompose(Component comp) throws Exception {
+	public void doAfterCompose(Component comp)  {
 		comp.setAttribute(this.getUseCase(), this, true);
 		super.doAfterCompose(comp);				
 	}

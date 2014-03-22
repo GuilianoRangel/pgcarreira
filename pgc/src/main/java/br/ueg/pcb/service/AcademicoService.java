@@ -1,29 +1,22 @@
 package br.ueg.pcb.service;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.text.TabExpander;
-
-import org.apache.axis.transport.jms.MapUtils;
 import org.apache.commons.beanutils.BeanUtils;
-import org.omg.CORBA.OMGVMCID;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-
 
 import br.edu.aee.UniArch.domain.Order;
 import br.edu.aee.UniArch.domain.Restrictions;
 import br.edu.aee.UniArch.enums.RestrictionsTypeEnum;
 import br.edu.aee.UniArch.exception.SuperException;
 import br.edu.aee.UniArch.settings.SpringFactory;
-import br.edu.aee.UniArch.structure.model.UserPermission;
+import br.edu.aee.UniArch.structure.model.User;
 import br.edu.aee.UniArch.structure.persistence.dao.GenericDAO;
 import br.edu.aee.UniArch.structure.service.GenericService;
 import br.ueg.pcb.enums.TipoDeBuscaAcademicoEnum;
@@ -33,7 +26,6 @@ import br.ueg.pcb.model.CursosAcademico;
 import br.ueg.pcb.model.UegAcademico;
 import br.ueg.pcb.model.Unidade;
 import br.ueg.pcb.model.assist.EntityTabelaBasica;
-import br.ueg.pcb.model.assist.Sexo;
 import br.ueg.pcb.model.pks.CursosAcademicoPK;
 import br.ueg.pcb.utils.ORMUtils;
 import br.ueg.pcb.webservice.client.WsAlunoClient;
@@ -51,7 +43,7 @@ public class AcademicoService extends GenericService<Academico, Long> {
 			return true;
 		}else{
 			return false;
-		}
+		} 
 	}
 	/**
 	 * Mapeia o usuário no banco de dados da aplicação, atualizando o cadastro de
@@ -312,7 +304,7 @@ public class AcademicoService extends GenericService<Academico, Long> {
 		return false;
 	}
 	
-	public Academico getAcademicoByUserPermission(UserPermission up){
+	public Academico getAcademicoByUserPermission(User up){
 		List<Academico> listAcademico = this.findAcademicoByField("pkUserPermission",up.getPk());
 		if (listAcademico!=null && listAcademico.size()>0){
 			Academico academico = listAcademico.get(0);

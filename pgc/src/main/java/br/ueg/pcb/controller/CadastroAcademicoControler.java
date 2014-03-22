@@ -1,6 +1,7 @@
 package br.ueg.pcb.controller;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.context.annotation.Scope;
@@ -10,19 +11,20 @@ import br.edu.aee.UniArch.annotation.ActionMethod;
 import br.edu.aee.UniArch.annotation.UseCase;
 import br.edu.aee.UniArch.domain.ActionReturn;
 import br.edu.aee.UniArch.domain.GenericActionReturn;
+import br.edu.aee.UniArch.domain.Order;
+import br.edu.aee.UniArch.domain.Restrictions;
 import br.edu.aee.UniArch.enums.AuthenticationTypeEnum;
+import br.edu.aee.UniArch.enums.RestrictionsTypeEnum;
 import br.edu.aee.UniArch.enums.ReturnTypeEnum;
 import br.edu.aee.UniArch.enums.StatusEnum;
 import br.edu.aee.UniArch.exception.SuperException;
 import br.edu.aee.UniArch.structure.controller.GenericController;
-import br.edu.aee.UniArch.structure.interfaces.IEntityView;
 import br.edu.aee.UniArch.structure.interfaces.IGenericView;
-import br.edu.aee.UniArch.structure.interfaces.ISuperView;
 import br.edu.aee.UniArch.structure.interfaces.IValidator;
-import br.edu.aee.UniArch.structure.model.AllocationUser;
-import br.edu.aee.UniArch.structure.model.UserPermission;
-import br.edu.aee.UniArch.structure.view.ZK.EntityViewZK;
-import br.edu.aee.UniArch.subsystems.sessionparam.SessionParameter;
+import br.edu.aee.UniArch.structure.model.AllocatedUser;
+import br.edu.aee.UniArch.structure.model.AllocatedUserGroup;
+import br.edu.aee.UniArch.structure.model.Group;
+import br.edu.aee.UniArch.structure.model.User;
 import br.edu.aee.UniArch.utils.ConfigurationProperties;
 import br.ueg.pcb.model.Academico;
 import br.ueg.pcb.model.CursosAcademico;
@@ -80,7 +82,7 @@ public class CadastroAcademicoControler extends GenericController<Academico, Lon
 		this.resetAttributesOfView();
 		Academico academico = this.getEntityFromView();
 		
-		UserPermission up = saveUserPermission(academico, actionReturn);
+		User up = saveUser(academico, actionReturn);
 		
 		if(!actionReturn.isSuccess()	){
 			this.getSecurityService().rollback();
@@ -115,7 +117,7 @@ public class CadastroAcademicoControler extends GenericController<Academico, Lon
 	 * @param academico
 	 * @return retorna o UserPermission salvo ou null caso ocorra algum problema ao salvar e modifica o ActionReturn com o erro
 	 */
-	private UserPermission saveUserPermission(Academico academico, ActionReturn<?, ?> actionReturn) {
+	private User saveUser(Academico academico, ActionReturn<?, ?> actionReturn) {
 		Boolean isUpdate = (Boolean) getAttributeFromView(IGenericView.ATTRIBUTE_UPDATE);
 		ActionReturn<String, ?>ar2 = new GenericActionReturn();
 		
@@ -132,14 +134,14 @@ public class CadastroAcademicoControler extends GenericController<Academico, Lon
 		//_securityService.setDao(SpringFactory.getBean(SecurityDAO.class));
 		
 		
-		UserPermission up = new UserPermission();;;
+		User up = new User();;;
 		if(isUpdate){
 			up.setPk(academico.getPkUserPermission());
 			ar2 = this.getSecurityService().findByPk(academico.getPkUserPermission());
 			if(!ar2.isSuccess()){
 				return null;
 			}
-			up = (UserPermission) ar2.getParameter(ActionReturn.ENTITY_PARAMETER);
+			up = (User) ar2.getParameter(ActionReturn.ENTITY_PARAMETER);
 		}
 		up.setAuthenticationType(AuthenticationTypeEnum.INTERNAL);
 		up.setLogin(academico.getEmail());
@@ -166,10 +168,30 @@ public class CadastroAcademicoControler extends GenericController<Academico, Lon
 		}else{
 			//salva alocação de unidade(requirido pela arquitetura)
 			if (!isUpdate && this.getSystem().getHasNoUnit()) {
-				AllocationUser allocationUser = new AllocationUser();
-				allocationUser.setUser(up);
-				allocationUser.setUnit(this.getSecurityService().findNoUnit());
-				this.getSecurityService().saveAllocatedUser(allocationUser);
+				AllocatedUser allocatedUser = new AllocatedUser();
+				allocatedUser.setUser(up);
+				allocatedUser.setUnit(this.getSecurityService().findNoUnit());				
+				
+				this.getSecurityService().saveAllocatedUser(allocatedUser);
+				AllocatedUserGroup aug = new AllocatedUserGroup();
+				aug.setAllocatedUser(allocatedUser);
+				
+				Restrictions[] restrictions =  new Restrictions[1];
+
+				restrictions[0]  = new Restrictions(RestrictionsTypeEnum.EQUAL,"name","egresso");
+				Group group=null;
+				try {
+					List<Group> listByClass = (List<Group>)this.getSecurityService().getDao().listByClass(Group.class, restrictions, new Order[0]);
+					group = listByClass.get(0);
+					aug.setGroup(group);
+					this.getSecurityService().getDao().saveEntity(aug);
+				} catch (SuperException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					actionReturn.reportFailure(ReturnTypeEnum.ERROR,Arrays.asList(this.getMessageByKey("CadastroAcademico.CadastrarAcademico.erroSalvarUserPermission")));
+					actionReturn.addExtra("stackTrace", e.getStackTrace());
+					return null;
+				}
 			}
 		}
 		
@@ -248,7 +270,7 @@ public class CadastroAcademicoControler extends GenericController<Academico, Lon
 		this.selectedAcademico = selectedAcademico;
 	}
 	
-	public Academico getAcademicoByUserPermission(UserPermission up){
+	public Academico getAcademicoByUserPermission(User up){
 		return this.getAcademicoService().getAcademicoByUserPermission(up);
 	}
 	

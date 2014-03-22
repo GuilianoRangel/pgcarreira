@@ -1,3 +1,14 @@
 http://blog.coffeebeans.at/?p=64 - instruções do modulo jboss para postgres
 
 http://localhost:8080/pgc/~./map-app/admin/mapper.zul
+
+http://localhost:8080/soap/~./map-app/admin/mapper.zul
+http://localhost:8080/soap/~./sapo/admin/sign-up.zul --> cadastrar login
+
+revisão funcionando 382
+
+ex. cpf
+ 01525541145 | RINANNE BARBOSA DE CASTRO
+ 26094789172 | SALMIR FERREIRA DE ARAUJO
+ 02945206196 | DIEGO CARLOS REZENDE
+ 03303766169 | MARCOS ANTONIO LEITE DOS SANTOS JUNIOR
